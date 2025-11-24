@@ -6,17 +6,17 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-ARG NODE_VERSION=24.11.1
 ARG PROJECT_FOLDER=../../../
 
-FROM node:${NODE_VERSION}-alpine
+FROM mcr.microsoft.com/devcontainers/typescript-node:24
 
 # Use production node environment by default.
-ENV NODE_ENV production
+ENV NODE_ENV development
 
 WORKDIR /usr/src/app
-RUN apk add vim
-RUN npm install -g typescript ts-node
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends vim
+RUN su node -c "npm install -g ts-node"
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
@@ -34,8 +34,5 @@ COPY ${PROJECT_FOLDER} .
 
 # Expose the port that the application listens on.
 EXPOSE ${APP_PORT}
-
-
-USER node
 
 CMD tail -f /dev/null
