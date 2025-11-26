@@ -18,8 +18,9 @@ model Game {
   id String @id @default(cuid())
   name String @unique
   runs Run[]
-  locations Location[]
   stats GameStat[]
+  bosses Boss[]
+  gameLocation GameLocation[]
 }
 
 model Run{
@@ -70,8 +71,9 @@ model Character{
   bloodtinge Int?
   mind Int?
   hp Int?
-  fp Int?
+  mp Int?
   stamina Int?
+  arcane Int?
   deaths Int @default(0)
   runId String @unique
   run Run @relation(fields: [runId], references: [id])
@@ -83,14 +85,18 @@ model Character{
 model Stat{
   id String @id @default(cuid())
   name String @unique
+  displayName String
+
   stats GameStat[]
 }
 
 model GameStat{
   id String @id @default(cuid())
-  imageId String
+  imageId String?
   gameId String
   statId String
+  alternateName String?
+  order Int
   image Image? @relation(fields: [imageId], references: [id])
   stat Stat @relation(fields: [statId], references: [id])
   game Game @relation(fields: [gameId], references: [id])
@@ -107,19 +113,27 @@ model Boss{
   imageId String? @unique
   bossInstances BossInstance[]
   image Image? @relation(fields: [imageId], references: [id])
+  games Game[]
   @@index([name])
 }
 
 model Location{
   id String @id @default(cuid())
   name String //not unique to support having different records for locations that share the same name but exist in multiple games
-  gameId String
-  order Int
   bossInstances BossInstance[]
-  game Game @relation(fields: [gameId], references: [id])
-  @@index([gameId, order(sort: Asc)])
+  gameLocation GameLocation[]
 }
 
+model GameLocation{
+  id String @id @default(cuid())
+  gameId String 
+  locationId String
+  order Int
+  game Game @relation(fields: [gameId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+  @@index([gameId, order(sort: Asc)])
+  @@index([locationId])
+}
 
 
 
@@ -143,7 +157,6 @@ model BossInstance{
   boss Boss @relation(fields: [bossId], references: [id])
   location Location @relation(fields: [locationId], references: [id])
   order Int
-  @@unique([bossId, locationId])
   @@index([bossId])
   @@index([locationId, order(sort: Asc)])
 }

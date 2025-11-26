@@ -1,0 +1,248 @@
+{
+  "bosses": [
+    "The Last Giant",
+    "The Pursuer",
+    "Executioner's Chariot",
+    "Looking Glass Knight",
+    "The Skeleton Lords",
+    "Flexile Sentry",
+    "Lost Sinner",
+    "Belfry Gargoyles",
+    "Ruin Sentinel",
+    "Royal Rat Vanguard",
+    "Royal Rat Authority",
+    "Scorpioness Najka",
+    "The Duke's Dear Freja",
+    "Mytha, the Baneful Queen",
+    "The Rotten",
+    "Old Dragonslayer",
+    "Covetous Demon",
+    "Smelter Demon",
+    "Old Iron King",
+    "Guardian Dragon",
+    "Demon of Song",
+    "Velstadt, the Royal Aegis",
+    "Vendrick",
+    "Darklurker",
+    "Dragonrider",
+    "Twin Dragonrider",
+    "Prowling Magus and Congregation",
+    "Giant Lord",
+    "Ancient Dragon",
+    "Throne Watcher and Throne Defender",
+    "Nashandra",
+    "Aldia, Scholar of the First Sin",
+    "Elana, Squalid Queen",
+    "Sinh, the Slumbering Dragon",
+    "Graverobber, Varg, and Cerah",
+    "Blue Smelter Demon",
+    "Fume Knight",
+    "Sir Alonne",
+    "Burnt Ivory King",
+    "Aava, the King's Pet",
+    "Lud and Zallen, the King's Pets"
+  ],
+  "locations": [
+    {
+      "name": "Forest of Fallen Giants",
+      "bossInstances": [
+        "The Last Giant",
+        "The Pursuer"
+      ]
+    },
+    {
+      "name": "Huntsman's Copse",
+      "bossInstances": [
+        "Executioner's Chariot",
+        "The Skeleton Lords"
+      ]
+    },
+    {
+      "name": "King's Passage",
+      "bossInstances": [
+        "Looking Glass Knight"
+      ]
+    },
+    {
+      "name": "No-man's Wharf",
+      "bossInstances": [
+        "Flexile Sentry"
+      ]
+    },
+    {
+      "name": "Sinner's Rise",
+      "bossInstances": [
+        "Lost Sinner"
+      ]
+    },
+    {
+      "name": "Belfry Luna",
+      "bossInstances": [
+        "Belfry Gargoyles"
+      ]
+    },
+    {
+      "name": "Lost Bastille",
+      "bossInstances": [
+        "Ruin Sentinel"
+      ]
+    },
+    {
+      "name": "Grave of Saints",
+      "bossInstances": [
+        "Royal Rat Vanguard"
+      ]
+    },
+    {
+      "name": "Doors of Pharros",
+      "bossInstances": [
+        "Royal Rat Authority"
+      ]
+    },
+    {
+      "name": "Shaded Woods",
+      "bossInstances": [
+        "Scorpioness Najka"
+      ]
+    },
+    {
+      "name": "Brightstone Cove Tseldora",
+      "bossInstances": [
+        "The Duke's Dear Freja",
+        "Prowling Magus and Congregation"
+      ]
+    },
+    {
+      "name": "Earthen Peak",
+      "bossInstances": [
+        "Mytha, the Baneful Queen"
+      ]
+    },
+    {
+      "name": "Black Gulch",
+      "bossInstances": [
+        "The Rotten"
+      ]
+    },
+    {
+      "name": "Heide's Tower of Flame",
+      "bossInstances": [
+        "Old Dragonslayer",
+        "Dragonrider"
+      ]
+    },
+    {
+      "name": "Harvest Valley",
+      "bossInstances": [
+        "Covetous Demon"
+      ]
+    },
+    {
+      "name": "Iron Keep",
+      "bossInstances": [
+        "Smelter Demon",
+        "Old Iron King"
+      ]
+    },
+    {
+      "name": "Aldia's Keep",
+      "bossInstances": [
+        "Guardian Dragon"
+      ]
+    },
+    {
+      "name": "Shrine of Amana",
+      "bossInstances": [
+        "Demon of Song"
+      ]
+    },
+    {
+      "name": "Undead Crypt",
+      "bossInstances": [
+        "Velstadt, the Royal Aegis",
+        "Vendrick"
+      ]
+    },
+    {
+      "name": "Dark Chasm of Old",
+      "bossInstances": [
+        "Darklurker"
+      ]
+    },
+    {
+      "name": "Drangleic Castle",
+      "bossInstances": [
+        "Twin Dragonrider"
+      ]
+    },
+    {
+      "name": "Memory of Jeigh",
+      "bossInstances": [
+        "Giant Lord"
+      ]
+    },
+    {
+      "name": "Dragon Shrine",
+      "bossInstances": [
+        "Ancient Dragon"
+      ]
+    },
+    {
+      "name": "Throne of Want",
+      "bossInstances": [
+        "Throne Watcher and Throne Defender",
+        "Nashandra",
+        "Aldia, Scholar of the First Sin"
+      ]
+    },
+    {
+      "name": "Dragon's Rest",
+      "bossInstances": [
+        "Elana, Squalid Queen",
+        "Sinh, the Slumbering Dragon"
+      ]
+    },
+    {
+      "name": "Cave of the Dead",
+      "bossInstances": [
+        "Graverobber, Varg, and Cerah"
+      ]
+    },
+    {
+      "name": "Iron Passage",
+      "bossInstances": [
+        "Blue Smelter Demon"
+      ]
+    },
+    {
+      "name": "Brume Tower",
+      "bossInstances": [
+        "Fume Knight"
+      ]
+    },
+    {
+      "name": "Memory of the Old Iron King",
+      "bossInstances": [
+        "Sir Alonne"
+      ]
+    },
+    {
+      "name": "Old Chaos",
+      "bossInstances": [
+        "Burnt Ivory King"
+      ]
+    },
+    {
+      "name": "Frozen Eleum Loyce",
+      "bossInstances": [
+        "Aava, the King's Pet"
+      ]
+    },
+    {
+      "name": "Frigid Outskirts",
+      "bossInstances": [
+        "Lud and Zallen, the King's Pets"
+      ]
+    }
+  ]
+}

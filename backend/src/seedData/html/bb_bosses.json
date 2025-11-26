@@ -1,0 +1,80 @@
+{
+  "bosses": [
+    "Cleric Beast",
+    "Father Gascoigne",
+    "Vicar Amelia",
+    "Celestial Emissary",
+    "Ebrietas, Daughter of the Cosmos",
+    "Blood-starved Beast",
+    "Shadow of Yharnam",
+    "Rom, the Vacuous Spider",
+    "Witch of Hemwick",
+    "One Reborn",
+    "Martyr Logarius",
+    "Darkbeast Paarl",
+    "Amygdala",
+    "Mergo's Wet Nurse",
+    "Micolash, Host of the Nightmare",
+    "Ludwig, The Holy Blade",
+    "Living Failures",
+    "Lady Maria of the Astral Clocktower",
+    "Orphan of Kos",
+    "Laurence, the First Vicar",
+    "Gehrman, the First Hunter",
+    "Moon Presence"
+  ],
+  "locations": [
+    {
+      "name": "Yharnam Headstone",
+      "bossInstances": [
+        "Cleric Beast",
+        "Father Gascoigne",
+        "Vicar Amelia",
+        "Celestial Emissary",
+        "Ebrietas, Daughter of the Cosmos",
+        "Blood-starved Beast"
+      ]
+    },
+    {
+      "name": "Frontier Headstone",
+      "bossInstances": [
+        "Shadow of Yharnam",
+        "Rom, the Vacuous Spider",
+        "Witch of Hemwick"
+      ]
+    },
+    {
+      "name": "Unseen Headstone",
+      "bossInstances": [
+        "One Reborn",
+        "Martyr Logarius",
+        "Darkbeast Paarl"
+      ]
+    },
+    {
+      "name": "Nightmare Headstone",
+      "bossInstances": [
+        "Amygdala",
+        "Mergo's Wet Nurse",
+        "Micolash, Host of the Nightmare"
+      ]
+    },
+    {
+      "name": "The Old Hunters (DLC)",
+      "bossInstances": [
+        "Ludwig, The Holy Blade",
+        "Living Failures",
+        "Lady Maria of the Astral Clocktower",
+        "Orphan of Kos",
+        "Laurence, the First Vicar"
+      ]
+    },
+    {
+      "name": "The Hunter's Dream",
+      "bossInstances": [
+        "Gehrman, the First Hunter",
+        "Moon Presence"
+      ]
+    }
+  ]
+}
