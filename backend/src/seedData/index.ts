@@ -3,18 +3,11 @@ import {
   GameWhereUniqueInput
 } from '../../generated/prisma/models.js';
 import { prisma } from '../db/prisma.js';
-import { ABBREVIATION_TO_GAME, BOSSES, GameAbbreviation, LOCATIONS } from './bossInstance.js';
+import { ABBREVIATION_TO_GAME, BOSSES, GameAbbreviation } from './boss.js';
+import { GAMES } from './game.js';
+import { LOCATIONS } from './location.js';
 import { GAME_STATS, STATS } from './stats.js';
-const GAMES = [
-  	"Demon's Souls",
-		"Dark Souls",
-    "Dark Souls 2",
-    "Dark Souls 2: Scholar of the First Sin",
-    "Bloodborne",
-    "Dark Souls 3",
-    "Sekiro: Shadows Die Twice",
-    "Elden Ring"
-]
+
 
 interface BossData
 {
@@ -91,37 +84,19 @@ async function createBossesInDB(): Promise<BossData[]>{
 }
 
 async function createLocationsInDB(){
-    for(const abbreviation in LOCATIONS){
-    if((abbreviation as GameAbbreviation) === "ds2"){
-      continue;
-    }
-    for(const [locationOrder, location] of LOCATIONS[abbreviation as GameAbbreviation].entries()){
-      const gameName = ABBREVIATION_TO_GAME[abbreviation as GameAbbreviation];
+    for(const [locationOrder, location] of LOCATIONS.entries()){
 
       const gameLocation: GameLocationCreateWithoutLocationInput[] =
-      [
-        {
+      location.games.map((game) => {
+        return {
           order: locationOrder,
-          game: {
+          game:  {
             connect: {
-              name: gameName
+              name: game
             }
           }
-        } 
-      ]
-      
-      if((abbreviation as GameAbbreviation) === "sotfs"){
-        gameLocation.push({
-          order: locationOrder,
-          game: {
-            connect: {
-              name: ABBREVIATION_TO_GAME.ds2
-            }
-          }
-        })
-      }
-
-
+        }
+      });
 
       await prisma.location.create({
         data: {
@@ -131,35 +106,21 @@ async function createLocationsInDB(){
           },
         }
       });
-    }
   }
 }
 
-/*
-Record<GameAbbreviation, LocationSeedData>
-*/
+
 async function createBossInstancesInDB(bossMap: BossMap){
-  for(const abbreviation in LOCATIONS){
-    const gameName = ABBREVIATION_TO_GAME[abbreviation as GameAbbreviation];
-    for(const locationSeedData of LOCATIONS[abbreviation as GameAbbreviation]){
+    for(const locationSeedData of LOCATIONS){
       const locations = await prisma.location.findMany({
         where: {
           name: {
             equals: locationSeedData.name
           },
-          gameLocation: {
-            some: {
-              game: {
-                name: {
-                  equals: gameName
-                }
-              }
-            }
-          }
         }
       });
 
-      const error_id =`locationName=${locationSeedData.name},gameName=${gameName}`
+      const error_id =`locationName=${locationSeedData.name}`
       if(locations.length === 0){
         throw new Error("no locations found for " + error_id)
       }
@@ -168,18 +129,18 @@ async function createBossInstancesInDB(bossMap: BossMap){
       }
 
 
-      for(const [index, bossInstance] of locationSeedData.bossInstances.entries()){
+      for(const bossInstance of locationSeedData.bossInstances){
         const boss = getBossDataFromBossMap(bossMap, 
-          ABBREVIATION_TO_GAME[abbreviation as GameAbbreviation], bossInstance);
+          bossInstance.game, bossInstance.name);
 
         if(!boss){
-          throw new Error(`no boss data found from gameName=${gameName}, bossName=${bossInstance}`);
+          throw new Error(`no boss data found from gameName=${bossInstance.game}, bossName=${bossInstance.name}`);
         }
 
 
         await prisma.bossInstance.create({
           data: {
-            order: index,
+            order: bossInstance.order,
             bossId: boss.id,
             locationId: locations[0].id,
           }
@@ -188,9 +149,9 @@ async function createBossInstancesInDB(bossMap: BossMap){
         
       }
     }
-  }
-
 }
+
+
 
 async function createStatsInDB(){
   await prisma.stat.createMany({

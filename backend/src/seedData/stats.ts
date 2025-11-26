@@ -1,4 +1,4 @@
-import type { GameAbbreviation } from "./bossInstance.js";
+import type { GameAbbreviation } from "./boss.js";
 
 export interface StatSeedDataItem{
   name: string;

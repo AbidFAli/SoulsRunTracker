@@ -1,0 +1,125 @@
+import bb_bosses from './json/bb_bosses.json' with { type: 'json' };
+import ds2_bosses from './json/ds2_bosses.json' with { type: 'json' };
+import er_bosses from './json/er_bosses.json' with { type: 'json' };
+
+
+export type GameAbbreviation = "demonSouls" | "ds1" | "ds2" | "sotfs" | "bloodborne" | "ds3" | "sekiro" | "er";
+export const GAME_TO_ABBREVIATION: Record<string, GameAbbreviation> = {
+    "Demon's Souls": "demonSouls",
+		"Dark Souls" : "ds1",
+    "Dark Souls 2" : "ds2",
+    "Dark Souls 2: Scholar of the First Sin": "sotfs",
+    "Bloodborne": "bloodborne",
+    "Dark Souls 3": "ds3",
+    "Sekiro: Shadows Die Twice" : "sekiro",
+    "Elden Ring" : "er",
+};
+
+
+
+export const ABBREVIATION_TO_GAME : Record<GameAbbreviation, string> = 
+  Object.fromEntries(
+    Object.keys(GAME_TO_ABBREVIATION).map((key) => [GAME_TO_ABBREVIATION[key], key])
+  ) as Record<GameAbbreviation, string>;
+
+export const BOSSES: Record<GameAbbreviation, string[]> = {
+  demonSouls: [
+    "Phalanx",
+    "Blue Dragon",
+    "Red Dragon",
+    "Tower Knight",
+    "Penetrator",
+    "Primeval Demon",
+    "Old King Allant",
+    "Armor Spider",
+    "Flamelurker",
+    "Dragon God",
+    "Fool's Idol",
+    "Maneater",
+    "Old Monk",
+    "Adjudicator",
+    "Vanguard",
+    "Old Hero",
+    "Storm King",
+    "Leechmonger",
+    "Dirty Collosus",
+    "Maiden Astraea"
+  ],
+  ds1: [
+    "Asylum Demon",
+    "Bell Gargoyles",
+    "Capra Demon",
+    "Ceaseless Discharge",
+    "Centipede Demon",
+    "Chaos Witch Quelaag",
+    "Crossbreed Priscilla",
+    "Dark Sun Gwyndolin",
+    "Demon Firesage",
+    "Four Kings",
+    "Gaping Dragon",
+    "Great Gray Wolf Sif",
+    "Gwyn, Lord of Cinder",
+    "Iron Golem",
+    "Moonlight Butterfly",
+    "Gravelord Nito",
+    "Orenstein and Smough",
+    "Pinwheel",
+    "Seath the Scaleless",
+    "Stray Demon",
+    "Taurus Demon",
+    "Bed of Chaos",
+    "Sanctuary Guardian",
+    "Artorias the Abysswalker",
+    "Black Dragon Kalameet",
+    "Manus, Father of the Abyss"
+  ],
+  ds2: ds2_bosses.bosses.filter((boss) => !boss.includes("Aldia")),
+  sotfs: ds2_bosses.bosses,
+  bloodborne: bb_bosses.bosses,
+  ds3: [
+    "Iudex Gundyr",
+    "Vordt of the Boreal Valley",
+    "Curse-Rotted Greatwood",
+    "Crystal Sage",
+    "Abyss Watchers",
+    "Deacons of the Deep",
+    "High Lord Wolnir",
+    "Old Demon King",
+    "Pontiff Sulyvahn",
+    "Yhorm the Giant",
+    "Aldrich, Devourer of Gods",
+    "Dancer of the Boreal Valley",
+    "Dragonslayer Armour",
+    "Oceiros, the Consumed King",
+    "Champion Gundyr",
+    "Lothric, Younger Prince",
+    "Ancient Wyvern",
+    "Nameless King",
+    "Soul of Cinder",
+    "Sister Friede",
+    "Champion's Gravetender and Gravetender Greatwolf",
+    "Demon in Pain and Demon From Below / Demon Prince",
+    "Halflight, Spear of the Church",
+    "Darkeater Midir",
+    "Slave Knight Gael"
+  ],
+  sekiro: [
+    "Gyoubu Masataka Oniwa",
+    "Lady Butterfly",
+    "Genichiro Ashina",
+    "Folding Screen Monkeys",
+    "Guardian Ape",
+    "Headless Ape",
+    "Corrupted Monk",
+    "Emma, the Gentle Blade and Isshin Ashina",
+    "Great Shinobi Owl",
+    "True Corrupted Monk",
+    "Divine Dragon",
+    "Owl (Father)",
+    "Demon of Hatred",
+    "Isshin, the Sword Saint",
+  ],
+  er: er_bosses.bosses
+}
+
+
