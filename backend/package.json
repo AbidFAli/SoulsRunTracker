@@ -28,7 +28,8 @@
     "prisma": "^6.19.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.47.0"
+    "typescript-eslint": "^8.47.0",
+    "uuid": "^13.0.0"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^6.19.0",

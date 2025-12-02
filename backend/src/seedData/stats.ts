@@ -90,212 +90,165 @@ export const STATS: StatSeedDataItem[] = [
 export interface GameStatSeedDataItem{
   name: string;
   alternateName?: string;
+  minimum?: number;
+  maximum?: number;
 }
 
+function NormalStat(args: {name: string, alternateName?: string}): GameStatSeedDataItem {
+  return {
+    ...args,
+    minimum: 1,
+    maximum: 99,
+  }
+}
+
+
 const DS2_GAME_STATS: GameStatSeedDataItem[] = [
+    NormalStat({name: "vigor"}),
+    NormalStat({name: "endurance"}),
+    NormalStat({name: "vitality"}),
+    NormalStat({name: "attunement"}),
+    NormalStat({name: "strength"}),
+    NormalStat({name: "dexterity"}),
+    NormalStat({name: "resistance"}),
+    NormalStat({name: "intelligence"}),
+    NormalStat({name: "faith"}),
     {
-      name: "vigor"
+      name: "hp",
+      minimum: 1,
+      maximum: 9999,
     },
     {
-      name: "endurance"
-    },
-    {
-      name: "vitality"
-    },
-    {
-      name: "attunement"
-    },
-    {
-      name: "strength"
-    },
-    {
-      name: "dexterity"
-    },
-    {
-      name: "resistance"
-    },
-    {
-      name: "intelligence"
-    },
-    {
-      name: "faith"
-    },
-    {
-      name: "hp"
-    },
-    {
-      name: "stamina"
+      name: "stamina",
+      minimum: 1,
+      maximum: 9999,
     }
   ];
+
+
+
 export const GAME_STATS: Record<GameAbbreviation, GameStatSeedDataItem[]> = {
   bloodborne: [
+    NormalStat({name: "insight"}),
+    NormalStat({name: "vitality"}),
+    NormalStat({name: "endurance"}),
+    NormalStat({name: "strength"}),
+    NormalStat({name: "skill"}),
+    NormalStat({name: "bloodtinge"}),
+    NormalStat({name: "arcane"}),
     {
-      name: "insight"
+      name: "hp",
+      minimum: 1,
+      maximum: 9999,
     },
     {
-      name: "vitality"
-    },
-    {
-      name: "endurance"
-    },
-    {
-      name: "strength"
-    },
-    {
-      name: "skill"
-    },
-    {
-      name: "bloodtinge"
-    },
-    {
-      name: "arcane"
-    },
-    {
-      name: "hp"
-    },
-    {
-      name: "stamina"
+      name: "stamina",
+      minimum: 1,
+      maximum: 9999
     }
 
 
   ],
   demonSouls: [
+    NormalStat({name: "vitality"}),
+    NormalStat({name: "intelligence"}),
+    NormalStat({name: "endurance"}),
+    NormalStat({name: "strength"}),
+    NormalStat({name: "dexterity"}),
+    NormalStat({name: "magic"}),
+    NormalStat({name: "faith"}),
+    NormalStat({name: "luck"}),
     {
-      name: "vitality"
+      name: "hp",
+      minimum: 1,
+      maximum: 9999,
     },
     {
-      name: "intelligence"
+      name: "mp",
+      minimum: 1,
+      maximum: 9999,
     },
     {
-      name: "endurance"
-    },
-    {
-      name: "strength"
-    },
-    {
-      name: "dexterity"
-    },
-    {
-      name: "magic"
-    },
-    {
-      name: "faith"
-    },
-    {
-      name: "luck"
-    },
-    {
-      name: "hp"
-    },
-    {
-      name: "mp"
+      name: "stamina",
+      minimum: 1,
+      maximum: 9999,
     }
   ],
   ds1: [
+    NormalStat({name: "vitality"}),
+    NormalStat({name: 'attunement'}),
+    NormalStat({name: "endurance"}),
+    NormalStat({name: "strength"}),
+    NormalStat({name: "dexterity"}),
+    NormalStat({name: "resistance"}),
+    NormalStat({name: "intelligence"}),
+    NormalStat({name: "faith"}),
     {
-      name: "vitality"
+      name: "hp",
+      minimum: 1,
+      maximum: 9999,
     },
     {
-      name: "attunement"
-    },
-    {
-      name: "endurance"
-    },
-    {
-      name: "strength"
-    },
-    {
-      name: "dexterity"
-    },
-    {
-      name: "resistance"
-    },
-    {
-      name: "intelligence"
-    },
-    {
-      name: "faith"
-    },
-    {
-      name: "hp"
-    },
-    {
-      name: "stamina"
+      name: "stamina",
+      minimum: 1,
+      maximum: 9999,
     }
   ],
   ds2: DS2_GAME_STATS,
   sotfs: DS2_GAME_STATS,
   ds3: [
+    NormalStat({name: "vigor"}),
+    NormalStat({name: "attunement"}),
+    NormalStat({name: "endurance"}),
+    NormalStat({name: "vitality"}),
+    NormalStat({name: "strength" }),
+    NormalStat({name: "dexterity"}),
+    NormalStat({name: "intelligence"}),
+    NormalStat({name: "faith"}),
+    NormalStat({name: "luck"}),
+
     {
-      name: "vigor"
-    },
-    {
-      name: "attunement"
-    },
-    {
-      name: "endurance"
-    },
-    {
-      name: "vitality"
-    },
-    {
-      name: "strength"
-    },
-    {
-      name: "dexterity",
-    },
-    {
-      name: "intelligence",
-    },
-    {
-      name: "faith"
-    },
-    {
-      name: "luck"
-    },
-    {
-      name: "hp"
+      name: "hp",
+      minimum: 1,
+      maximum: 9999,
     },
     {
       name: "mp",
-      alternateName: "FP"
+      alternateName: "FP",
+      minimum: 1,
+      maximum: 9999,
+    },
+    {
+      name: "stamina",
+      minimum: 1,
+      maximum: 9999,
     }
   ],
   sekiro: [],
   er: [
+    NormalStat({name: "vigor"}),
+    NormalStat({name: "mind"}),
+    NormalStat({name: "endurance"}),
+    NormalStat({name: "strength"}),
+    NormalStat({name: "dexterity"}),
+    NormalStat({name: "intelligence"}),
+    NormalStat({name: "faith"}),
+    NormalStat({name: "arcane"}),
     {
-      name: "vigor"
-    },
-    {
-      name: "mind"
-    },
-    {
-      name: "endurance"
-    },
-    {
-      name: "strength"
-    },
-    {
-      name: "dexterity"
-    },
-    {
-      name: "intelligence"
-    },
-    {
-      name: "faith"
-    },
-    {
-      name: "arcane"
-    },
-    {
-      name: "hp"
+      name: "hp",
+      minimum: 1,
+      maximum: 9999,
     },
     {
       name: "mp",
-      alternateName: "FP"
+      alternateName: "FP",
+      minimum: 1,
+      maximum: 9999,
     },
     {
-      name: "stamina"
+      name: "stamina",
+      minimum: 1,
+      maximum: 9999,
     }
   ]
 

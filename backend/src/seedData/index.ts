@@ -1,6 +1,5 @@
 import {
   GameLocationCreateWithoutLocationInput,
-  GameWhereUniqueInput
 } from '../../generated/prisma/models.js';
 import { prisma } from '../db/prisma.js';
 import { ABBREVIATION_TO_GAME, BOSSES, GameAbbreviation } from './boss.js';
@@ -8,77 +7,34 @@ import { GAMES } from './game.js';
 import { LOCATIONS } from './location.js';
 import { GAME_STATS, STATS } from './stats.js';
 
+import lodash from 'lodash';
+import { CHARACTERS } from './character.js';
+import { CYCLES } from './cycle.js';
+import { RUNS } from './run.js';
+import { USERS } from './user.js';
+
+const {groupBy} = lodash;
+
 
 interface BossData
 {
   name: string, 
   id: string,
-  games: {id: string, name: string}[]
 }
 
 
-//get bossId from (gameName, bossName)
-//Map<bossName, Map<gameName, BossData>>
-type BossMap = Map<string, Map<string, BossData>>;
 
-function createBossMap(bosses: BossData[]): BossMap{
-  const bossMap: BossMap = new Map();
-
-  bosses.forEach((boss) => {
-    if(bossMap.get(boss.name) !== undefined){
-      throw new Error("Seed data script does not support multiple bosses with the same name");
-    }
-    const gameMap = new Map<string, BossData>();
-    boss.games.forEach((game) => {
-      gameMap.set(game.name, boss)
-    });
-    bossMap.set(boss.name, gameMap);
-    
-  })
-  return bossMap;
-}
-
-function getBossDataFromBossMap(bossMap: BossMap, gameName: string, bossName: string){
-  const gameMap = bossMap.get(bossName)
-  if(gameMap === undefined){
-    return undefined
-  }
-  return gameMap.get(gameName)
-}
 
 
 async function createBossesInDB(): Promise<BossData[]>{
   const bosses: BossData[] = [];
-  for(const abbreviation in BOSSES){
-    //all sotfs bossess are in ds2 except aldia
-    if( (abbreviation as GameAbbreviation) === "ds2"){
-      continue;
-    }
-    for(const bossName of BOSSES[abbreviation as GameAbbreviation]){
-      const connect: GameWhereUniqueInput[] = [
-        {name: ABBREVIATION_TO_GAME[abbreviation as GameAbbreviation]}
-      ];
-      if((abbreviation as GameAbbreviation) === "sotfs" && !bossName.includes("Aldia")){
-        connect.push({
-          name: ABBREVIATION_TO_GAME["ds2"]
-        });
-      }
-
-      const boss = await prisma.boss.create({
-        data: {
-          name: bossName,
-          games: {
-            connect
-          }
-        },
-        include: {
-          games: true
-        }
-      });
-      bosses.push(boss);
-
-
-    }
+  for(const bossName of BOSSES){
+    const boss = await prisma.boss.create({
+      data: {
+        name: bossName,
+      },
+    });
+    bosses.push(boss);
   }
   return bosses
 }
@@ -110,45 +66,53 @@ async function createLocationsInDB(){
 }
 
 
-async function createBossInstancesInDB(bossMap: BossMap){
-    for(const locationSeedData of LOCATIONS){
-      const locations = await prisma.location.findMany({
-        where: {
-          name: {
-            equals: locationSeedData.name
+async function createBossInstancesInDB(){
+  for(const locationSeedData of LOCATIONS){
+    const locations = await prisma.location.findMany({
+      where: {
+        name: {
+          equals: locationSeedData.name
+        },
+      }
+    });
+
+    const error_id =`locationName=${locationSeedData.name}`
+    if(locations.length === 0){
+      throw new Error("no locations found for " + error_id)
+    }
+    if(locations.length > 1){
+      throw new Error("multiple locations found for " + error_id)
+    }
+
+
+    for(const bossInstance of locationSeedData.bossInstances){
+
+
+
+      await prisma.bossInstance.create({
+        data: {
+          order: bossInstance.order,
+          boss: {
+            connect: {
+              name: bossInstance.name
+            }
           },
+          location: {
+            connect: {
+              id: locations[0].id
+            }
+          },
+          game: {
+            connect: {
+              name: bossInstance.game
+            }
+          }
         }
       });
 
-      const error_id =`locationName=${locationSeedData.name}`
-      if(locations.length === 0){
-        throw new Error("no locations found for " + error_id)
-      }
-      if(locations.length > 1){
-        throw new Error("multiple locations found for " + error_id)
-      }
-
-
-      for(const bossInstance of locationSeedData.bossInstances){
-        const boss = getBossDataFromBossMap(bossMap, 
-          bossInstance.game, bossInstance.name);
-
-        if(!boss){
-          throw new Error(`no boss data found from gameName=${bossInstance.game}, bossName=${bossInstance.name}`);
-        }
-
-
-        await prisma.bossInstance.create({
-          data: {
-            order: bossInstance.order,
-            bossId: boss.id,
-            locationId: locations[0].id,
-          }
-        });
-
-        
-      }
+      
     }
+  }
 }
 
 
@@ -169,6 +133,8 @@ async function createStatsInDB(){
             }
           },
           alternateName: gameStat.alternateName,
+          maximum: gameStat?.maximum,
+          minimum: gameStat?.minimum,
           game: {
             connect: {
               name: ABBREVIATION_TO_GAME[(abbreviation as GameAbbreviation)]
@@ -182,20 +148,67 @@ async function createStatsInDB(){
   
 }
 
+async function createBossCompletionsInDB(){
+  const cycles = await prisma.cycle.findMany({
+    include: {
+      run: true
+    }
+  });
+
+  const bossInstances = await prisma.bossInstance.findMany({orderBy: {gameId: "asc"}});
+  const gameBosses = groupBy(bossInstances, (bossInstance) => bossInstance.gameId);
+  //Map<GameId, BossInstance[]>
+  for(const cycle of cycles){
+    for(const gameId in gameBosses){
+      await prisma.bossCompletion.createMany({
+        data: gameBosses[gameId].map((gameBoss) => {
+          return {
+            cycleId: cycle.id,
+            instanceId: gameBoss.id,
+            completed: false,
+          }
+        })
+      })
+    }
+  }
+}
+
 async function main() {
   await prisma.game.createManyAndReturn({
     data: GAMES.map(g => ({name: g}))
   })
   
-  const bosses = await createBossesInDB();
-  const bossMap = createBossMap(bosses);
+  await createBossesInDB();
   await createLocationsInDB();
-  await createBossInstancesInDB(bossMap);
+  await createBossInstancesInDB();
   await createStatsInDB();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  await prisma.user.createMany({data: new Array({size: 10}).map(_ => ({}))});
 
+  await prisma.user.createMany({data: USERS});
+
+  for(const run of RUNS){
+    await prisma.run.create({
+      data: {
+        game: {
+          connect: {
+            name: run.game
+          }
+        },
+        name: run.name,
+        user: {
+          connect: {
+            id: run.userId
+          }
+        },
+        id: run.id,
+        completed: run.completed,
+      }
+    });
+  }
+
+  await prisma.character.createMany({data: CHARACTERS});
+  await prisma.cycle.createMany({data: CYCLES});
+  await createBossCompletionsInDB();
 
 }
 

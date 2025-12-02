@@ -22,8 +22,7 @@ export const ABBREVIATION_TO_GAME : Record<GameAbbreviation, string> =
     Object.keys(GAME_TO_ABBREVIATION).map((key) => [GAME_TO_ABBREVIATION[key], key])
   ) as Record<GameAbbreviation, string>;
 
-export const BOSSES: Record<GameAbbreviation, string[]> = {
-  demonSouls: [
+export const BOSSES: string[] = [
     "Phalanx",
     "Blue Dragon",
     "Red Dragon",
@@ -43,9 +42,7 @@ export const BOSSES: Record<GameAbbreviation, string[]> = {
     "Storm King",
     "Leechmonger",
     "Dirty Collosus",
-    "Maiden Astraea"
-  ],
-  ds1: [
+    "Maiden Astraea",
     "Asylum Demon",
     "Bell Gargoyles",
     "Capra Demon",
@@ -72,11 +69,8 @@ export const BOSSES: Record<GameAbbreviation, string[]> = {
     "Artorias the Abysswalker",
     "Black Dragon Kalameet",
     "Manus, Father of the Abyss"
-  ],
-  ds2: ds2_bosses.bosses.filter((boss) => !boss.includes("Aldia")),
-  sotfs: ds2_bosses.bosses,
-  bloodborne: bb_bosses.bosses,
-  ds3: [
+    ,...ds2_bosses.bosses,
+    ...bb_bosses.bosses,
     "Iudex Gundyr",
     "Vordt of the Boreal Valley",
     "Curse-Rotted Greatwood",
@@ -101,9 +95,7 @@ export const BOSSES: Record<GameAbbreviation, string[]> = {
     "Demon in Pain and Demon From Below / Demon Prince",
     "Halflight, Spear of the Church",
     "Darkeater Midir",
-    "Slave Knight Gael"
-  ],
-  sekiro: [
+    "Slave Knight Gael",
     "Gyoubu Masataka Oniwa",
     "Lady Butterfly",
     "Genichiro Ashina",
@@ -118,8 +110,7 @@ export const BOSSES: Record<GameAbbreviation, string[]> = {
     "Owl (Father)",
     "Demon of Hatred",
     "Isshin, the Sword Saint",
-  ],
-  er: er_bosses.bosses
-}
+    ...er_bosses.bosses
+]
 
 

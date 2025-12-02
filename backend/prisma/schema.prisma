@@ -19,14 +19,14 @@ model Game {
   name String @unique
   runs Run[]
   stats GameStat[]
-  bosses Boss[]
+  bossInstances BossInstance[]
   gameLocation GameLocation[]
 }
 
 model Run{
   id String @id @default(cuid())
   name String
-  descriptionUrl String
+  descriptionUrl String @default("")
   completed Boolean @default(false)
   gameId String
   game Game @relation(fields: [gameId], references: [id])
@@ -42,7 +42,7 @@ model Run{
 
 model Cycle{
   id String @id @default(cuid())
-  level Int
+  level Int @default(0)
   completed Boolean @default(false)
   runId String
   run Run @relation(fields: [runId], references: [id])
@@ -97,6 +97,8 @@ model GameStat{
   statId String
   alternateName String?
   order Int
+  minimum Int?
+  maximum Int?
   image Image? @relation(fields: [imageId], references: [id])
   stat Stat @relation(fields: [statId], references: [id])
   game Game @relation(fields: [gameId], references: [id])
@@ -109,12 +111,12 @@ model GameStat{
 
 model Boss{
   id String @id @default(cuid())
-  name String //not unique to support having different records for  bosses that share the same name but exist in multiple games
+  name String  @unique
   imageId String? @unique
   bossInstances BossInstance[]
   image Image? @relation(fields: [imageId], references: [id])
-  games Game[]
   @@index([name])
+  @@index([imageId])
 }
 
 model Location{
@@ -151,13 +153,18 @@ model BossCompletion{
 
 model BossInstance{
   id String @id @default(cuid())
+  //PK= (bossId, locationId, gameId)
   bossId String
   locationId String
+  gameId String
+
   completions BossCompletion[]
   boss Boss @relation(fields: [bossId], references: [id])
   location Location @relation(fields: [locationId], references: [id])
   order Int
+  game Game @relation(fields: [gameId], references: [id])
   @@index([bossId])
+  @@index([gameId])
   @@index([locationId, order(sort: Asc)])
 }
 
