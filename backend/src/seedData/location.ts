@@ -2,18 +2,18 @@ import locations from './json/location.json' with { type: 'json' };
 
 
 
-export const LOCATIONS : LocationObject[] = [...locations]
+export const LOCATIONS : LocationSeedData[] = [...locations]
 
-interface BossInstanceLocationObject{
+export interface NestedBossInstanceWithoutLocation{
   name: string;
   game: string;
   order: number;
 }
 
-interface LocationObject{
+export interface LocationSeedData{
   name: string;
   games: string[];
-  bossInstances: BossInstanceLocationObject[];
+  bossInstances: NestedBossInstanceWithoutLocation[];
 }
 
 

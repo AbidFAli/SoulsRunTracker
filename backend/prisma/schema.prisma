@@ -166,6 +166,7 @@ model BossInstance{
   @@index([bossId])
   @@index([gameId])
   @@index([locationId, order(sort: Asc)])
+  @@unique([gameId, locationId, bossId])
 }
 
 model User{
