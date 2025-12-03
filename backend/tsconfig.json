@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "esModuleInterop": true,
+    "target": "es2020",
+    "outDir": "./build",
+    "strict": true,
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "incremental": true,
+    "sourceMap" : true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "lib": ["ES2023"],
+  "include": ["./src/**/*"],
+  "exclude" : ["node_modules"]
+}

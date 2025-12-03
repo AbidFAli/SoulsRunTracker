@@ -1,0 +1,2999 @@
+[
+  {
+    "name": "Boletarian Palace",
+    "games": [
+      "Demon's Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Phalanx",
+        "order": 0,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Blue Dragon",
+        "order": 1,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Red Dragon",
+        "order": 2,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Tower Knight",
+        "order": 3,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Penetrator",
+        "order": 4,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Primeval Demon",
+        "order": 5,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Old King Allant",
+        "order": 6,
+        "game": "Demon's Souls"
+      }
+    ]
+  },
+  {
+    "name": "Stonefang Tunnel",
+    "games": [
+      "Demon's Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Armor Spider",
+        "order": 0,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Flamelurker",
+        "order": 1,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Dragon God",
+        "order": 2,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Primeval Demon",
+        "order": 3,
+        "game": "Demon's Souls"
+      }
+    ]
+  },
+  {
+    "name": "Tower of Latria",
+    "games": [
+      "Demon's Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Fool's Idol",
+        "order": 0,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Maneater",
+        "order": 1,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Old Monk",
+        "order": 2,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Primeval Demon",
+        "order": 3,
+        "game": "Demon's Souls"
+      }
+    ]
+  },
+  {
+    "name": "Shrine of Storms",
+    "games": [
+      "Demon's Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Adjudicator",
+        "order": 0,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Vanguard",
+        "order": 1,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Old Hero",
+        "order": 2,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Storm King",
+        "order": 3,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Primeval Demon",
+        "order": 4,
+        "game": "Demon's Souls"
+      }
+    ]
+  },
+  {
+    "name": "Valley of Defilement",
+    "games": [
+      "Demon's Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Leechmonger",
+        "order": 0,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Dirty Collosus",
+        "order": 1,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Maiden Astraea",
+        "order": 2,
+        "game": "Demon's Souls"
+      },
+      {
+        "name": "Primeval Demon",
+        "order": 3,
+        "game": "Demon's Souls"
+      }
+    ]
+  },
+  {
+    "name": "Undead Asylum",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Asylum Demon",
+        "order": 0,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Stray Demon",
+        "order": 1,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Undead Burg/Undead Parish",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Taurus Demon",
+        "order": 0,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Bell Gargoyles",
+        "order": 1,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Capra Demon",
+        "order": 2,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Depths",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Gaping Dragon",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Blighttown/Quelaag's Domain",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Chaos Witch Quelaag",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Darkroot Garden",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Moonlight Butterfly",
+        "order": 0,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Great Gray Wolf Sif",
+        "order": 1,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Sen's Fortress",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Iron Golem",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Anor Londo",
+    "games": [
+      "Dark Souls",
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Orenstein and Smough",
+        "order": 0,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Dark Sun Gwyndolin",
+        "order": 1,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Aldrich, Devourer of Gods",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Painted World of Ariamis",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Crossbreed Priscilla",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "The Duke's Archives/Crystal Cave",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Seath the Scaleless",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "The Catacombs",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Pinwheel",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Tomb of the Giants",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Gravelord Nito",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "New Londo Ruins",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Four Kings",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Demon Ruins",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ceaseless Discharge",
+        "order": 0,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Demon Firesage",
+        "order": 1,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Centipede Demon",
+        "order": 2,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Lost Izalith",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Bed of Chaos",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Kiln of the First Flames",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Gwyn, Lord of Cinder",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Sanctuary Garden",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Sanctuary Guardian",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Royal Wood",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Artorias the Abysswalker",
+        "order": 0,
+        "game": "Dark Souls"
+      },
+      {
+        "name": "Black Dragon Kalameet",
+        "order": 1,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Chasm of the Abyss",
+    "games": [
+      "Dark Souls"
+    ],
+    "bossInstances": [
+      {
+        "name": "Manus, Father of the Abyss",
+        "order": 0,
+        "game": "Dark Souls"
+      }
+    ]
+  },
+  {
+    "name": "Forest of Fallen Giants",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "The Last Giant",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "The Pursuer",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "The Last Giant",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "The Pursuer",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Huntsman's Copse",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Executioner's Chariot",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "The Skeleton Lords",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Executioner's Chariot",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "The Skeleton Lords",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "King's Passage",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Looking Glass Knight",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Looking Glass Knight",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "No-man's Wharf",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Flexile Sentry",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Flexile Sentry",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Sinner's Rise",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Lost Sinner",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Lost Sinner",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Belfry Luna",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Belfry Gargoyles",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Belfry Gargoyles",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Lost Bastille",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ruin Sentinel",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Ruin Sentinel",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Grave of Saints",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Royal Rat Vanguard",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Royal Rat Vanguard",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Doors of Pharros",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Royal Rat Authority",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Royal Rat Authority",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Shaded Woods",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Scorpioness Najka",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Scorpioness Najka",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Brightstone Cove Tseldora",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "The Duke's Dear Freja",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Prowling Magus and Congregation",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "The Duke's Dear Freja",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "Prowling Magus and Congregation",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Earthen Peak",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Mytha, the Baneful Queen",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Mytha, the Baneful Queen",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Black Gulch",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "The Rotten",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "The Rotten",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Heide's Tower of Flame",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Old Dragonslayer",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Dragonrider",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Old Dragonslayer",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "Dragonrider",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Harvest Valley",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Covetous Demon",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Covetous Demon",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Iron Keep",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Smelter Demon",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Old Iron King",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Smelter Demon",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "Old Iron King",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Aldia's Keep",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Guardian Dragon",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Guardian Dragon",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Shrine of Amana",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Demon of Song",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Demon of Song",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Undead Crypt",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Velstadt, the Royal Aegis",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Vendrick",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Velstadt, the Royal Aegis",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "Vendrick",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Dark Chasm of Old",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Darklurker",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Darklurker",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Drangleic Castle",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Twin Dragonrider",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Twin Dragonrider",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Memory of Jeigh",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Giant Lord",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Giant Lord",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Dragon Shrine",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ancient Dragon",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Ancient Dragon",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Throne of Want",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Throne Watcher and Throne Defender",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Nashandra",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Throne Watcher and Throne Defender",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "Nashandra",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "Aldia, Scholar of the First Sin",
+        "order": 2,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Dragon's Rest",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Elana, Squalid Queen",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Sinh, the Slumbering Dragon",
+        "order": 1,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Elana, Squalid Queen",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      },
+      {
+        "name": "Sinh, the Slumbering Dragon",
+        "order": 1,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Cave of the Dead",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Graverobber, Varg, and Cerah",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Graverobber, Varg, and Cerah",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Iron Passage",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Blue Smelter Demon",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Blue Smelter Demon",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Brume Tower",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Fume Knight",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Fume Knight",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Memory of the Old Iron King",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Sir Alonne",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Sir Alonne",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Old Chaos",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Burnt Ivory King",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Burnt Ivory King",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Frozen Eleum Loyce",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Aava, the King's Pet",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Aava, the King's Pet",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Frigid Outskirts",
+    "games": [
+      "Dark Souls 2",
+      "Dark Souls 2: Scholar of the First Sin"
+    ],
+    "bossInstances": [
+      {
+        "name": "Lud and Zallen, the King's Pets",
+        "order": 0,
+        "game": "Dark Souls 2"
+      },
+      {
+        "name": "Lud and Zallen, the King's Pets",
+        "order": 0,
+        "game": "Dark Souls 2: Scholar of the First Sin"
+      }
+    ]
+  },
+  {
+    "name": "Yharnam Headstone",
+    "games": [
+      "Bloodborne"
+    ],
+    "bossInstances": [
+      {
+        "name": "Cleric Beast",
+        "order": 0,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Father Gascoigne",
+        "order": 1,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Vicar Amelia",
+        "order": 2,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Celestial Emissary",
+        "order": 3,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Ebrietas, Daughter of the Cosmos",
+        "order": 4,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Blood-starved Beast",
+        "order": 5,
+        "game": "Bloodborne"
+      }
+    ]
+  },
+  {
+    "name": "Frontier Headstone",
+    "games": [
+      "Bloodborne"
+    ],
+    "bossInstances": [
+      {
+        "name": "Shadow of Yharnam",
+        "order": 0,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Rom, the Vacuous Spider",
+        "order": 1,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Witch of Hemwick",
+        "order": 2,
+        "game": "Bloodborne"
+      }
+    ]
+  },
+  {
+    "name": "Unseen Headstone",
+    "games": [
+      "Bloodborne"
+    ],
+    "bossInstances": [
+      {
+        "name": "One Reborn",
+        "order": 0,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Martyr Logarius",
+        "order": 1,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Darkbeast Paarl",
+        "order": 2,
+        "game": "Bloodborne"
+      }
+    ]
+  },
+  {
+    "name": "Nightmare Headstone",
+    "games": [
+      "Bloodborne"
+    ],
+    "bossInstances": [
+      {
+        "name": "Amygdala",
+        "order": 0,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Mergo's Wet Nurse",
+        "order": 1,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Micolash, Host of the Nightmare",
+        "order": 2,
+        "game": "Bloodborne"
+      }
+    ]
+  },
+  {
+    "name": "The Old Hunters (DLC)",
+    "games": [
+      "Bloodborne"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ludwig, The Holy Blade",
+        "order": 0,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Living Failures",
+        "order": 1,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Lady Maria of the Astral Clocktower",
+        "order": 2,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Orphan of Kos",
+        "order": 3,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Laurence, the First Vicar",
+        "order": 4,
+        "game": "Bloodborne"
+      }
+    ]
+  },
+  {
+    "name": "The Hunter's Dream",
+    "games": [
+      "Bloodborne"
+    ],
+    "bossInstances": [
+      {
+        "name": "Gehrman, the First Hunter",
+        "order": 0,
+        "game": "Bloodborne"
+      },
+      {
+        "name": "Moon Presence",
+        "order": 1,
+        "game": "Bloodborne"
+      }
+    ]
+  },
+  {
+    "name": "Cemetery of Ash",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Iudex Gundyr",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "High Wall of Lothric",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Vordt of the Boreal Valley",
+        "order": 0,
+        "game": "Dark Souls 3"
+      },
+      {
+        "name": "Dancer of the Boreal Valley",
+        "order": 1,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Undead Settlement",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Curse-Rotted Greatwood",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Road of Sacrifices",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Crystal Sage",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Farron Keep",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Abyss Watchers",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Cathedral of the Deep",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Deacons of the Deep",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Catacombs of Carthus",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "High Lord Wolnir",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Smouldering Lake",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Old Demon King",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Irithyll of the Boreal Valley",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Pontiff Sulyvahn",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Profaned Capital",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Yhorm the Giant",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Lothric Castle",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Dragonslayer Armour",
+        "order": 0,
+        "game": "Dark Souls 3"
+      },
+      {
+        "name": "Lothric, Younger Prince",
+        "order": 1,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Consumed King's Garden",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Oceiros, the Consumed King",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Untended Graves",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Champion Gundyr",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Archdragon Peak",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ancient Wyvern",
+        "order": 0,
+        "game": "Dark Souls 3"
+      },
+      {
+        "name": "Nameless King",
+        "order": 1,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Kiln of the First Flame",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Soul of Cinder",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Painted World of Ariandel",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Sister Friede",
+        "order": 0,
+        "game": "Dark Souls 3"
+      },
+      {
+        "name": "Champion's Gravetender and Gravetender Greatwolf",
+        "order": 1,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "The Dreg Heap",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Demon in Pain and Demon From Below / Demon Prince",
+        "order": 0,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "The Ringed City",
+    "games": [
+      "Dark Souls 3"
+    ],
+    "bossInstances": [
+      {
+        "name": "Halflight, Spear of the Church",
+        "order": 0,
+        "game": "Dark Souls 3"
+      },
+      {
+        "name": "Darkeater Midir",
+        "order": 1,
+        "game": "Dark Souls 3"
+      },
+      {
+        "name": "Slave Knight Gael",
+        "order": 2,
+        "game": "Dark Souls 3"
+      }
+    ]
+  },
+  {
+    "name": "Ashina Outskirts",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "Gyoubu Masataka Oniwa",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      },
+      {
+        "name": "Demon of Hatred",
+        "order": 1,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Hirata Estate",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "Lady Butterfly",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      },
+      {
+        "name": "Owl (Father)",
+        "order": 1,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Ashina Reservoir",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "Genichiro Ashina",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      },
+      {
+        "name": "Isshin, the Sword Saint",
+        "order": 1,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Ashina Castle",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "Genichiro Ashina",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      },
+      {
+        "name": "Emma, the Gentle Blade and Isshin Ashina",
+        "order": 1,
+        "game": "Sekiro: Shadows Die Twice"
+      },
+      {
+        "name": "Great Shinobi Owl",
+        "order": 2,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Senpou Temple",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "Folding Screen Monkeys",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Sunken Valley Passage",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "Guardian Ape",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Ashina Depths",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "Headless Ape",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      },
+      {
+        "name": "Corrupted Monk",
+        "order": 1,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Fountainhead Palace",
+    "games": [
+      "Sekiro: Shadows Die Twice"
+    ],
+    "bossInstances": [
+      {
+        "name": "True Corrupted Monk",
+        "order": 0,
+        "game": "Sekiro: Shadows Die Twice"
+      },
+      {
+        "name": "Divine Dragon",
+        "order": 1,
+        "game": "Sekiro: Shadows Die Twice"
+      }
+    ]
+  },
+  {
+    "name": "Limgrave",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Beastman of Farum Azula",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Bell Bearing Hunter",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Black Knife Assassin",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Bloodhound Knight Darriwil",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Crucible Knight",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Deathbird",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Demi-Human Chief",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Burial Watchdog (Stormfoot Catacombs)",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Flying Dragon Agheel",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godrick the Grafted",
+        "order": 9,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Grafted Scion",
+        "order": 10,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Grave Warden Duelist",
+        "order": 11,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Guardian Golem",
+        "order": 12,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Mad Pumpkin Head",
+        "order": 13,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Margit, the Fell Omen",
+        "order": 14,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry",
+        "order": 15,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Patches",
+        "order": 16,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Soldier of Godrick",
+        "order": 17,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Stonedigger Troll",
+        "order": 18,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tibia Mariner",
+        "order": 19,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tree Sentinel",
+        "order": 20,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ulcerated Tree Spirit",
+        "order": 21,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Weeping Peninsula",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ancient Hero of Zamor",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Cemetery Shade",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Deathbird",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Avatar",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Burial Watchdog (Impaler's Catacombs)",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Leonine Misbegotten",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Miranda the Blighted Bloom",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Runebear",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Scaly Misbegotten",
+        "order": 9,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Liurnia of the Lakes",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Adan, Thief of Fire",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Alecto, Black Knife Ringleader",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Bell Bearing Hunter",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Black Knife Assassin",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Bloodhound Knight",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Bols, Carian Knight",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Cemetery Shade",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Cleanrot Knight",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Crystalian",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Crystalian Spear & Crystalian Staff (Duo)",
+        "order": 9,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Death Rite Bird",
+        "order": 10,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Deathbird",
+        "order": 11,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Avatar (Liurnia Northeast)",
+        "order": 12,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Avatar (Liurnia Southwest)",
+        "order": 13,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Burial Watchdog",
+        "order": 14,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Glintstone Dragon Adula",
+        "order": 15,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Glintstone Dragon Smarag",
+        "order": 16,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Magma Wyrm Makar",
+        "order": 17,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry (Liurnia North)",
+        "order": 18,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry (Liurnia South)",
+        "order": 19,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Omenkiller",
+        "order": 20,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Onyx Lord",
+        "order": 21,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Red Wolf of Radagon",
+        "order": 22,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Rennala, Queen of the Full Moon",
+        "order": 23,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Royal Knight Loretta",
+        "order": 24,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Royal Revenant",
+        "order": 25,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Spirit-Caller Snail",
+        "order": 26,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tibia Mariner",
+        "order": 27,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Caelid",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Cemetery Shade",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Commander O'Neil",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Crucible Knight and Misbegotten Warrior",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Death Rite Bird",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Decaying Ekzykes",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Burial Watchdog (Duo)",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Fallingstar Beast",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Frenzied Duelist",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Mad Pumpkin Heads",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Magma Wyrm",
+        "order": 9,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry (Caelid)",
+        "order": 10,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Nox Swordstress & Nox Priest",
+        "order": 11,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Putrid Avatar",
+        "order": 12,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Starscourge Radahn",
+        "order": 13,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Dragonbarrow",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Battlemage Hugues",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Beastman of Farum Azula (Duo)",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Bell Bearing Hunter",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Black Blade Kindred ",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Cleanrot Knight (Duo)",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Flying Dragon Greyll",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godskin Apostle",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry (Dragonbarrow)",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Putrid Avatar",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Putrid Crystalian Trio",
+        "order": 9,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Putrid Tree Spirit",
+        "order": 10,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Altus Plateau",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ancient Dragon Lansseax",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ancient Hero of Zamor",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Black Knife Assassin (Sage's Cave)",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Black Knife Assassin (Sainted Hero's Grave)",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Crystalian Spear & Crystalian Ringblade",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Demi-Human Queen Gilika",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Elemer of the Briar",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Burial Watchdog",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Fallingstar Beast",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godefroy The Grafted",
+        "order": 9,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godskin Apostle",
+        "order": 10,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Necromancer Garris",
+        "order": 11,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry",
+        "order": 12,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Omenkiller & Miranda the Blighted Bloom",
+        "order": 13,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Perfumer Tricia and Misbegotten Warrior",
+        "order": 14,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Sanguine Noble",
+        "order": 15,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Stonedigger Troll",
+        "order": 16,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tibia Mariner",
+        "order": 17,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tree Sentinel (Duo)",
+        "order": 18,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Wormface",
+        "order": 19,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Mt. Gelmir",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Abductor Virgins (Duo)",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Demi-Human Queen Maggie",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Demi-Human Queen Margot",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Full-Grown Fallingstar Beast",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "God-Devouring Serpent / Rykard, Lord of Blasphemy",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godskin Noble",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Kindred of Rot (Duo)",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Magma Wyrm (Fort Laiedd)",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Red Wolf of the Champion",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ulcerated Tree Spirit",
+        "order": 9,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Capital Outskirts",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Bell Bearing Hunter",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Crucible Knight & Crucible Knight Ordovis",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Deathbird",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Draconic Tree Sentinel",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Fell Twins",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Grave Warden Duelist",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Onyx Lord",
+        "order": 6,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Leyndell, Royal Capital",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Esgar, Priest of Blood",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godfrey, First Elden Lord",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Mohg, the Omen",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Morgott, the Omen King",
+        "order": 3,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Mountaintops of the Giants",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ancient Hero of Zamor",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Borealis the Freezing Fog",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Commander Niall",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Death Rite Bird",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Erdtree Avatar",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Fire Giant",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godskin Apostle and Godskin Noble (Spiritcaller Snail)",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ulcerated Tree Spirit",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Vyke, Knight of the Roundtable",
+        "order": 8,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Crumbling Farum Azula",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Beast Clergyman / Maliketh, the Black Blade",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Dragonlord Placidusax",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godskin Duo",
+        "order": 2,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Forbidden Lands",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Black Blade Kindred",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Stray Mimic Tear",
+        "order": 2,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Consecrated Snowfield",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Astel, Stars of Darkness",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Death Rite Bird",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Great Wyrm Theodorix",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Misbegotten Crusader",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Night's Cavalry (Duo)",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Putrid Avatar",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Putrid Grave Warden Duelist",
+        "order": 6,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Miquella's Haligtree",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Loretta, Knight of the Haligtree",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Malenia, Blade of Miquella",
+        "order": 1,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Siofra River",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ancestor Spirit",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Dragonkin Soldier",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Mohg, Lord of Blood",
+        "order": 2,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Ainsel River",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Dragonkin Soldier of Nokstella",
+        "order": 0,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Nokron, Eternal City",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Mimic Tear",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Regal Ancestor Spirit",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Valiant Gargoyle & Valiant Gargoyle (Twinblade)",
+        "order": 2,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Deeproot Depths",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Crucible Knight Siluria",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Fia's Champions",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Lichdragon Fortissax",
+        "order": 2,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Lake of Rot",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Astel, Naturalborn of the Void",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Dragonkin Soldier",
+        "order": 1,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Leyndell, Ashen Capital",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Esgar, Priest of Blood",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Godfrey, First Elden Lord (Hoarah Loux)",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Mohg, the Omen",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Sir Gideon Ofnir, the All-Knowing",
+        "order": 3,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Elden Throne",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Radagon of the Golden Order / Elden Beast",
+        "order": 0,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Gravesite Plain",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Blackgaol Knight",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Chief Bloodfiend",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Demi-Human Swordmaster Onze",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Divine Beast Dancing Lion",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ghostflame Dragon",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Rellana Twin Moon Knight",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Red Bear",
+        "order": 6,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Scadu Altus",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Black Knight Edredd",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Black Knight Garrew",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Count Ymir, Mother of Fingers",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Curseblade Labirith",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Death Knight",
+        "order": 4,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Dryleaf Dane",
+        "order": 5,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ghostflame Dragon",
+        "order": 6,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Golden Hippopotamus",
+        "order": 7,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Messmer the Impaler + Base Serpent Messmer",
+        "order": 8,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Metyr, Mother of Fingers",
+        "order": 9,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Rakshasa",
+        "order": 10,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Jori, Elder Inquisitor",
+        "order": 11,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ralva the Great Red Bear",
+        "order": 12,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tree Sentinel",
+        "order": 13,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Rauh Base",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Death Knight",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Rugalea the Great Red Bear",
+        "order": 1,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Cerulean Coast",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Dancer of Ranah",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Demi-Human Queen Marigga",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ghostflame Dragon",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Putrescent Knight",
+        "order": 3,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Charo's Hidden Grave",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Death Rite Bird",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Lamenter",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tibia Mariner",
+        "order": 2,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Jagged Peak",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Ancient Dragon-Man",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Ancient Dragon Senessax",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Bayle the Dread",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Jagged Peak Drake (Foothills)",
+        "order": 3,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Jagged Peak Drake",
+        "order": 4,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Abyssal Woods",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Midra Lord of Frenzied Flame",
+        "order": 0,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Scaduview",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Fallingstar Beast",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Scadutree Avatar",
+        "order": 1,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Commander Gaius",
+        "order": 2,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Tree Sentinel",
+        "order": 3,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Ancient Ruins of Rauh",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Divine Beast Dancing Lion",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Romina, Saint of the Bud",
+        "order": 1,
+        "game": "Elden Ring"
+      }
+    ]
+  },
+  {
+    "name": "Enir-Ilim",
+    "games": [
+      "Elden Ring"
+    ],
+    "bossInstances": [
+      {
+        "name": "Leda and Allies",
+        "order": 0,
+        "game": "Elden Ring"
+      },
+      {
+        "name": "Promised Consort Radahn + Radahn Consort of Miquella",
+        "order": 1,
+        "game": "Elden Ring"
+      }
+    ]
+  }
+]

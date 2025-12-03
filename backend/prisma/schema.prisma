@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model Game {
+  id String @id @default(cuid())
+  name String @unique
+  runs Run[]
+  stats GameStat[]
+  bossInstances BossInstance[]
+  gameLocation GameLocation[]
+}
+
+model Run{
+  id String @id @default(cuid())
+  name String
+  descriptionUrl String @default("")
+  completed Boolean @default(false)
+  gameId String
+  game Game @relation(fields: [gameId], references: [id])
+  cycles Cycle[]
+  character Character?
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  @@index([gameId])
+  @@index([name])
+  @@index([userId])
+}
+
+model Cycle{
+  id String @id @default(cuid())
+  level Int @default(0)
+  completed Boolean @default(false)
+  runId String
+  run Run @relation(fields: [runId], references: [id])
+  bossesCompleted BossCompletion[]
+  @@index([runId, level(sort: Asc)])
+}
+
+model Character{
+  id String @id @default(cuid())
+  name String
+  level Int @default(1)
+  vitality Int?
+  intelligence Int?
+  endurance Int?
+  strength Int?
+  dexterity Int?
+  magic Int?
+  faith Int?
+  luck Int?
+  attunement Int?
+  resistance Int?
+  vigor Int?
+  adaptability Int?
+  insight Int?
+  skill Int?
+  bloodtinge Int?
+  mind Int?
+  hp Int?
+  mp Int?
+  stamina Int?
+  arcane Int?
+  deaths Int @default(0)
+  runId String @unique
+  run Run @relation(fields: [runId], references: [id])
+  imageId String? @unique
+  image Image? @relation(fields: [imageId], references: [id])
+  @@index([imageId])
+}
+
+model Stat{
+  id String @id @default(cuid())
+  name String @unique
+  displayName String
+
+  stats GameStat[]
+}
+
+model GameStat{
+  id String @id @default(cuid())
+  imageId String?
+  gameId String
+  statId String
+  alternateName String?
+  order Int
+  minimum Int?
+  maximum Int?
+  image Image? @relation(fields: [imageId], references: [id])
+  stat Stat @relation(fields: [statId], references: [id])
+  game Game @relation(fields: [gameId], references: [id])
+
+  @@unique([gameId, statId])
+  @@index([imageId])
+  @@index([statId])
+}
+
+
+model Boss{
+  id String @id @default(cuid())
+  name String  @unique
+  imageId String? @unique
+  bossInstances BossInstance[]
+  image Image? @relation(fields: [imageId], references: [id])
+  @@index([name])
+  @@index([imageId])
+}
+
+model Location{
+  id String @id @default(cuid())
+  name String //not unique to support having different records for locations that share the same name but exist in multiple games
+  bossInstances BossInstance[]
+  gameLocation GameLocation[]
+}
+
+model GameLocation{
+  id String @id @default(cuid())
+  gameId String 
+  locationId String
+  order Int
+  game Game @relation(fields: [gameId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+  @@index([gameId, order(sort: Asc)])
+  @@index([locationId])
+}
+
+
+
+model BossCompletion{
+  id String @id @default(cuid())
+  cycleId String
+  completed Boolean @default(false)
+  cycle Cycle @relation(fields: [cycleId], references: [id])
+  instanceId String
+  instance BossInstance @relation(fields: [instanceId], references: [id])
+  @@unique([cycleId, instanceId])
+  @@index([cycleId])
+  @@index([instanceId])
+}
+
+model BossInstance{
+  id String @id @default(cuid())
+  //PK= (bossId, locationId, gameId)
+  bossId String
+  locationId String
+  gameId String
+
+  completions BossCompletion[]
+  boss Boss @relation(fields: [bossId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+  order Int
+  game Game @relation(fields: [gameId], references: [id])
+  @@index([bossId])
+  @@index([gameId])
+  @@index([locationId, order(sort: Asc)])
+  @@unique([gameId, locationId, bossId])
+}
+
+model User{
+  id String @id @default(cuid())
+  runs Run[]
+}
+
+model Image{
+  id String @id @default(cuid())
+  name String?
+  storageUrl String
+  character Character?
+  gameStats GameStat[]
+  boss Boss?
+}
