@@ -1,5 +1,23 @@
 name: ${APP_NAME}
 services:
+  nginx:
+    container_name: ${APP_NAME}-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    volumes:
+      - ../../../nginx/development.config.nginx:${TEMPLATE_PATH}
+      - type: volume
+        source: nginx-data
+        target: /etc/nginx/
+    environment:
+      - TEMPLATE_PATH=${TEMPLATE_PATH}
+      - NGINX_PORT=${NGINX_PORT}
+      - FRONTEND_IP=${APP_NAME}-dev:${FRONTEND_PORT}
+      - BACKEND_IP=${APP_NAME}-dev:${BACKEND_PORT}
+      
   server:
     env_file: .env
     container_name: ${APP_NAME}-dev
@@ -7,7 +25,8 @@ services:
     build:
       context: .
     ports:
-      - 3000:3000
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     volumes:
       - type: bind
         source: ../../..
@@ -37,5 +56,6 @@ services:
       retries: 5
 volumes:
   db-data:
+  nginx-data:
 
 

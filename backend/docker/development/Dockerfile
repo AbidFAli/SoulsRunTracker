@@ -16,7 +16,7 @@ ENV NODE_ENV development
 WORKDIR /usr/src/app
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends vim
-RUN su node -c "npm install -g ts-node"
+#RUN su node -c "npm install -g pm2"
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
@@ -33,6 +33,7 @@ RUN su node -c "npm install -g ts-node"
 COPY ${PROJECT_FOLDER} .
 
 # Expose the port that the application listens on.
-EXPOSE ${APP_PORT}
+EXPOSE ${BACKEND_PORT}
+EXPOSE ${FRONTEND_PORT}
 
 CMD tail -f /dev/null

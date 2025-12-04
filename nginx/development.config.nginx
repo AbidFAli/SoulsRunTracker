@@ -1,0 +1,33 @@
+worker_processes 1;
+
+events {
+  worker_connections 1024;
+}
+
+http{
+  include mime.types;
+  
+  server {
+    listen ${NGINX_PORT} default_server;
+    server_name _;
+
+    # react app & front-end files
+    location / {
+      proxy_pass http://${FRONTEND_IP};
+      # set original ip address accessed. ie that of the nginx server
+      proxy_set_header Host $host;
+      # set client's ip
+      proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # node api reverse proxy
+    location /api/ {
+      # don't include the trailing / after the port or nginx will replace /api/ in the original URL with what follows proxy_pass
+      # see https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass
+      proxy_pass http://${BACKEND_IP};
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+    }
+  }
+}
+
