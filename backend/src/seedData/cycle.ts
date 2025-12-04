@@ -1,4 +1,4 @@
-import type { Cycle } from '../../generated/prisma/client.js';
+import type { Cycle } from '#generated/prisma/client.js';
 import { createId } from './id.js';
 import { RUNS } from './run.js';
 

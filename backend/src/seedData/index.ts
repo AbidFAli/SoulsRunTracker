@@ -1,8 +1,8 @@
 import {
   BossCompletionCreateManyInput,
   GameLocationCreateWithoutLocationInput
-} from '../../generated/prisma/models.js';
-import { prisma } from '../db/prisma.js';
+} from '#generated/prisma/models.js';
+import { prisma } from '#src/db/prisma.js';
 import { ABBREVIATION_TO_GAME, BOSSES, GameAbbreviation } from './boss.js';
 import { GAMES } from './game.js';
 import { LOCATIONS, LocationSeedData, NestedBossInstanceWithoutLocation } from './location.js';

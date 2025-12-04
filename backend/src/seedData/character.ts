@@ -1,4 +1,4 @@
-import type { CharacterCreateManyInput } from '../../generated/prisma/models.js';
+import type { CharacterCreateManyInput } from '#generated/prisma/models.js';
 
 
 export const CHARACTERS: CharacterCreateManyInput[] = [

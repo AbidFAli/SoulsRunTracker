@@ -10,10 +10,11 @@
     "incremental": true,
     "sourceMap" : true,
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "#src/*": ["./src/*"],
+      "#generated/*": ["./generated/*"]
+    },
   },
   "lib": ["ES2023"],
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./generated/**/*"],
   "exclude" : ["node_modules"]
 }
