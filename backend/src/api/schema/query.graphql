@@ -1,0 +1,8 @@
+
+type Query{
+  game(where: GameWhereUniqueInput): Game
+  games(where: GameWhereInput): [Game!]
+
+}
+
+type Mutation

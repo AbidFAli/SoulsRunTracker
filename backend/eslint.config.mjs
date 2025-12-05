@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import graphqlPlugin from '@graphql-eslint/eslint-plugin';
 import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -13,4 +14,17 @@ export default defineConfig([
     }
    },
   tseslint.configs.recommended,
+  {
+    files: ['**/*.graphql'],
+    languageOptions: {
+      parser: graphqlPlugin.parser,
+    },
+    plugins: {
+      '@graphql-eslint': graphqlPlugin,
+    },
+    rules: {
+      '@graphql-eslint/no-anonymous-operations': 'error',
+      '@graphql-eslint/no-duplicate-fields': 'error',
+    },
+  }
 ]);

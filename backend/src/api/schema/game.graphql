@@ -1,0 +1,20 @@
+
+
+type Game{
+  id: ID
+  name: String
+}
+
+input GameWhereUniqueInput{
+  id: StringFilter
+  name: StringFilter
+}
+
+input GameWhereInput{
+  AND: GameWhereInput | [GameWhereInput!]
+  OR: [GameWhereInput!]
+  NOT: GameWhereInput | [GameWhereInput!]
+  id: String | StringFilter
+  name: String | StringFilter
+}
+

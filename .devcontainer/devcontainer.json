@@ -13,7 +13,9 @@
 				"christian-kohler.npm-intellisense",
 				"humao.rest-client",
 				"mhutchie.git-graph",
-				"Prisma.prisma"
+				"Prisma.prisma",
+				"GraphQL.vscode-graphql-syntax",
+				"GraphQL.vscode-graphql"
 			]
 		}
 	},

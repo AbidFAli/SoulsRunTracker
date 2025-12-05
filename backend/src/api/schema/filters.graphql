@@ -1,0 +1,255 @@
+
+
+
+enum QueryMode{
+  DEFAULT
+  INSENSITIVE
+}
+
+enum NoneFilter{
+  NONE
+}
+
+enum SortOrder{
+  ASC
+  DESC
+}
+
+enum NullsOrder{
+  FIRST
+  LAST
+}
+
+#StringFilter | String
+input StringFilterNot{
+  filter: StringFilter
+  value: String
+}
+
+input StringFilter{
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringFilterNot 
+}
+
+#StringWithAggregatesFilter | String
+input StringWithAggregatesFilterNot{
+  filter: StringWithAggregatesFilter
+  value: String
+}
+
+input StringWithAggregatesFilter{
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringWithAggregatesFilterNot
+  _count: IntFilter
+  _min: StringFilter
+  _max: StringFilter
+}
+
+#BoolFilter | Boolean
+input BoolFilterNot{
+  filter: BoolFilter
+  value: Boolean
+}
+
+input BoolFilter{
+  equals: Boolean
+  not: BoolFilterNot
+}
+
+#NestedBoolWithAggregatesFilter | Boolean
+input BoolWithAggregatesFilterNot{
+  filter: NestedBoolWithAggregatesFilter
+  value: Boolean
+}
+
+
+input BoolWithAggregatesFilter{
+  equals: Boolean
+  not: BoolWithAggregatesFilterNot
+  _count: IntFilter
+  _min: BoolFilter
+  _max: BoolFilter
+}
+
+#Int | IntFilter
+input IntFilterNot{
+  value: Int
+  filter: IntFilter
+}
+
+input IntFilter{
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilterNot
+}
+
+# Int | IntFilter
+input IntWithAggregatesFilterNot{
+  value: Int
+  filter: IntFilter
+}
+
+input IntWithAggregatesFilter{
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntWithAggregatesFilterNot
+  _count: IntFilter
+  _avg: FloatFilter
+  _sum: IntFilter
+  _min: IntFilter
+  _max: IntFilter
+}
+
+union IntNullableFilterEquals = Int | NoneFilter
+union IntNullableFilterNot = IntNullableFilter | Int | NoneFilter
+union IntNullableFilterIn = NoneFilter | [Int!]
+
+input IntNullableFilter{
+  equals: IntNullableFilterIn
+  in: IntNullableFilterIn
+  notIn: [Int!] | NoneFilter
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilterNot
+}
+
+input StringNullableFilter{
+  equals: String | NoneFilter
+  in: [String!] | NoneFilter
+  notIn: [String!] | NoneFilter
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableFilter | String | NoneFilter
+}
+
+input SortOrderInput{
+  sort: SortOrder!
+  nulls: NullsOrder
+}
+
+input IntNullableWithAggregatesFilter{
+  equals: Int | NoneFilter
+  in: [Int!] | NoneFilter
+  notIn: [Int!] | NoneFilter
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableWithAggregatesFilter | Int | NoneFilter
+  _count: IntNullableFilter
+  _avg: FloatNullableFilter
+  _sum: IntNullableFilter
+  _min: IntNullableFilter
+  _max: IntNullableFilter
+}
+
+
+input StringNullableWithAggregatesFilter{
+  equals: String | NoneFilter
+  in: [String!] | NoneFilter
+  notIn: [String!] | NoneFilter
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableWithAggregatesFilter | String | NoneFilter
+  _count: IntNullableFilter
+  _min: StringNullableFilter
+  _max: StringNullableFilter
+}
+
+input FloatFilter{
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatFilter | Float
+}
+input FloatNullableFilter{
+  equals: Float | NoneFilter
+  in: [Float!] | NoneFilter
+  notIn: [Float!] | NoneFilter
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatFilter | Float
+}
+
+input FloatWithAggregatesFilter{
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: Float | Float
+  _count: FloatFilter
+  _avg: FloatFilter
+  _sum: FloatFilter
+  _min: FloatFilter
+  _max: FloatFilter
+}
+
+input FloatNullableWithAggregatesFilter{
+  equals: Float | NoneFilter
+  in: [Float!] | NoneFilter
+  notIn: [Float!] | NoneFilter
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableWithAggregatesFilter | Float | NoneFilter
+  _count: FloatNullableFilter
+  _avg: FloatNullableFilter
+  _sum: FloatNullableFilter
+  _min: FloatNullableFilter
+  _max: FloatNullableFilter
+}
+
