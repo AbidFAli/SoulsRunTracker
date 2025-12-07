@@ -5,7 +5,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts}"], 
+  { files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"], 
     plugins: { js }, 
     extends: ["js/recommended"], 
     languageOptions: { globals: globals.node },
@@ -15,7 +15,7 @@ export default defineConfig([
    },
   tseslint.configs.recommended,
   {
-    files: ['**/*.graphql'],
+    files: ['./src/api/schema/*.graphql'],
     languageOptions: {
       parser: graphqlPlugin.parser,
     },

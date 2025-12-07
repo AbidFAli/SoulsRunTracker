@@ -76,13 +76,13 @@ Exceptions:
 */
 function getBosses(row: Element){
   const listItems = row.querySelectorAll(`li`);
-  const bosses: string[] = [];
+  const foundBosses: string[] = [];
   listItems.forEach((item) => {
     const bossName = item.textContent.replace(/\u00A0/g, " ");
-    bosses.push(bossName)
+    foundBosses.push(bossName)
   });
 
-  return bosses;
+  return foundBosses;
 }
 
 function getLocationName(row: Element){

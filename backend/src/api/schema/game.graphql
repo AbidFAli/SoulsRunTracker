@@ -6,15 +6,17 @@ type Game{
 }
 
 input GameWhereUniqueInput{
+  id: String
+  name: String
+}
+
+
+input GameWhereInput{
+  AND: [GameWhereInput!]
+  OR: [GameWhereInput!]
+  NOT: [GameWhereInput!]
   id: StringFilter
   name: StringFilter
 }
 
-input GameWhereInput{
-  AND: GameWhereInput | [GameWhereInput!]
-  OR: [GameWhereInput!]
-  NOT: GameWhereInput | [GameWhereInput!]
-  id: String | StringFilter
-  name: String | StringFilter
-}
-
+#this is an extra comment

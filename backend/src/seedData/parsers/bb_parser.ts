@@ -40,11 +40,11 @@ rows.forEach((row) => {
 
 function getBosses(row: Element){
   const links = row.querySelectorAll(`li a`);
-  const bosses: string[] = [];
+  const foundBosses: string[] = [];
   links.forEach((link) => {
-    bosses.push(link.textContent)
+    foundBosses.push(link.textContent)
   })
-  return bosses;
+  return foundBosses;
 }
 
 function getLocationName(row: Element){

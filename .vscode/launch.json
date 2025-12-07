@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/backend/build/src/seedData/index.js",
+      "program": "${workspaceFolder}/backend/build/src/index.js",
       "outFiles": [
         "${workspaceFolder}/backend/build/**/*.js"
       ],

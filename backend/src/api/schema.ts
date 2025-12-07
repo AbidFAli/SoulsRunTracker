@@ -2,9 +2,12 @@ import { loadFilesSync } from '@graphql-tools/load-files'
 import { mergeTypeDefs } from '@graphql-tools/merge'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import path from 'path'
- 
-const typesArray = loadFilesSync(path.join(__dirname, './schema'))
- 
-const typeDefs = mergeTypeDefs(typesArray)
+import { resolvers } from './resolvers/index.js'
 
-export const schema = makeExecutableSchema({typeDefs})
+
+const tempPath = path.join(import.meta.dirname, './schema/');
+const typesArray = loadFilesSync(tempPath, {extensions: ['graphql']})
+ 
+const typeDefs = mergeTypeDefs(typesArray);
+
+export const schema = makeExecutableSchema({typeDefs, resolvers});

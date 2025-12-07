@@ -16,7 +16,7 @@ ENV NODE_ENV development
 WORKDIR /usr/src/app
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends vim
-#RUN su node -c "npm install -g pm2"
+RUN su node -c "npm install -g gulp-cli ts-node esm"
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
