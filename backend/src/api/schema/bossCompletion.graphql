@@ -1,0 +1,7 @@
+type BossCompletion{
+  id: ID!
+  cycleId: ID
+  instanceId: ID
+  completed: Boolean
+  instance: BossInstance
+}

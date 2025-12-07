@@ -87,7 +87,7 @@ model Stat{
   name String @unique
   displayName String
 
-  stats GameStat[]
+  gameStats GameStat[]
 }
 
 model GameStat{

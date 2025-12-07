@@ -1,0 +1,7 @@
+type GameLocation{
+  id: ID!
+  gameId: ID
+  locationId: ID
+  order: Int
+  location: Location
+}

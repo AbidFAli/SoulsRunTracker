@@ -3,10 +3,6 @@ enum QueryMode{
   INSENSITIVE
 }
 
-enum NoneFilter{
-  NONE
-}
-
 enum SortOrder{
   ASC
   DESC
@@ -103,20 +99,20 @@ input IntWithAggregatesFilter{
   _max: IntFilter
 }
 
-#Only use one
+""" Only use one """
 input IntNullableFilterEquals{
   value: Int
   null: Boolean
 }
 
-#Only use one
+""" Only use one """
 input IntNullableFilterNot{
   value: Int
   filter: IntNullableFilter
   null: Boolean
 }
 
-#Only use one
+""" Only use one """
 input IntNullableFilterIn{
   value: [Int!]
   null: Boolean
@@ -133,19 +129,19 @@ input IntNullableFilter{
   not: IntNullableFilterNot
 }
 
-#Only use one
+""" Only use one """
 input StringNullableFilterEquals{
   value: String
   null: Boolean
 }
 
-#Only use one
+""" Only use one """
 input StringNullableFilterIn{
   value: [String!]
   null: Boolean
 }
 
-#Only use one
+""" Only use one """
 input StringNullableFilterNot{
   value: String
   filter: StringNullableFilter
@@ -171,7 +167,7 @@ input SortOrderInput{
   nulls: NullsOrder
 }
 
-#Only use one
+""" Only use one """
 input IntNullableWithAggregatesFilterNot{
   value: Int
   filter: IntNullableWithAggregatesFilter
@@ -194,7 +190,7 @@ input IntNullableWithAggregatesFilter{
   _max: IntNullableFilter
 }
 
-#Only use one
+""" Only use one """
 input StringNullableWithAggregatesFilterNot{
   value: String
   filter: StringNullableWithAggregatesFilter
@@ -232,19 +228,19 @@ input FloatFilter{
   not: FloatFilter
 }
 
-#Only use one
+""" Only use one """
 input FloatNullableFilterEquals{
   value: Float
   null: Boolean
 }
 
-#Only use one
+""" Only use one """
 input FloatNullableFilterIn{
   value: [Float!]
   null: Boolean
 }
 
-#Only use one
+""" Only use one """
 input FloatNullableFilterNot{
   value: Float
   filter: FloatNullableFilter
@@ -279,7 +275,7 @@ input FloatWithAggregatesFilter{
   _max: FloatFilter
 }
 
-#Only use one
+""" Only use one """
 input FloatNullableWithAggregatesFilterNot{
   value: Float
   filter: FloatNullableWithAggregatesFilter

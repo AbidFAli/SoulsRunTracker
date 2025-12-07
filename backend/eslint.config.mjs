@@ -15,16 +15,21 @@ export default defineConfig([
    },
   tseslint.configs.recommended,
   {
-    files: ['./src/api/schema/*.graphql'],
+    files: ['**/*.graphql'],
     languageOptions: {
-      parser: graphqlPlugin.parser,
+      parser: graphqlPlugin.parser
     },
     plugins: {
-      '@graphql-eslint': graphqlPlugin,
-    },
+      '@graphql-eslint': graphqlPlugin
+    }
+  },
+  {
+    files: ['./src/api/schema/*.graphql'],
     rules: {
-      '@graphql-eslint/no-anonymous-operations': 'error',
-      '@graphql-eslint/no-duplicate-fields': 'error',
-    },
+      ...graphqlPlugin.configs['flat/schema-recommended'].rules,
+      "@graphql-eslint/require-description": 'off',
+      "@graphql-eslint/naming-convention": 'off',
+      "@graphql-eslint/no-unreachable-types": 'off'
+    }
   }
 ]);
