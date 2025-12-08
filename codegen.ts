@@ -1,9 +1,13 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
  
 const config: CodegenConfig = {
-   schema: './src/api/schema/*.graphql',
+   schema: './backend/src/api/schema/*.graphql',
+   documents: ['./frontend/src/graphql/*.graphql'],
    generates: {
-      './generated/graphql/types.ts': {
+    './frontend/src/generated/graphql/': {
+        preset: 'client',
+      },
+    './backend/generated/graphql/types.ts': {
         config: {
           useIndexSignature: true,
         },
@@ -11,4 +15,6 @@ const config: CodegenConfig = {
       }
    }
 }
+
+
 export default config

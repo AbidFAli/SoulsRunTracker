@@ -2,6 +2,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
   },
-  "graphql-config.load.rootDir": "./backend",
+  "eslint.workingDirectories": ["./backend", "./frontend"],
+  "eslint.useFlatConfig": true,
 }
     

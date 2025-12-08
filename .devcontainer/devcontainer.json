@@ -8,7 +8,6 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-vscode.vscode-typescript-next",
 				"eamodio.gitlens",
 				"christian-kohler.npm-intellisense",
 				"humao.rest-client",
