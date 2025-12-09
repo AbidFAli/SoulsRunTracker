@@ -3,6 +3,5 @@ type Cycle{
   level: Int
   completed: Boolean
   runId: ID
-  run: Run
   bossesCompleted: [BossCompletion!]
 }

@@ -1,6 +1,6 @@
 type Boss{
   id: ID!
-  name: name
+  name: String
   imageId: ID
   image: Image
 }

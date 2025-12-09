@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production node ./build/src/index.js",
     "dev": "NODE_ENV=development nodemon ./build/src/index.js",
     "build": "gulp",
-    "generate": "npx prisma generate && npx graphql-codegen",
+    "generate": "npx prisma generate",
     "seed": "node ./build/src/seedData/index.js",
     "lint": "eslint ./src",
     "cleanup": "rm -rf build/*"
