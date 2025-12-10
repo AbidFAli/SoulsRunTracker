@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "type": "module",
+  "private": true,
   "workspaces": [
     "backend",
     "frontend"
