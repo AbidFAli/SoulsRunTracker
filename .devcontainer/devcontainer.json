@@ -14,7 +14,9 @@
 				"mhutchie.git-graph",
 				"Prisma.prisma",
 				"GraphQL.vscode-graphql-syntax",
-				"GraphQL.vscode-graphql"
+				"GraphQL.vscode-graphql",
+				"bradlc.vscode-tailwindcss",
+				"stylelint.vscode-stylelint"
 			]
 		}
 	},
