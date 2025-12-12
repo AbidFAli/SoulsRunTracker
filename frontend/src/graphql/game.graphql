@@ -1,0 +1,48 @@
+query GetGameInformation($where: GameWhereUniqueInput!){
+  game(where: $where){
+    id
+    gameLocations{
+      id
+      order
+      location{
+        id
+        name
+      }
+      bossInstances{
+        id
+        boss{
+          id
+          name
+        }
+        locationId
+        order
+      }
+    }
+    gameStat{
+      id
+      imageId
+      alternateName
+      order
+      minimum
+      maximum
+      stat{
+        name
+        id
+        displayName
+      }
+      image{
+        id
+        name
+        storageUrl
+      }
+    }
+  }
+}
+
+
+query GetGames{
+  games{
+    id
+    name
+  }
+}

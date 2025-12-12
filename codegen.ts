@@ -1,5 +1,16 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
  
+
+/*
+  allowParentTypeOverride
+  addUnderscoreToArgsType
+  contextType
+  mapperTypeSuffix
+  mappers
+  typesSuffix/typesPrefix
+  namingConvention
+
+*/
 const config: CodegenConfig = {
    schema: './backend/src/api/schema/*.graphql',
    documents: ['./frontend/src/graphql/*.graphql'],
@@ -12,6 +23,7 @@ const config: CodegenConfig = {
           useIndexSignature: true,
         },
         plugins: ['typescript', 'typescript-resolvers'],
+        
       }
    }
 }
