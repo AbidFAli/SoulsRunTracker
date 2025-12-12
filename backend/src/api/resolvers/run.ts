@@ -19,12 +19,7 @@ export const runResolvers: graphql.RunResolvers = {
   }
 }
 
-interface BossCompletionSqlRecord{
-  id: string;
-  cycleId: string;
-  completed: boolean;
-  instanceId: string;
-}
+
 
 export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun"> = {
   async createRun(parent, args){
@@ -52,6 +47,13 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun"> 
       }
     }
 
+    const bossInstances = await prisma.bossInstance.findMany({
+      where: {
+        gameId: cleanedInput.gameId
+      }
+    })
+    
+
     const transactionResult = await prisma.$transaction(async(txn) => {
       const run = await txn.run.create({
         data: runCreateInput,
@@ -62,12 +64,15 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun"> 
       })
       const cycle = run.cycles[0];
 
-      const bossCompletions = await txn.$queryRaw<BossCompletionSqlRecord[]>`
-        insert into "BossCompletion" ("cycleId", "completed", "instanceId")
-        select ${cycle.id}, false, bi.id from "BossInstance" bi
-        where bi."gameId" = ${cleanedInput.gameId}
-        returning id, "cycleId", "completed", "instanceId"
-      `
+      const bossCompletions = await txn.bossCompletion.createMany({
+        data: bossInstances.map((bossInstance) => {
+          return {
+            cycleId: cycle.id,
+            instanceId: bossInstance.id,
+            completed: false,
+          }
+        })
+      });
 
       return {
         run,
@@ -77,7 +82,12 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun"> 
 
     const run : graphql.Run = transactionResult.run;
     if(run.cycles){
-      run.cycles[0].bossesCompleted = transactionResult.bossCompletions;
+      const bossCompletions = await prisma.bossCompletion.findMany({
+        where: {
+          cycleId: run.cycles[0].id
+        }
+      })
+      run.cycles[0].bossesCompleted = bossCompletions;
     }
     return run;
   }

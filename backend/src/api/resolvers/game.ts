@@ -19,13 +19,27 @@ function convertGameWhereInput(data: graphql.GameWhereInput): GameWhereInput{
 }
 
 export const gameFieldResolvers: graphql.GameResolvers = {
-  async gameLocations(parent){
+  gameLocations(parent){
     if(parent.gameLocations){
       return parent.gameLocations;
     }
     return prisma.gameLocation.findMany({
       where: {
         gameId: parent.id
+      },
+      orderBy: {
+        order: "asc"
+      }
+    })
+  },
+  gameStat(parent){
+    if(parent.gameStat){
+      return parent.gameStat;
+    }
+
+    return prisma.gameStat.findMany({
+      where: {
+        gameId : parent.id
       },
       orderBy: {
         order: "asc"

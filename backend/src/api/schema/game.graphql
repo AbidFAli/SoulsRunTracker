@@ -4,6 +4,7 @@ type Game{
   id: ID!
   name: String
   gameLocations: [GameLocation!]
+  gameStat: [GameStat!]
 }
 
 input GameWhereUniqueInput{
