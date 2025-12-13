@@ -1,0 +1,22 @@
+mutation CreateRun($input: RunCreateInput!){
+  createRun(run: $input){ #i know the gameId
+    id
+    name
+    descriptionUrl
+    completed
+    cycles{
+      id
+      level
+      completed
+      bossesCompleted{
+        id
+        completed
+        instance{ #look up instance information in another request
+          id
+          bossId
+          locationId
+        }
+      }
+    }
+  }
+}

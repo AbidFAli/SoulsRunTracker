@@ -31,5 +31,14 @@ export default defineConfig([
       "@graphql-eslint/naming-convention": 'off',
       "@graphql-eslint/no-unreachable-types": 'off'
     }
+  },
+  {
+    files: ['./src/test/queries/*.graphql'],
+    rules: {
+      ...graphqlPlugin.configs['flat/operations-recommended'].rules,
+      "@graphql-eslint/require-description": 'off',
+      "@graphql-eslint/naming-convention": 'off',
+      "@graphql-eslint/no-unreachable-types": 'off'
+    }
   }
 ]);

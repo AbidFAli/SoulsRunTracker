@@ -19,6 +19,19 @@
       // "env": {
       //   "DEBUG": "*"
       // }
+    }, {
+      "cwd": "${workspaceFolder}/backend",
+      "type": "node",
+      "request": "launch",
+      "name": "Backend: Debug vitest integration test",
+      "autoAttachChildProcesses": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "program": "${workspaceRoot}/backend/node_modules/vitest/vitest.mjs",
+      "args": ["run", "--fileParallelism=false", "./build/src/test/integration/run.test.js"],
+      "smartStep": true,
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/backend/.env.test", //this only reads the .env file naively. It doesn't perform variable substitution
+      "preLaunchTask": "backend integration test setup"
     }
   ]
 }

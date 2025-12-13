@@ -14,6 +14,7 @@ import { CHARACTERS } from './character.js';
 import { CYCLES } from './cycle.js';
 import { RUNS, RunSeedData } from './run.js';
 import { USERS } from './user.js';
+import { isCli } from '#src/util/cli.js';
 
 
 const {groupBy, flatMap} = lodash;
@@ -201,9 +202,8 @@ async function createBossCompletionsInDB(){
   })
 }
 
-async function main() {
-  console.time("script run time");
-  await prisma.game.createManyAndReturn({
+export async function createConfigData(){
+  await prisma.game.createMany({
     data: GAMES.map(g => ({name: g}))
   })
   
@@ -211,6 +211,12 @@ async function main() {
   await createLocationsInDB();
   await createBossInstancesInDB();
   await createStatsInDB();
+}
+
+async function main() {
+  console.log('seeding data');
+  console.time("script run time");
+  await createConfigData();
 
 
   await prisma.user.createMany({data: USERS});
@@ -243,12 +249,14 @@ async function main() {
 
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+if(isCli(import.meta.filename)){
+  main()
+    .then(async () => {
+      await prisma.$disconnect()
+    })
+    .catch(async (e) => {
+      console.error(e)
+      await prisma.$disconnect()
+      process.exit(1)
+    })
+}

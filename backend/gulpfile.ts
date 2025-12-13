@@ -21,7 +21,7 @@ function execSyncBoilerplate(command: string){
 }
 
 async function generate(){
-  execSyncBoilerplate('npm run generate && cd .. && npm run generate');
+  execSyncBoilerplate('npm run generate && cd .. && npx graphql-codegen --project backend');
 }
 
 async function build() {
