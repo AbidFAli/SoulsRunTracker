@@ -1,6 +1,7 @@
 import type { SpawnSyncReturns } from 'child_process';
 import { execSync } from "child_process";
 import { mkdir } from "fs/promises";
+import { emptyDir} from 'fs-extra/esm'
 import { dest, src } from 'gulp';
 
 const graphQlSchemaDir = {
@@ -30,10 +31,11 @@ async function build() {
   
   try{
     await mkdir(graphQlSchemaDir.dest)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   }catch(_){
   }
 
-  await execSync(`rm ${graphQlSchemaDir.dest}/*.graphql`);
+  await emptyDir(graphQlSchemaDir.dest);
 
   return src(graphQlSchemaDir.source+'/*.graphql')
     .pipe(dest(graphQlSchemaDir.dest));

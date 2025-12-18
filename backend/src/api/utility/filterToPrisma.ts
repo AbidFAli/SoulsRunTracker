@@ -20,9 +20,10 @@ import type {
 } from '#generated/prisma/internal/prismaNamespace.js';
 import { NullsOrder, QueryMode, SortOrder } from '#generated/prisma/internal/prismaNamespace.js';
 import { Unnullified } from '#src/util/utilityTypes.js';
-import * as lodash from 'lodash';
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import lodash = require('lodash');
 const { omit, isNumber, isString, pick} = lodash;
+
 
 //these functions convert graphql filters to prisma filters
 

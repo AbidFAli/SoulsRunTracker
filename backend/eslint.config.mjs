@@ -29,7 +29,17 @@ export default defineConfig([
       ...graphqlPlugin.configs['flat/schema-recommended'].rules,
       "@graphql-eslint/require-description": 'off',
       "@graphql-eslint/naming-convention": 'off',
-      "@graphql-eslint/no-unreachable-types": 'off'
+      "@graphql-eslint/no-unreachable-types": 'off',
+      "@graphql-eslint/no-typename-prefix": 'off',
+      "@graphql-eslint/strict-id-in-types": [
+        'error',
+        {
+          exceptions: {
+            types: ['PageInfo'],
+            suffixes: ['Connection', 'ConnectionEdge']
+          }
+        }
+      ]
     }
   },
   {

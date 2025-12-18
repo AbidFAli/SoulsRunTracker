@@ -2,5 +2,9 @@
 type Query{
   game(where: GameWhereUniqueInput!): Game
   games(where: GameWhereInput): [Game!]
+  runs(
+    where: RunWhereInput!, 
+    pagination: RunPaginationInput!
+  ): RunConnection
 }
 

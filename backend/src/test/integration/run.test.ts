@@ -1,7 +1,7 @@
 import { createApp } from "#src/index.js";
 import { describe } from "node:test";
 import request from 'supertest';
-import { createConfigData } from "#src/seedData/index.js";
+import { createConfigData } from "#src/seedData/config.js";
 import { prisma } from "#src/db/prisma.js";
 import { afterAll, afterEach, beforeAll, test, expect } from "vitest";
 import { resetDatabase } from "../util/db.js";

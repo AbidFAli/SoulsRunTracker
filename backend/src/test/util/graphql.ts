@@ -16,6 +16,6 @@ export async function executeOperation<TResult, TVariables>(
         variables: variables ?? undefined
       }))
   
-  return response.body //TODO idk if this is a parsed body or not
+  return response.body //this should be a parsed body
 }
  

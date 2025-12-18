@@ -6,6 +6,7 @@ type Run{
   gameId: ID
   userId: ID
   cycles: [Cycle!]
+  currentCycle: Int
   character: Character
 }
 
@@ -43,4 +44,48 @@ input CharacterCreateWithoutRunInput{
   stamina: Int
   arcane: Int
   deaths: Int
+}
+
+
+input RunWhereInput{
+  AND: [RunWhereInput!]
+  OR: [RunWhereInput!]
+  NOT: [RunWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  completed: BoolFilter
+  gameId: StringFilter
+  userId: StringFilter
+}
+
+input RunOrderByInput{
+  id: SortOrder
+  name: SortOrder
+  completed: SortOrder
+  game: GameOrderByInput
+  character: CharacterOrderByInput
+}
+
+input GameOrderByInput{
+  name: SortOrder
+}
+
+input CharacterOrderByInput{
+  name: SortOrder
+  level: SortOrder
+  deaths: SortOrder
+}
+
+
+input RunPaginationInput{
+  offset: PaginationOffsetInput
+  cursor: PaginationCursorInput
+}
+
+
+
+
+type RunConnection{
+  pageInfo: PageInfo!
+  edges: [Run!]
 }

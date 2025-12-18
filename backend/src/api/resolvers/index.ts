@@ -4,8 +4,9 @@ import { cycleResolvers } from './cycle.js'
 import { gameFieldResolvers, gameQueryResolvers } from './game.js'
 import { gameLocationFieldResolvers } from './gameLocation.js'
 import { gameStatFieldResolvers } from './gameStat.js'
-import { runMutationResolvers, runResolvers } from './run.js'
-import type { Resolvers } from "./types.js"
+import { runMutationResolvers, runResolvers, runsQueryResolvers } from './run.js'
+import type { Resolvers } from "#generated/graphql/types.js"
+import { cursorScalar } from './scalars/cursor.js'
 
 export const resolvers: Resolvers = {
   Run: runResolvers,
@@ -16,9 +17,11 @@ export const resolvers: Resolvers = {
   BossCompletion: bossCompletionResolvers,
   GameStat: gameStatFieldResolvers,
   Query: {
-    ...gameQueryResolvers
+    ...gameQueryResolvers,
+    ...runsQueryResolvers,
   },
   Mutation: {
     ...runMutationResolvers,
-  }
+  },
+  Cursor: cursorScalar,
 }

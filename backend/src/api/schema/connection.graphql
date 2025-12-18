@@ -1,0 +1,24 @@
+type PageInfo{
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  startCursor: Cursor #this will be null for offset based pagination
+  endCursor: Cursor #this will be null for offset based pagination
+  totalCount: Int #this will be null for cursor based pagination
+}
+
+input PaginationOffsetInput{
+  skip: Int
+  take: Int
+}
+
+input PaginationCursorInput{
+  first: Int
+  after: Cursor 
+  last: Int
+  before: Cursor
+}
+
+enum PaginationType{
+  OFFSET
+  CURSOR
+}
