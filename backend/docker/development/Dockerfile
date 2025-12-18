@@ -10,8 +10,6 @@ ARG PROJECT_FOLDER=../../../
 
 FROM mcr.microsoft.com/devcontainers/typescript-node:24
 
-# Use production node environment by default.
-ENV NODE_ENV development
 
 WORKDIR /usr/src/app
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
