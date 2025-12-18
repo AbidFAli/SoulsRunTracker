@@ -8,6 +8,7 @@ type Run{
   cycles: [Cycle!]
   currentCycle: Int
   character: Character
+  deaths: Int
 }
 
 
@@ -18,6 +19,7 @@ input RunCreateInput{
   gameId: String!
   userId: String!
   character: CharacterCreateWithoutRunInput
+  deaths: Int
 }
 
 input CharacterCreateWithoutRunInput{
@@ -43,7 +45,6 @@ input CharacterCreateWithoutRunInput{
   mp: Int
   stamina: Int
   arcane: Int
-  deaths: Int
 }
 
 
@@ -64,6 +65,7 @@ input RunOrderByInput{
   completed: SortOrder
   game: GameOrderByInput
   character: CharacterOrderByInput
+  deaths: SortOrder
 }
 
 input GameOrderByInput{
@@ -73,7 +75,6 @@ input GameOrderByInput{
 input CharacterOrderByInput{
   name: SortOrder
   level: SortOrder
-  deaths: SortOrder
 }
 
 

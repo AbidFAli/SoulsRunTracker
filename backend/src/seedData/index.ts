@@ -7,7 +7,7 @@ import { prisma } from '#src/db/prisma.js';
 
 import as from 'async';
 import lodash from 'lodash';
-import { CHARACTERS } from './character.js';
+import { CHARACTERS, makeCharacterCreateManyInput } from './character.js';
 import { CYCLES } from './cycle.js';
 import { RUNS, RunSeedData } from './run.js';
 import { USERS } from './user.js';
@@ -15,7 +15,7 @@ import { isCli } from '#src/util/cli.js';
 import { createConfigData } from './config.js';
 import { GAMES } from './game.js';
 import { createId } from './id.js';
-
+import { faker } from '@faker-js/faker';
 
 const {groupBy} = lodash;
 
@@ -73,6 +73,7 @@ function createRuns(data: RunSeedData[]){
           },
           id: run.id,
           completed: run.completed,
+          deaths: run.deaths
         }
     });
   });
@@ -92,7 +93,8 @@ async function main() {
       game: GAMES[0],
       id: createId(),
       name: `run ${index}`,
-      userId: USERS[0].id
+      userId: USERS[0].id,
+      deaths: faker.number.int({max: 9999, min: 0}),
     }
   });
 
@@ -100,6 +102,12 @@ async function main() {
   await createRuns(extraRuns);
 
   await prisma.character.createMany({data: CHARACTERS});
+  await prisma.character.createMany({
+    data: extraRuns.map((run) => {
+      return makeCharacterCreateManyInput(run)
+    })
+  });
+  
   await prisma.cycle.createMany({data: CYCLES});
   await createBossCompletionsInDB();
   console.timeEnd("script run time");

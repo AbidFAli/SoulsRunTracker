@@ -22,7 +22,6 @@ type Character{
   mp: Int
   stamina: Int
   arcane: Int
-  deaths: Int
   runId: ID
   run: Run 
   imageId: ID

@@ -6,6 +6,7 @@ export interface RunSeedData {
     name: string;
     completed: boolean;
     game: string;
+    deaths: number;
 }
 
 export const RUNS: RunSeedData[] = [...runs];

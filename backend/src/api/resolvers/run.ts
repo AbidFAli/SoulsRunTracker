@@ -51,6 +51,7 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun"> 
       name: cleanedInput.name,
       descriptionUrl: cleanedInput.descriptionUrl,
       completed: cleanedInput.completed,
+      deaths: cleanedInput.deaths,
       game: {
         connect: {
           id: cleanedInput.gameId

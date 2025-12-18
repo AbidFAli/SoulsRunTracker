@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development nodemon ./build/src/index.js",
     "build": "gulp",
     "generate": "npx prisma generate && npx graphql-codegen",
-    "seed": "node ./build/src/seedData/index.js",
+    "seed": "NODE_ENV=development node ./build/src/seedData/index.js",
     "lint": "eslint ./src",
     "cleanup": "rm -rf build/*",
     "test-integration": "./scripts/setupTestDatabase.sh && vitest --fileParallelism=false build/src/test/integration/"
@@ -19,6 +19,7 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@faker-js/faker": "^10.1.0",
     "@graphql-codegen/cli": "^6.1.0",
     "@graphql-codegen/typescript": "^5.0.6",
     "@graphql-codegen/typescript-resolvers": "^5.1.4",
