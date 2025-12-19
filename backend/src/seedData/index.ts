@@ -13,11 +13,11 @@ import { RUNS, RunSeedData } from './run.js';
 import { USERS } from './user.js';
 import { isCli } from '#src/util/cli.js';
 import { createConfigData } from './config.js';
-import { GAMES } from './game.js';
+import { GAME_NAMES, GAMES } from './game.js';
 import { createId } from './id.js';
 import { faker } from '@faker-js/faker';
 
-const {groupBy} = lodash;
+const {groupBy, compact} = lodash;
 
 const LOCATION_MAP_LIMIT = 10;
 
@@ -89,8 +89,8 @@ async function main() {
 
   const extraRuns: RunSeedData[] = Array.from({length: 1000}, (_, index) => {
     return {
-      completed: false,
-      game: GAMES[0],
+      completed: index % 2 == 0,
+      game: faker.helpers.arrayElement(GAMES),
       id: createId(),
       name: `run ${index}`,
       userId: USERS[0].id,
@@ -103,9 +103,12 @@ async function main() {
 
   await prisma.character.createMany({data: CHARACTERS});
   await prisma.character.createMany({
-    data: extraRuns.map((run) => {
+    data: compact(extraRuns.map((run) => {
+      if(run.game === GAME_NAMES.sekiro){
+        return undefined
+      }
       return makeCharacterCreateManyInput(run)
-    })
+    }))
   });
   
   await prisma.cycle.createMany({data: CYCLES});

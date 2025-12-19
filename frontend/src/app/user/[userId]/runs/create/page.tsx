@@ -13,6 +13,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { Controller, useForm } from 'react-hook-form';
 import { AppContext } from "@/state/appContext";
 import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
+import { BasicPageLayout } from "@/components/BasicPageLayout";
 const { Title} = Typography;
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
@@ -87,8 +88,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     handleSubmit(onSubmit)(e);
   }, [handleSubmit, onSubmit])
   
-
-  return <div className="lg:mx-64">
+  const title = useMemo(() => (
     <Row>
       <Col span= {8}>
         <Title className="inline w-lg">Create your run</Title>
@@ -99,8 +99,10 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
         </div>
       </Col>
     </Row>
-    
-    <form className="bg-card p-6 rounded-lg">
+    ),[gameName]
+  );
+  return <BasicPageLayout title={title}>
+    <form>
       <Space orientation="vertical" className="w-full" size="middle">
         <Controller 
           name="name"
@@ -116,13 +118,6 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
       <Divider />
       <Title level={2}>Boss Completion</Title>
       <Button onClick={onSaveClick}>Save</Button>
-      
     </form>
-
-    
-    
-
-
-    
-  </div>
+  </BasicPageLayout>
 }

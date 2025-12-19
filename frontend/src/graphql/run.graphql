@@ -1,11 +1,10 @@
-#TODO arguments. What if I have a complex where, can I pass that as child args? Should I pass as parent value?
-
 mutation CreateRun($input: RunCreateInput!){
   createRun(run: $input){ #i know the gameId
     id
     name
     descriptionUrl
     completed
+    deaths
     cycles{
       id
       level
@@ -22,6 +21,32 @@ mutation CreateRun($input: RunCreateInput!){
     }
   }
 }
+
+fragment UserRuns on Run{
+  id
+  name
+  completed
+  gameId
+  currentCycle
+  deaths
+  character{
+    id
+    name
+    level
+  }
+}
+
+query GetUserRuns($where: RunWhereInput!, $pagination: RunPaginationInput!){
+  runs(where: $where, pagination: $pagination){
+    edges{
+      ...UserRuns
+    }
+    pageInfo{
+      ...PageInfoFragment
+    }
+  }
+}
+
 
 
 

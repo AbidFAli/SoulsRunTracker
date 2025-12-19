@@ -5,6 +5,9 @@ const frontendConfig: CodegenConfig = {
    generates: {
     './src/generated/graphql/': {
         preset: 'client',
+        presetConfig: {
+          fragmentMasking: false
+        }
       }
    }
 }

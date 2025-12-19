@@ -25,16 +25,17 @@ const themeConfig: ThemeConfig = {
   components: {
     Input: {
       colorBorder: "#FFFFFF"
+    },
+    Table: {
+      colorBgContainer: "#0F0E0E",
+      headerBg: "#0F0E0E",
     }
   }
 }
 
 const client = new ApolloClient({
-
   link: new HttpLink({ uri: 'http://localhost:8000/api/graphql' }),
-
   cache: new InMemoryCache(),
-
 });
 
 
@@ -55,7 +56,9 @@ export default function RootLayout({
           <AppContextProvider>
             <ConfigProvider theme={themeConfig}>
               <AntdRegistry>
+                <div className="2xl:mx-64 lg:mx-12">
                   {children}
+                </div>
               </AntdRegistry>
             </ConfigProvider>
           </AppContextProvider>
