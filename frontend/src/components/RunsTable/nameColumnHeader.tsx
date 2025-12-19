@@ -1,12 +1,17 @@
 "use client"
 import { Input, Space, Button, theme } from "antd"
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState, useContext } from "react";
+import { RunTableContext} from './context'
 import { SearchOutlined} from '@ant-design/icons'
-import { RunsTableFilters } from "./filters";
+import { RunsTableFilters } from "./types";
 import { ColumnHeader } from "./columnHeader";
 import { useOnClickOutside } from "usehooks-ts";
+import { FILTER_COLOR } from "./colors";
 
 const { useToken} = theme;
+
+
+
 
 interface NameColumnHeaderProps{
   filters: RunsTableFilters;
@@ -14,17 +19,24 @@ interface NameColumnHeaderProps{
 }
 
 
+
 export function NameColumnHeader(props: NameColumnHeaderProps){
   const {token} = useToken();
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const filterDropdownRef = useRef<HTMLDivElement>(null);
+  const runTableContext = useContext(RunTableContext);
+
+
+  const closeDropdown = useCallback(() => {
+    runTableContext.setColumnFilterOpen(undefined);
+  }, [runTableContext])
+
+
   const filtered = useMemo<boolean>(() => {
     return props.filters.name !== undefined
   }, [props.filters.name])
 
   const onSearchClick = useCallback(() => {
-    setDropdownOpen(true)
-  }, [])
+    runTableContext.setColumnFilterOpen('name')
+  }, [runTableContext])
 
 
 
@@ -34,15 +46,15 @@ export function NameColumnHeader(props: NameColumnHeaderProps){
         <ColumnHeader value={'Name'} />
         <div className="flex justify-end grow">
           <SearchOutlined 
-            style={{ color: filtered ? '#1677ff' : undefined }}
+            style={{color: filtered ? FILTER_COLOR.active : FILTER_COLOR.inactive}}
             onClick={onSearchClick}
           />
         </div>
       </div>
-      {dropdownOpen && (
+      {runTableContext.columnFilterOpen === 'name' && (
         <div className="absolute z-50 rounded-md" style={{backgroundColor: token.Table?.filterDropdownMenuBg}}>
           <NameFilterDropdown 
-            closeDropdown={() => setDropdownOpen(false)}
+            closeDropdown={closeDropdown}
             filters={props.filters}
             updateFilters={props.updateFilters}
           />

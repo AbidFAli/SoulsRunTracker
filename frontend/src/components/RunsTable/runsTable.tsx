@@ -6,10 +6,11 @@ import { GamesData } from "@/app/user/[userId]/runs/useGetGames";
 import type { TablePaginationConfig, TableProps } from "antd";
 import { CheckOutlined, EditOutlined} from '@ant-design/icons'
 import { GAMES } from "@/util/game";
-import { RunsTableFilters } from "./filters";
+import { ColumnDataIndex, RunsTableFilters } from "./types";
 import { NameColumnHeader } from "./nameColumnHeader";
 import { ColumnHeader } from "./columnHeader";
-
+import { RunTableContext, RunTableContextState } from "./context";
+import { FilterIcon } from "./filterIcon";
 
 const {  Text} = Typography;
 
@@ -42,6 +43,7 @@ const DEFAULT_PAGE_SIZE=20;
 
 export function RunsTable(props: RunsTableProps){
   const [rowHoveredId, setRowHoveredId] = useState<string|undefined>();
+  const [columnFilterOpen, setColumnFilterOpen] = useState<ColumnDataIndex>();
 
 
 
@@ -69,7 +71,15 @@ export function RunsTable(props: RunsTableProps){
             value: gameName
           }
         }),
+        filterIcon(filtered) {
+          return <FilterIcon filtered={filtered} />
+        },
         filteredValue: props.filters.game ?? [],
+        filterDropdownProps: {
+          onOpenChange(open) {
+            setColumnFilterOpen(open ? 'game' : undefined)
+          },
+        }
       },
       {
         key: 'level',
@@ -125,8 +135,16 @@ export function RunsTable(props: RunsTableProps){
             value: false,
           }
         ],
+        filterIcon(filtered) {
+          return <FilterIcon filtered={filtered} />
+        },
         filterMultiple: false,
-        filteredValue: props.filters.completed !== undefined ? [props.filters.completed] : undefined
+        filteredValue: props.filters.completed !== undefined ? [props.filters.completed] : undefined,
+        filterDropdownProps: {
+          onOpenChange(open) {
+            setColumnFilterOpen(open ? 'completed' : undefined)
+          },
+        }
       },
     ]
   }, [props.gamesData, rowHoveredId, props.filters, props.updateFilters]);
@@ -150,15 +168,25 @@ export function RunsTable(props: RunsTableProps){
     console.log('table on change executed')
   }, [props])
 
+  const contextValue = useMemo<RunTableContextState>(() => {
+    return {
+      setColumnFilterOpen,
+      columnFilterOpen
+    }
+  }, [columnFilterOpen])
+
   return (
-    <Table<UserRunsFragment>
-      dataSource={props.data}
-      columns={columns}
-      bordered={false}
-      rowKey={getRowKey}
-      pagination={props.pagination}
-      onRow={onRow}
-      onChange={onChange}
-    />
+    <RunTableContext value={contextValue}>
+      <Table<UserRunsFragment>
+        dataSource={props.data}
+        columns={columns}
+        bordered={false}
+        rowKey={getRowKey}
+        pagination={props.pagination}
+        onRow={onRow}
+        onChange={onChange}
+      />
+    </RunTableContext>
+
   )
 }

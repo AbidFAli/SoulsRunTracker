@@ -3,3 +3,5 @@ export interface RunsTableFilters{
   game?: string[],
   completed?: boolean;
 }
+
+export type ColumnDataIndex = 'name' | 'game' | 'completed';
