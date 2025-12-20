@@ -6,7 +6,7 @@ import { SearchOutlined} from '@ant-design/icons'
 import { RunsTableFilters } from "./types";
 import { ColumnHeader } from "./columnHeader";
 import { useOnClickOutside } from "usehooks-ts";
-import { FILTER_COLOR } from "./colors";
+import { ICON_COLOR } from "./colors";
 
 const { useToken} = theme;
 
@@ -46,7 +46,7 @@ export function NameColumnHeader(props: NameColumnHeaderProps){
         <ColumnHeader value={'Name'} />
         <div className="flex justify-end grow">
           <SearchOutlined 
-            style={{color: filtered ? FILTER_COLOR.active : FILTER_COLOR.inactive}}
+            style={{color: filtered ? ICON_COLOR.active : ICON_COLOR.inactive}}
             onClick={onSearchClick}
           />
         </div>

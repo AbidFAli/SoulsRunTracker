@@ -11,7 +11,9 @@ import type {
   StringFilter,
   StringNullableFilter,
   StringNullableWithAggregatesFilter,
-  StringWithAggregatesFilter
+  StringWithAggregatesFilter,
+  DateTimeFilter,
+  DateTimeWithAggregatesFilter
 } from '#generated/prisma/commonInputTypes.js';
 import type {
   NullsOrder as NullsOrderValue,
@@ -279,4 +281,35 @@ export function convertFloatNullableWithAggregatesFilter(
   data: graphql.FloatNullableWithAggregatesFilter) : IntNullableWithAggregatesFilter
 {
   return convertIntNullableWithAggregatesFilter(data);
+}
+
+export function convertDateTimeFilter(data: graphql.DateTimeFilter): DateTimeFilter{
+  const easyKeys = ["equals", "lt", "lte", "gt", "gte"] as const;
+  const returnType: DateTimeFilter = {}
+  for(const key of easyKeys){
+    returnType[key] = new Date(data[key])
+  }
+  const inKeys = ["in", "notIn"] as const;
+  for(const key of inKeys){
+    if(data[key]){
+      returnType[key] = data[key].map((dateStr) => new Date(dateStr))
+    }
+  }
+
+  returnType.not = data.not ? convertDateTimeFilter(data.not) : undefined;
+
+  return returnType;
+
+}
+
+export function convertDateTimeWithAggregatesFilter(data: graphql.DateTimeWithAggregatesFilter) : DateTimeWithAggregatesFilter{
+  const nonAggregateFields = convertDateTimeFilter(data);
+
+  return {
+    ...nonAggregateFields,
+    _count: data._count ? convertIntFilter(data._count) : undefined,
+    _min: data._min ? convertDateTimeFilter(data._min) : undefined,
+    _max: data._max ? convertDateTimeFilter(data._max) : undefined,
+  }
+
 }

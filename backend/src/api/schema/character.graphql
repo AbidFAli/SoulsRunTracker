@@ -27,3 +27,8 @@ type Character{
   imageId: ID
   image: Image
 }
+
+input CharacterOrderByInput{
+  name: SortOrder
+  level: SortOrder
+}

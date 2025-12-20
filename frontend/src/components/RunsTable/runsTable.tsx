@@ -1,24 +1,25 @@
 "use client"
 import { Row, Table, Typography, Col} from "antd"
-import type { UserRunsFragment } from "@/generated/graphql/graphql";
-import { useCallback, useMemo, useState } from "react";
+import type { SortOrder, UserRunsFragment } from "@/generated/graphql/graphql";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { GamesData } from "@/app/user/[userId]/runs/useGetGames";
 import type { TablePaginationConfig, TableProps } from "antd";
 import { CheckOutlined, EditOutlined} from '@ant-design/icons'
 import { GAMES } from "@/util/game";
-import { ColumnDataIndex, RunsTableFilters } from "./types";
+import { FilterableColumnKey, OffsetPaginationConfig, RunsTableFilters } from "./types";
 import { NameColumnHeader } from "./nameColumnHeader";
 import { ColumnHeader } from "./columnHeader";
 import { RunTableContext, RunTableContextState } from "./context";
 import { FilterIcon } from "./filterIcon";
-
+import { SortIcon } from "./sortIcon";
+import { MyRunsPageContext } from "@/app/user/[userId]/runs/context";
+import lodash from 'lodash';
+import { ColumnType, SorterResult } from "antd/es/table/interface";
+import type { SortableColumnKey } from "./types";
+import { convertSortOrderToGraphql } from "@/util/antd";
 const {  Text} = Typography;
 
 
-export interface OffsetPaginationConfig{
-  page: number;
-  pageSize: number;
-}
 
 export interface RunsTableProps{
   data: UserRunsFragment[];
@@ -39,11 +40,16 @@ function getRowKey(data: UserRunsFragment){
 
 
 const WIDTH_NUMBER_COL=150;
+const WIDTH_GAME_COL=300
 const DEFAULT_PAGE_SIZE=20;
+
+const renderSortIcon: NonNullable<ColumnType<UserRunsFragment>['sortIcon']> =
+  ({sortOrder}) => <SortIcon direction={convertSortOrderToGraphql(sortOrder)} />;
 
 export function RunsTable(props: RunsTableProps){
   const [rowHoveredId, setRowHoveredId] = useState<string|undefined>();
-  const [columnFilterOpen, setColumnFilterOpen] = useState<ColumnDataIndex>();
+  const [columnFilterOpen, setColumnFilterOpen] = useState<FilterableColumnKey>();
+  const {updateSorter} = useContext(MyRunsPageContext);
 
 
 
@@ -57,7 +63,7 @@ export function RunsTable(props: RunsTableProps){
           updateFilters={props.updateFilters}
           />,
         dataIndex: 'name',
-        filteredValue: props.filters.name ? [props.filters.name] : undefined,
+        filteredValue: props.filters.name ? [props.filters.name] : [],
       },
       {
         key: 'game',
@@ -79,7 +85,10 @@ export function RunsTable(props: RunsTableProps){
           onOpenChange(open) {
             setColumnFilterOpen(open ? 'game' : undefined)
           },
-        }
+        },
+        sorter: true,
+        sortIcon: renderSortIcon,
+        width: WIDTH_GAME_COL,
       },
       {
         key: 'level',
@@ -87,7 +96,10 @@ export function RunsTable(props: RunsTableProps){
         render(_, record) {
           return record.character?.level ?? ""
         },
-        width: WIDTH_NUMBER_COL
+        width: WIDTH_NUMBER_COL,
+        filteredValue: [],
+        sorter: true,
+        sortIcon: renderSortIcon,
       },
       {
         key:'deaths',
@@ -97,6 +109,9 @@ export function RunsTable(props: RunsTableProps){
           return <Text style={{color: 'firebrick'}}>{value ?? ""}</Text>
         },
         width: WIDTH_NUMBER_COL,
+        filteredValue: [],
+        sorter: true,
+        sortIcon: renderSortIcon,
       },
       {
         key: 'currentCycle',
@@ -106,6 +121,8 @@ export function RunsTable(props: RunsTableProps){
           return `NG+${record.currentCycle ?? 0}`
         },
         width: WIDTH_NUMBER_COL,
+        filteredValue: [],
+
       },
       {
         key: 'completed',
@@ -127,19 +144,19 @@ export function RunsTable(props: RunsTableProps){
         },
         filters: [
           {
-            text: 'Yes',
+            text: 'Complete',
             value: true
           },
           {
-            text: 'No',
+            text: 'Incomplete',
             value: false,
           }
         ],
         filterIcon(filtered) {
-          return <FilterIcon filtered={filtered} />
+          return <FilterIcon filtered={filtered} className="my-4" />
         },
         filterMultiple: false,
-        filteredValue: props.filters.completed !== undefined ? [props.filters.completed] : undefined,
+        filteredValue: props.filters.completed !== undefined ? [props.filters.completed] : [],
         filterDropdownProps: {
           onOpenChange(open) {
             setColumnFilterOpen(open ? 'completed' : undefined)
@@ -158,7 +175,14 @@ export function RunsTable(props: RunsTableProps){
 
   const onChange = useCallback<NonNullable<TableProps<UserRunsFragment>['onChange']>>((pagination, filters, sorter) => {
     props.updatePagination({page: pagination.current ?? 1, pageSize: pagination.pageSize ?? DEFAULT_PAGE_SIZE})
+    const sorterArray = Array.isArray(sorter) ?  sorter : [sorter];
+    const sorterValue: SorterResult<UserRunsFragment> | undefined = sorterArray[0];
 
+
+    updateSorter({
+      column: sorterValue?.columnKey as SortableColumnKey,
+      direction: convertSortOrderToGraphql(sorterValue?.order),
+    })
 
     props.updateFilters({
       completed: filters['completed']?.[0] as boolean,
@@ -166,7 +190,7 @@ export function RunsTable(props: RunsTableProps){
       name: props.filters.name,
     })
     console.log('table on change executed')
-  }, [props])
+  }, [props, updateSorter])
 
   const contextValue = useMemo<RunTableContextState>(() => {
     return {

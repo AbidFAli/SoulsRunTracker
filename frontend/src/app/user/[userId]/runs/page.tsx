@@ -1,6 +1,6 @@
 "use client"
 import type { GetGamesQuery } from '@/generated/graphql/graphql';
-import { GetUserRunsDocument, QueryMode, RunWhereInput } from '@/generated/graphql/graphql';
+import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput } from '@/generated/graphql/graphql';
 import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
 import { useQuery } from "@apollo/client/react";
 import type { MenuProps, TablePaginationConfig } from 'antd';
@@ -12,13 +12,13 @@ import { createRunCreatePageUrlSearchParams} from '@/util/routing'
 import { BasicPageLayout } from '@/components/BasicPageLayout';
 import { DownOutlined } from '@ant-design/icons';
 import lodash from 'lodash';
-import { OffsetPaginationConfig, RunsTable, RunsTableFilters } from '@/components/RunsTable';
+import { OffsetPaginationConfig, RunsTable, RunsTableFilters, RunsTableSorter } from '@/components/RunsTable';
 import { useGetGames } from '@/app/user/[userId]/runs/useGetGames';
 import { themeConfig } from './theme';
+import { MyRunsPageContext, MyRunsPageContextType } from './context';
 
 const { compact} = lodash;
 const { Title} = Typography;
-
 
 
 
@@ -51,7 +51,8 @@ function GameLink(props: GameLinkProps): React.ReactNode{
 
 export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   const params = use(props.params);
-  const [filters, setFilters] = useState<RunsTableFilters>({})
+  const [filters, setFilters] = useState<RunsTableFilters>({});
+  const [sorter, setSorter] = useState<RunsTableSorter>({});
 
   const [paginationState, setPaginationState] = useState<OffsetPaginationConfig>({page: 1, pageSize: 20})
 
@@ -86,9 +87,35 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   }, [filters, gameNameToId, params.userId]);
 
 
+  const runsQueryOrderBy = useMemo<RunOrderByInput | undefined>(() => {
+    const orderBy: RunOrderByInput = {};
+    if(sorter.column === undefined) {
+      return undefined
+    }
+    switch(sorter.column){
+      case "deaths":
+        orderBy.deaths = sorter.direction;
+        break;
+      case 'game':
+        orderBy.game = {
+          name: sorter.direction,
+        }
+        break;
+      case 'level':
+        orderBy.character ={
+          level: sorter.direction,
+        }
+        break;
+      default:
+        throw new Error(`invalid sorter.column. was ${sorter.column}`);
+    }
+    return orderBy;
+  }, [sorter])
+
   const { loading: runsLoading, data: runsData} = useQuery(GetUserRunsDocument, {
     variables: {
       where: runsQueryWhere,
+      orderBy: runsQueryOrderBy ? [runsQueryOrderBy] : undefined,
       pagination: {
         offset: {
           skip: (paginationState.page-1) * paginationState.pageSize,
@@ -134,6 +161,11 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     }
   }, [paginationState.page, paginationState.pageSize, runsData?.runs?.pageInfo.totalCount, runsLoading])
 
+  const myRunsPageContext = useMemo<MyRunsPageContextType>(() => {
+    return {
+      updateSorter: setSorter
+    }
+  }, [])
 
   return <BasicPageLayout
     title={<Title level={1}>My Runs</Title>}
@@ -147,14 +179,16 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
           </Space>
         </div>
       </Dropdown>
-      <RunsTable 
-        data={runsData?.runs?.edges ?? []}
-        gamesData={cleanedGamesData}
-        pagination={tablePaginationConfig}
-        filters={filters}
-        updateFilters={setFilters}
-        updatePagination={setPaginationState}
-      />
+      <MyRunsPageContext value={myRunsPageContext}>
+        <RunsTable 
+          data={runsData?.runs?.edges ?? []}
+          gamesData={cleanedGamesData}
+          pagination={tablePaginationConfig}
+          filters={filters}
+          updateFilters={setFilters}
+          updatePagination={setPaginationState}
+        />
+      </MyRunsPageContext>
     </ConfigProvider>
   </BasicPageLayout>
 }

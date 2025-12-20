@@ -1,9 +1,9 @@
 import { createContext } from 'react';
-import { ColumnDataIndex } from './types';
+import { FilterableColumnKey } from './types';
 
 export interface RunTableContextState{
-  setColumnFilterOpen: (index: ColumnDataIndex | undefined)  => void;
-  columnFilterOpen?: ColumnDataIndex;
+  setColumnFilterOpen: (index: FilterableColumnKey | undefined)  => void;
+  columnFilterOpen?: FilterableColumnKey;
 }
 
 export const RunTableContext = createContext<RunTableContextState>({

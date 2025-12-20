@@ -16,6 +16,8 @@ import { createConfigData } from './config.js';
 import { GAME_NAMES, GAMES } from './game.js';
 import { createId } from './id.js';
 import { faker } from '@faker-js/faker';
+import type { Dayjs} from 'dayjs'
+import dayjs from 'dayjs'
 
 const {groupBy, compact} = lodash;
 
@@ -56,8 +58,13 @@ async function createBossCompletionsInDB(){
   })
 }
 
-function createRuns(data: RunSeedData[]){
-  return as.mapLimit(data, LOCATION_MAP_LIMIT, async (run: RunSeedData) => {
+interface RunDataWithDate extends RunSeedData{
+  createdAt?: Dayjs;
+  modifiedAt?: Dayjs;
+}
+
+function createRuns(data: RunDataWithDate[]){
+  return as.mapLimit(data, LOCATION_MAP_LIMIT, async (run: RunDataWithDate) => {
     return prisma.run.create({
         data: {
           game: {
@@ -73,7 +80,9 @@ function createRuns(data: RunSeedData[]){
           },
           id: run.id,
           completed: run.completed,
-          deaths: run.deaths
+          deaths: run.deaths,
+          createdAt: run.createdAt ? run.createdAt.toDate() : undefined,
+          modifiedAt: run.modifiedAt ? run.modifiedAt.toDate() : undefined,
         }
     });
   });
@@ -87,7 +96,8 @@ async function main() {
 
   await prisma.user.createMany({data: USERS});
 
-  const extraRuns: RunSeedData[] = Array.from({length: 1000}, (_, index) => {
+  const extraRuns: RunDataWithDate[] = Array.from({length: 1000}, (_, index) => {
+    const date = dayjs().subtract(index, 'd');
     return {
       completed: index % 2 == 0,
       game: faker.helpers.arrayElement(GAMES),
@@ -95,6 +105,8 @@ async function main() {
       name: `run ${index}`,
       userId: USERS[0].id,
       deaths: faker.number.int({max: 9999, min: 0}),
+      createdAt: date,
+      modifiedAt: date,
     }
   });
 

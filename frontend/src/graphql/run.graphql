@@ -5,6 +5,8 @@ mutation CreateRun($input: RunCreateInput!){
     descriptionUrl
     completed
     deaths
+    createdAt
+    modifiedAt
     cycles{
       id
       level
@@ -29,6 +31,8 @@ fragment UserRuns on Run{
   gameId
   currentCycle
   deaths
+  createdAt
+  modifiedAt
   character{
     id
     name
@@ -36,8 +40,8 @@ fragment UserRuns on Run{
   }
 }
 
-query GetUserRuns($where: RunWhereInput!, $pagination: RunPaginationInput!){
-  runs(where: $where, pagination: $pagination){
+query GetUserRuns($where: RunWhereInput!, $pagination: RunPaginationInput!, $orderBy: [RunOrderByInput!]){
+  runs(where: $where, pagination: $pagination, orderBy: $orderBy){
     edges{
       ...UserRuns
     }

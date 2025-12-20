@@ -36,6 +36,10 @@ model Run{
 
   userId String
   user User @relation(fields: [userId], references: [id])
+
+  modifiedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+
   @@index([gameId])
   @@index([name])
   @@index([userId])

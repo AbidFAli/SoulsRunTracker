@@ -9,6 +9,8 @@ type Run{
   currentCycle: Int
   character: Character
   deaths: Int
+  modifiedAt: DateTime
+  createdAt: DateTime
 }
 
 
@@ -66,25 +68,14 @@ input RunOrderByInput{
   game: GameOrderByInput
   character: CharacterOrderByInput
   deaths: SortOrder
+  modifiedAt: SortOrder
+  createdAt: SortOrder
 }
-
-input GameOrderByInput{
-  name: SortOrder
-}
-
-input CharacterOrderByInput{
-  name: SortOrder
-  level: SortOrder
-}
-
 
 input RunPaginationInput{
   offset: PaginationOffsetInput
   cursor: PaginationCursorInput
 }
-
-
-
 
 type RunConnection{
   pageInfo: PageInfo!

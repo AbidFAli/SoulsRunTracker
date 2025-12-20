@@ -4,7 +4,8 @@ type Query{
   games(where: GameWhereInput): [Game!]
   runs(
     where: RunWhereInput!, 
-    pagination: RunPaginationInput!
+    pagination: RunPaginationInput!,
+    orderBy: [RunOrderByInput!]
   ): RunConnection
 }
 

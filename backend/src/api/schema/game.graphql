@@ -21,4 +21,6 @@ input GameWhereInput{
   name: StringFilter
 }
 
-#this is an extra comment
+input GameOrderByInput{
+  name: SortOrder
+}
