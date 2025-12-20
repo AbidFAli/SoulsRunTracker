@@ -81,3 +81,9 @@ type RunConnection{
   pageInfo: PageInfo!
   edges: [Run!]
 }
+
+input RunDeleteInput{
+  userId: ID!
+  ids: [ID!]
+  all: Boolean
+}

@@ -1,3 +1,4 @@
 type Mutation{
   createRun(run: RunCreateInput!): Run
+  deleteRuns(where: RunDeleteInput!): Boolean!
 }

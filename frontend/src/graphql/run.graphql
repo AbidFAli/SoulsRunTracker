@@ -51,6 +51,9 @@ query GetUserRuns($where: RunWhereInput!, $pagination: RunPaginationInput!, $ord
   }
 }
 
+mutation DeleteUserRuns($where: RunDeleteInput!){
+  deleteRuns(where: $where)
+}
 
 
 
