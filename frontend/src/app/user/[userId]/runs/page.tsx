@@ -1,6 +1,6 @@
 "use client"
 import type { GetGamesQuery } from '@/generated/graphql/graphql';
-import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput } from '@/generated/graphql/graphql';
+import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder } from '@/generated/graphql/graphql';
 import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
 import { useQuery } from "@apollo/client/react";
 import type { MenuProps, TablePaginationConfig } from 'antd';
@@ -102,8 +102,14 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
         }
         break;
       case 'level':
+        if(!sorter.direction){
+          throw new Error("missing sorter.direction");
+        }
         orderBy.character ={
-          level: sorter.direction,
+          level: {
+            sort: sorter.direction,
+            nulls: NullsOrder.Last,
+          },
         }
         break;
       default:

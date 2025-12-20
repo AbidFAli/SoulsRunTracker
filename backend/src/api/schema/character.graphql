@@ -30,5 +30,5 @@ type Character{
 
 input CharacterOrderByInput{
   name: SortOrder
-  level: SortOrder
+  level: SortOrderInput
 }

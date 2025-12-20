@@ -4,7 +4,7 @@ import type { SortOrder, UserRunsFragment } from "@/generated/graphql/graphql";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { GamesData } from "@/app/user/[userId]/runs/useGetGames";
 import type { TablePaginationConfig, TableProps } from "antd";
-import { CheckOutlined, EditOutlined} from '@ant-design/icons'
+import { CheckOutlined, DeleteFilled, EditFilled, EditOutlined} from '@ant-design/icons'
 import { GAMES } from "@/util/game";
 import { FilterableColumnKey, OffsetPaginationConfig, RunsTableFilters } from "./types";
 import { NameColumnHeader } from "./nameColumnHeader";
@@ -137,7 +137,10 @@ export function RunsTable(props: RunsTableProps){
             </Col>
             <Col span={12}>
               {record.id === rowHoveredId && (
-                <EditOutlined />
+                <div className="flex justify-around">
+                  <EditFilled style={{color: 'white'}} />
+                  <DeleteFilled style={{color: 'white'}} />
+                </div>
               )}
             </Col>
           </Row>

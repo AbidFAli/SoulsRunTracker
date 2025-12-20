@@ -2,7 +2,7 @@ import * as graphql from '#generated/graphql/types.js';
 import { RunWhereInput, 
   RunOrderByWithRelationInput, 
   CharacterOrderByWithRelationInput,
-  GameOrderByWithRelationInput
+  GameOrderByWithRelationInput,
  } from '#generated/prisma/models.js';
 import { prisma } from '#src/db/prisma.js';
 import * as filterToPrisma from '#src/api/utility/filterToPrisma.js';
@@ -45,20 +45,22 @@ function convertRunOrderByInputToPrisma(data: graphql.RunOrderByInput): RunOrder
 }
 
 function convertCharacterOrderByInputToPrisma(data: graphql.CharacterOrderByInput): CharacterOrderByWithRelationInput {
-  const returnValue: CharacterOrderByWithRelationInput = {}
-  const easyFields = ["level", "name"] as const
-  for(const key of easyFields){
-    returnValue[key] = data[key] ? filterToPrisma.convertSortOrder(data[key]) : undefined
+  const returnValue: CharacterOrderByWithRelationInput = {
+    name: data.name ? filterToPrisma.convertSortOrder(data.name) : undefined,
+    level: data.level ? filterToPrisma.convertSortOrderInput(data.level) : undefined,
   }
-
   return returnValue;
 }
+
+
 
 function convertGameOrderByInputToPrisma(data: graphql.GameOrderByInput): GameOrderByWithRelationInput {
   return {
     name: data.name ? filterToPrisma.convertSortOrder(data.name) : undefined
   }
 }
+
+
 
 
 // interface RunCursor{

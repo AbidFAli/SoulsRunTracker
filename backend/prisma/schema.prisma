@@ -58,7 +58,7 @@ model Cycle{
 model Character{
   id String @id @default(cuid())
   name String
-  level Int @default(1)
+  level Int? //I would like to make this required but prisma doesn't allow controlling null sort order on Optional relationships with required fields.
   vitality Int?
   intelligence Int?
   endurance Int?
