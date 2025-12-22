@@ -17,3 +17,8 @@ export interface RunsTableSorter{
   column?: SortableColumnKey;
   direction?: SortOrder;
 }
+
+export interface RunsTableSelection{
+  selectedRows: string[];
+  all: boolean;
+}

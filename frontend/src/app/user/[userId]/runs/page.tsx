@@ -1,21 +1,23 @@
 "use client"
 import type { GetGamesQuery } from '@/generated/graphql/graphql';
-import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder } from '@/generated/graphql/graphql';
+import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument } from '@/generated/graphql/graphql';
 import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
-import { useQuery } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import type { MenuProps, TablePaginationConfig } from 'antd';
-import { Dropdown, Space, Typography, ConfigProvider } from 'antd';
+import { Dropdown, Space, Typography, ConfigProvider, Button, Spin } from 'antd';
 import Link from 'next/link';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { use } from 'react';
 import { createRunCreatePageUrlSearchParams} from '@/util/routing'
 import { BasicPageLayout } from '@/components/BasicPageLayout';
 import { DownOutlined } from '@ant-design/icons';
 import lodash from 'lodash';
-import { OffsetPaginationConfig, RunsTable, RunsTableFilters, RunsTableSorter } from '@/components/RunsTable';
+import { OffsetPaginationConfig, RunsTable, RunsTableFilters, RunsTableSelection, RunsTableSorter } from '@/components/RunsTable';
 import { useGetGames } from '@/app/user/[userId]/runs/useGetGames';
 import { themeConfig } from './theme';
 import { MyRunsPageContext, MyRunsPageContextType } from './context';
+import { colors } from '@/util/colors';
+import styles from './page.module.scss'
 
 const { compact} = lodash;
 const { Title} = Typography;
@@ -53,6 +55,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   const params = use(props.params);
   const [filters, setFilters] = useState<RunsTableFilters>({});
   const [sorter, setSorter] = useState<RunsTableSorter>({});
+  const [selection, setSelection] = useState<RunsTableSelection>({all: false, selectedRows: []});
 
   const [paginationState, setPaginationState] = useState<OffsetPaginationConfig>({page: 1, pageSize: 20})
 
@@ -131,6 +134,13 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     }
   });
 
+  const [deleteUserRuns, {loading: deleteRunning, error: deletionError}] = useMutation(DeleteUserRunsDocument, {
+    refetchQueries: [GetUserRunsDocument],
+  })
+
+  const loading = useMemo(() => {
+    return gamesLoading || runsLoading || deleteRunning
+  }, [deleteRunning, gamesLoading, runsLoading])
 
 
   const menuItems: MenuProps['items'] = useMemo(() => {
@@ -164,27 +174,59 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
       pageSize: paginationState.pageSize,
       current: paginationState.page,
       total: runsLoading ? 1 : (runsData?.runs?.pageInfo.totalCount ?? 1),
+      disabled: runsLoading,
+
     }
   }, [paginationState.page, paginationState.pageSize, runsData?.runs?.pageInfo.totalCount, runsLoading])
 
   const myRunsPageContext = useMemo<MyRunsPageContextType>(() => {
     return {
-      updateSorter: setSorter
+      updateSorter: setSorter,
+      loading,
     }
+  }, [loading])
+
+
+
+  const onCancelDelete = useCallback(() => {
+    setSelection({
+      all: false,
+      selectedRows: []
+    })
   }, [])
 
+  const onConfirmDelete = useCallback(() => {
+    deleteUserRuns({
+      variables: {
+        where: {
+          all: selection.all ? selection.all : undefined,
+          userId: params.userId,
+          ids: selection.all ? undefined : selection.selectedRows
+        }
+      }
+    })
+  }, [deleteUserRuns, params.userId, selection.all, selection.selectedRows])
+
+  const anySelected = useMemo<boolean>(() => {
+    return selection.all || selection.selectedRows.length > 0
+  }, [selection.all, selection.selectedRows.length])
+
+  //<Spin tip="Loading" size="large" spinning={loading} />
   return <BasicPageLayout
     title={<Title level={1}>My Runs</Title>}
   >
     <ConfigProvider theme={themeConfig}>
-      <Dropdown menu={menuProps}>
-        <div className="border rounded-md border-white w-32 flex justify-center">
-          <Space>
-            <Typography>Create Run</Typography>
-            <DownOutlined />
-          </Space>
-        </div>
-      </Dropdown>
+      <div className="flex min-w-full w-full">
+        <Dropdown menu={menuProps}>
+          <div className="border rounded-md border-white w-32 flex justify-center">
+            <Space>
+              <Typography>Create Run</Typography>
+              <DownOutlined />
+            </Space>
+          </div>
+        </Dropdown>
+      </div>
+      
       <MyRunsPageContext value={myRunsPageContext}>
         <RunsTable 
           data={runsData?.runs?.edges ?? []}
@@ -193,8 +235,22 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
           filters={filters}
           updateFilters={setFilters}
           updatePagination={setPaginationState}
+          selection={selection}
+          updateSelection={setSelection}
+          showSelection={true}
         />
       </MyRunsPageContext>
+      {
+        anySelected && (
+        <div className={`${styles['delete-action-bar']}`}>
+          <div className="p-1.5 w-full rounded-md flex justify-center gap-4"style={{backgroundColor: colors.dropdown}}>
+            <Button danger={true} onClick={onConfirmDelete}>Delete</Button>
+            <Button onClick={onCancelDelete}>Cancel</Button>
+          </div>
+        </div>
+        )
+      }
+
     </ConfigProvider>
   </BasicPageLayout>
 }

@@ -1,0 +1,12 @@
+/*
+https://stackoverflow.com/questions/2005954/center-a-positionfixed-element
+*/
+.delete-action-bar{
+  position: fixed;
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  width: 384px;
+  margin-left: -192px;
+  bottom: 24px;
+}

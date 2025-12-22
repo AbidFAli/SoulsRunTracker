@@ -14,8 +14,8 @@ import { FilterIcon } from "./filterIcon";
 import { SortIcon } from "./sortIcon";
 import { MyRunsPageContext } from "@/app/user/[userId]/runs/context";
 import lodash from 'lodash';
-import { ColumnType, SorterResult } from "antd/es/table/interface";
-import type { SortableColumnKey } from "./types";
+import { ColumnType, SorterResult, TableRowSelection } from "antd/es/table/interface";
+import type { RunsTableSelection, SortableColumnKey } from "./types";
 import { convertSortOrderToGraphql } from "@/util/antd";
 const {  Text} = Typography;
 
@@ -28,6 +28,9 @@ export interface RunsTableProps{
   filters: RunsTableFilters;
   updateFilters: (newFilters: RunsTableFilters) => void;
   updatePagination: (newPagination: OffsetPaginationConfig) => void;
+  selection: RunsTableSelection;
+  updateSelection: (newSelection: RunsTableSelection) => void;
+  showSelection: boolean;
 }
 
 function getRowKey(data: UserRunsFragment){
@@ -46,7 +49,20 @@ const DEFAULT_PAGE_SIZE=20;
 const renderSortIcon: NonNullable<ColumnType<UserRunsFragment>['sortIcon']> =
   ({sortOrder}) => <SortIcon direction={convertSortOrderToGraphql(sortOrder)} />;
 
-export function RunsTable(props: RunsTableProps){
+export function RunsTable(
+  {
+    data, 
+    filters,
+    gamesData,
+    pagination,
+    selection, 
+    updateFilters, 
+    updatePagination, 
+    updateSelection,
+    showSelection
+  }: RunsTableProps
+){
+
   const [rowHoveredId, setRowHoveredId] = useState<string|undefined>();
   const [columnFilterOpen, setColumnFilterOpen] = useState<FilterableColumnKey>();
   const {updateSorter} = useContext(MyRunsPageContext);
@@ -59,17 +75,17 @@ export function RunsTable(props: RunsTableProps){
       {
         key: 'name',
         title: <NameColumnHeader 
-          filters={props.filters}
-          updateFilters={props.updateFilters}
+          filters={filters}
+          updateFilters={updateFilters}
           />,
         dataIndex: 'name',
-        filteredValue: props.filters.name ? [props.filters.name] : [],
+        filteredValue: filters.name ? [filters.name] : [],
       },
       {
         key: 'game',
         title: <ColumnHeader value={'Game'} />,
         render(_, record) {
-          return props.gamesData.find((game) => game.id === record.gameId)?.name ?? ""
+          return gamesData.find((game) => game.id === record.gameId)?.name ?? ""
         },
         filters: Object.values(GAMES).map((gameName) => {
           return {
@@ -80,7 +96,7 @@ export function RunsTable(props: RunsTableProps){
         filterIcon(filtered) {
           return <FilterIcon filtered={filtered} />
         },
-        filteredValue: props.filters.game ?? [],
+        filteredValue: filters.game ?? [],
         filterDropdownProps: {
           onOpenChange(open) {
             setColumnFilterOpen(open ? 'game' : undefined)
@@ -159,26 +175,26 @@ export function RunsTable(props: RunsTableProps){
           return <FilterIcon filtered={filtered} className="my-4" />
         },
         filterMultiple: false,
-        filteredValue: props.filters.completed !== undefined ? [props.filters.completed] : [],
+        filteredValue: filters.completed !== undefined ? [filters.completed] : [],
         filterDropdownProps: {
           onOpenChange(open) {
             setColumnFilterOpen(open ? 'completed' : undefined)
           },
-        }
+        },
       },
     ]
-  }, [props.gamesData, rowHoveredId, props.filters, props.updateFilters]);
+  }, [filters, updateFilters, gamesData, rowHoveredId]);
 
-  const onRow = useCallback<NonNullable<TableProps<UserRunsFragment>['onRow']>>((data) => {
+  const onRow = useCallback<NonNullable<TableProps<UserRunsFragment>['onRow']>>((rowData) => {
     return {
-      onMouseEnter: () => setRowHoveredId(data.id),
+      onMouseEnter: () => setRowHoveredId(rowData.id),
       onMouseLeave: () => setRowHoveredId(undefined)
     }
   }, [])
 
-  const onChange = useCallback<NonNullable<TableProps<UserRunsFragment>['onChange']>>((pagination, filters, sorter) => {
-    props.updatePagination({page: pagination.current ?? 1, pageSize: pagination.pageSize ?? DEFAULT_PAGE_SIZE})
-    const sorterArray = Array.isArray(sorter) ?  sorter : [sorter];
+  const onChange = useCallback<NonNullable<TableProps<UserRunsFragment>['onChange']>>((newPagination, newFilters, newSorter) => {
+    updatePagination({page: newPagination.current ?? 1, pageSize: newPagination.pageSize ?? DEFAULT_PAGE_SIZE})
+    const sorterArray = Array.isArray(newSorter) ?  newSorter : [newSorter];
     const sorterValue: SorterResult<UserRunsFragment> | undefined = sorterArray[0];
 
 
@@ -187,13 +203,13 @@ export function RunsTable(props: RunsTableProps){
       direction: convertSortOrderToGraphql(sorterValue?.order),
     })
 
-    props.updateFilters({
-      completed: filters['completed']?.[0] as boolean,
-      game: (filters['game'] as string[]) ?? undefined,
-      name: props.filters.name,
+    updateFilters({
+      completed: newFilters['completed']?.[0] as boolean,
+      game: (newFilters['game'] as string[]) ?? undefined,
+      name: filters.name,
     })
     console.log('table on change executed')
-  }, [props, updateSorter])
+  }, [filters.name, updateFilters, updatePagination, updateSorter])
 
   const contextValue = useMemo<RunTableContextState>(() => {
     return {
@@ -202,17 +218,50 @@ export function RunsTable(props: RunsTableProps){
     }
   }, [columnFilterOpen])
 
+  const rowSelection = useMemo<TableRowSelection<UserRunsFragment>>(() => {
+    const allKeys = data.map(run => run.id);
+    return {
+      selectedRowKeys: selection.all ? allKeys : selection.selectedRows,
+      onChange(selectedRowKeys, selectedRows, info) {
+        console.log(`row selection method is ${info.type}`)
+        if(info.type === 'all'){
+          const all = selectedRowKeys.length > 0;
+          updateSelection({
+            all: all,
+            selectedRows: all ? allKeys : [],
+          })
+        }
+        else{
+          updateSelection({
+            all: false,
+            selectedRows: [...selectedRowKeys] as string[]
+          })
+        }
+      },
+      hideSelectAll: !showSelection,
+      renderCell: showSelection ? undefined : () => undefined,
+    }
+
+  }, [
+      data, 
+      selection.all, 
+      selection.selectedRows, 
+      updateSelection, 
+      showSelection
+    ])
+
   return (
     <RunTableContext value={contextValue}>
-      <Table<UserRunsFragment>
-        dataSource={props.data}
-        columns={columns}
-        bordered={false}
-        rowKey={getRowKey}
-        pagination={props.pagination}
-        onRow={onRow}
-        onChange={onChange}
-      />
+        <Table<UserRunsFragment>
+          dataSource={data}
+          columns={columns}
+          bordered={false}
+          rowKey={getRowKey}
+          pagination={pagination}
+          onRow={onRow}
+          onChange={onChange}
+          rowSelection={rowSelection}
+        />
     </RunTableContext>
 
   )
