@@ -1,7 +1,6 @@
 'use client'
 
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 import type { ThemeConfig } from "antd";
 import { ConfigProvider, theme } from "antd";
@@ -9,6 +8,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { AppContextProvider } from "@/state/appContext";
+import { apolloClient } from "@/util/apollo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +33,6 @@ const themeConfig: ThemeConfig = {
   }
 }
 
-const client = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:8000/api/graphql' }),
-  cache: new InMemoryCache(),
-});
 
 
 
@@ -52,7 +48,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased p-10`}
       >
-        <ApolloProvider client={client}>
+        <ApolloProvider client={apolloClient}>
           <AppContextProvider>
             <ConfigProvider theme={themeConfig}>
               <AntdRegistry>

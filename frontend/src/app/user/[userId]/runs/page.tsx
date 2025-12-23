@@ -121,7 +121,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     return orderBy;
   }, [sorter])
 
-  const { loading: runsLoading, data: runsData} = useQuery(GetUserRunsDocument, {
+  const { loading: runsLoading, data: runsData, fetchMore} = useQuery(GetUserRunsDocument, {
     variables: {
       where: runsQueryWhere,
       orderBy: runsQueryOrderBy ? [runsQueryOrderBy] : undefined,
@@ -133,6 +133,19 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
       }
     }
   });
+
+  const fetchMoreRuns = useCallback((pagination: OffsetPaginationConfig) => {
+    return fetchMore({
+      variables: {
+        pagination: {
+          offset: {
+            skip: (pagination.page - 1) * pagination.pageSize,
+            take: pagination.pageSize,
+          }
+        }
+      }
+    })
+  }, [fetchMore])
 
   const [deleteUserRuns, {loading: deleteRunning, error: deletionError}] = useMutation(DeleteUserRunsDocument, {
     refetchQueries: [GetUserRunsDocument],
@@ -175,7 +188,6 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
       current: paginationState.page,
       total: runsLoading ? 1 : (runsData?.runs?.pageInfo.totalCount ?? 1),
       disabled: runsLoading,
-
     }
   }, [paginationState.page, paginationState.pageSize, runsData?.runs?.pageInfo.totalCount, runsLoading])
 
@@ -183,8 +195,9 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     return {
       updateSorter: setSorter,
       loading,
+      sorter
     }
-  }, [loading])
+  }, [loading, sorter])
 
 
 
@@ -238,6 +251,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
           selection={selection}
           updateSelection={setSelection}
           showSelection={true}
+          fetchMore={fetchMoreRuns}
         />
       </MyRunsPageContext>
       {

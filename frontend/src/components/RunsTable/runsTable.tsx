@@ -4,7 +4,7 @@ import type { SortOrder, UserRunsFragment } from "@/generated/graphql/graphql";
 import { useCallback, useContext, useMemo, useState } from "react";
 import { GamesData } from "@/app/user/[userId]/runs/useGetGames";
 import type { TablePaginationConfig, TableProps } from "antd";
-import { CheckOutlined, DeleteFilled, EditFilled, EditOutlined} from '@ant-design/icons'
+import { CheckOutlined, DeleteFilled, EditFilled} from '@ant-design/icons'
 import { GAMES } from "@/util/game";
 import { FilterableColumnKey, OffsetPaginationConfig, RunsTableFilters } from "./types";
 import { NameColumnHeader } from "./nameColumnHeader";
@@ -15,9 +15,11 @@ import { SortIcon } from "./sortIcon";
 import { MyRunsPageContext } from "@/app/user/[userId]/runs/context";
 import lodash from 'lodash';
 import { ColumnType, SorterResult, TableRowSelection } from "antd/es/table/interface";
-import type { RunsTableSelection, SortableColumnKey } from "./types";
+import type { RunsTableSelection} from "./types";
 import { convertSortOrderToGraphql } from "@/util/antd";
+import { convertAntFiltersToRunTableFilters, convertAntSorterToRunTableSorter, paginationIsEqual } from "./util";
 const {  Text} = Typography;
+
 
 
 
@@ -31,6 +33,7 @@ export interface RunsTableProps{
   selection: RunsTableSelection;
   updateSelection: (newSelection: RunsTableSelection) => void;
   showSelection: boolean;
+  fetchMore: (pagination: OffsetPaginationConfig) => Promise<unknown>;
 }
 
 function getRowKey(data: UserRunsFragment){
@@ -38,7 +41,7 @@ function getRowKey(data: UserRunsFragment){
 }
 
 
-//filterOnClose
+
 
 
 
@@ -59,13 +62,14 @@ export function RunsTable(
     updateFilters, 
     updatePagination, 
     updateSelection,
-    showSelection
+    showSelection,
+    fetchMore
   }: RunsTableProps
 ){
 
   const [rowHoveredId, setRowHoveredId] = useState<string|undefined>();
   const [columnFilterOpen, setColumnFilterOpen] = useState<FilterableColumnKey>();
-  const {updateSorter} = useContext(MyRunsPageContext);
+  const {updateSorter, sorter} = useContext(MyRunsPageContext);
 
 
 
@@ -192,24 +196,42 @@ export function RunsTable(
     }
   }, [])
 
-  const onChange = useCallback<NonNullable<TableProps<UserRunsFragment>['onChange']>>((newPagination, newFilters, newSorter) => {
-    updatePagination({page: newPagination.current ?? 1, pageSize: newPagination.pageSize ?? DEFAULT_PAGE_SIZE})
-    const sorterArray = Array.isArray(newSorter) ?  newSorter : [newSorter];
+  const onChange = useCallback<NonNullable<TableProps<UserRunsFragment>['onChange']>>((antPagination, antFilters, antSorter) => {
+    if(!paginationIsEqual(pagination, antPagination)){
+      const newPagination: OffsetPaginationConfig = {
+        page: antPagination.current ?? 1, 
+        pageSize: antPagination.pageSize ?? DEFAULT_PAGE_SIZE
+      }
+      fetchMore(newPagination).then(() => updatePagination(newPagination))
+    }     
+    const sorterArray = Array.isArray(antSorter) ?  antSorter : [antSorter];
     const sorterValue: SorterResult<UserRunsFragment> | undefined = sorterArray[0];
 
+    const newSorter = convertAntSorterToRunTableSorter(sorterValue);
+    const newFilters: RunsTableFilters = {
+      ...convertAntFiltersToRunTableFilters(antFilters),
+      name: filters.name, //don't change name here its controlled outside of ant table
+    }
 
-    updateSorter({
-      column: sorterValue?.columnKey as SortableColumnKey,
-      direction: convertSortOrderToGraphql(sorterValue?.order),
-    })
+    if(!lodash.isEqual(sorter,newSorter)){
+      updateSorter(newSorter)
+    }
 
-    updateFilters({
-      completed: newFilters['completed']?.[0] as boolean,
-      game: (newFilters['game'] as string[]) ?? undefined,
-      name: filters.name,
-    })
-    console.log('table on change executed')
-  }, [filters.name, updateFilters, updatePagination, updateSorter])
+    if(!lodash.isEqual(filters, newFilters)){
+      updateFilters(newFilters)
+    }
+    
+
+    
+  }, [
+    pagination, 
+    updatePagination, 
+    filters, 
+    sorter, 
+    updateSorter, 
+    updateFilters,
+    fetchMore
+  ])
 
   const contextValue = useMemo<RunTableContextState>(() => {
     return {
