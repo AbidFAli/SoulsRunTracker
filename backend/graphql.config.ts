@@ -14,7 +14,15 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 */
 export const backendConfig: CodegenConfig = {
   importExtension: '.js',
-   generates: {
+  config: {
+    scalars: {
+      Cursor: {
+        input: 'string',
+        output: 'string'
+      }
+    }
+  },
+  generates: {
     './generated/graphql/test/': {
         preset: 'client',
       },

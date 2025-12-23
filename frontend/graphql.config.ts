@@ -7,6 +7,14 @@ const frontendConfig: CodegenConfig = {
         preset: 'client',
         presetConfig: {
           fragmentMasking: false
+        },
+        config: {
+          scalars: {
+            Cursor: {
+              input: 'string',
+              output: 'string'
+            }
+          }
         }
       }
    }

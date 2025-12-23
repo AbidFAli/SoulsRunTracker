@@ -11,7 +11,7 @@ import { use } from 'react';
 import { createRunCreatePageUrlSearchParams} from '@/util/routing'
 import { BasicPageLayout } from '@/components/BasicPageLayout';
 import { DownOutlined } from '@ant-design/icons';
-import lodash from 'lodash';
+import lodash, {compact} from 'lodash';
 import { OffsetPaginationConfig, RunsTable, RunsTableFilters, RunsTableSelection, RunsTableSorter } from '@/components/RunsTable';
 import { useGetGames } from '@/app/user/[userId]/runs/useGetGames';
 import { themeConfig } from './theme';
@@ -21,7 +21,6 @@ import styles from './page.module.scss'
 import { runsQueryGenerateCacheKey } from '@/util/apollo';
 import { Reference } from '@apollo/client';
 
-const { compact} = lodash;
 const { Title} = Typography;
 
 
