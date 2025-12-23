@@ -157,10 +157,7 @@ export function RunsTable(
             </Col>
             <Col span={12}>
               {record.id === rowHoveredId && (
-                <div className="flex justify-around">
-                  <EditFilled style={{color: 'white'}} />
-                  <DeleteFilled style={{color: 'white'}} />
-                </div>
+                <EditFilled style={{color: 'white'}} />
               )}
             </Col>
           </Row>
@@ -245,11 +242,10 @@ export function RunsTable(
     return {
       selectedRowKeys: selection.all ? allKeys : selection.selectedRows,
       onChange(selectedRowKeys, selectedRows, info) {
-        console.log(`row selection method is ${info.type}`)
         if(info.type === 'all'){
           const all = selectedRowKeys.length > 0;
           updateSelection({
-            all: all,
+            all: false,
             selectedRows: all ? allKeys : [],
           })
         }

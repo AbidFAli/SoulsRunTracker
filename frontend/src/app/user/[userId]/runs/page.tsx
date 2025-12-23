@@ -1,10 +1,10 @@
 "use client"
-import type { GetGamesQuery } from '@/generated/graphql/graphql';
-import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument } from '@/generated/graphql/graphql';
+import type { GetGamesQuery, GetUserRunsQueryVariables, Run, PageInfo, RunConnection, DeleteUserRunsMutationVariables, PaginationOffsetInput } from '@/generated/graphql/graphql';
+import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument, GetUserRunsQuery } from '@/generated/graphql/graphql';
 import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
 import { useMutation, useQuery } from "@apollo/client/react";
-import type { MenuProps, TablePaginationConfig } from 'antd';
-import { Dropdown, Space, Typography, ConfigProvider, Button, Spin } from 'antd';
+import type { MenuProps, TablePaginationConfig, AlertProps } from 'antd';
+import { Dropdown, Space, Typography, ConfigProvider, Button, Spin, Alert } from 'antd';
 import Link from 'next/link';
 import React, { useCallback, useMemo, useState } from 'react';
 import { use } from 'react';
@@ -18,6 +18,8 @@ import { themeConfig } from './theme';
 import { MyRunsPageContext, MyRunsPageContextType } from './context';
 import { colors } from '@/util/colors';
 import styles from './page.module.scss'
+import { runsQueryGenerateCacheKey } from '@/util/apollo';
+import { Reference } from '@apollo/client';
 
 const { compact} = lodash;
 const { Title} = Typography;
@@ -45,11 +47,18 @@ function GameLink(props: GameLinkProps): React.ReactNode{
   return props.href ? <Link href={props.href}>{props.gameName}</Link> : undefined
 }
 
+interface GetUserRunsQueryCachedData{
+  __typename: "RunConnection",
+  pageInfo: PageInfo,
+  edges?: (Reference | null | undefined)[]
+}
 
-
-
-
-
+function createPaginationOffsetInput(config: OffsetPaginationConfig): PaginationOffsetInput{
+  return {
+    skip: (config.page-1) * config.pageSize,
+    take: config.pageSize
+  }
+}
 
 export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   const params = use(props.params);
@@ -59,7 +68,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
 
   const [paginationState, setPaginationState] = useState<OffsetPaginationConfig>({page: 1, pageSize: 20})
 
-  const {data: cleanedGamesData, loading: gamesLoading, gameNameToId} = useGetGames();
+  const {data: cleanedGamesData, loading: gamesLoading, gameNameToId, error: getGamesError} = useGetGames();
 
   const runsQueryWhere = useMemo<RunWhereInput>(() => {
     const queryWhere: RunWhereInput = {
@@ -121,34 +130,32 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     return orderBy;
   }, [sorter])
 
-  const { loading: runsLoading, data: runsData, fetchMore} = useQuery(GetUserRunsDocument, {
-    variables: {
+  const runsQueryVariables = useMemo<GetUserRunsQueryVariables>(() => {
+    return {
       where: runsQueryWhere,
       orderBy: runsQueryOrderBy ? [runsQueryOrderBy] : undefined,
       pagination: {
-        offset: {
-          skip: (paginationState.page-1) * paginationState.pageSize,
-          take: paginationState.pageSize
-        }
+        offset: createPaginationOffsetInput(paginationState)
       }
     }
+  }, [paginationState, runsQueryOrderBy, runsQueryWhere]);
+
+  const { loading: runsLoading, data: runsData, fetchMore, error: getUserRunsError} = useQuery(GetUserRunsDocument, {
+    variables: runsQueryVariables
   });
 
   const fetchMoreRuns = useCallback((pagination: OffsetPaginationConfig) => {
     return fetchMore({
       variables: {
         pagination: {
-          offset: {
-            skip: (pagination.page - 1) * pagination.pageSize,
-            take: pagination.pageSize,
-          }
+          offset: createPaginationOffsetInput(pagination)
         }
       }
     })
   }, [fetchMore])
 
   const [deleteUserRuns, {loading: deleteRunning, error: deletionError}] = useMutation(DeleteUserRunsDocument, {
-    refetchQueries: [GetUserRunsDocument],
+    refetchQueries: [GetUserRunsDocument]
   })
 
   const loading = useMemo(() => {
@@ -186,7 +193,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     return {
       pageSize: paginationState.pageSize,
       current: paginationState.page,
-      total: runsLoading ? 1 : (runsData?.runs?.pageInfo.totalCount ?? 1),
+      total: runsData?.runs?.pageInfo.totalCount ?? 0,
       disabled: runsLoading,
     }
   }, [paginationState.page, paginationState.pageSize, runsData?.runs?.pageInfo.totalCount, runsLoading])
@@ -209,25 +216,138 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   }, [])
 
   const onConfirmDelete = useCallback(() => {
+    const deleteUserRunsVariables: DeleteUserRunsMutationVariables = {
+      where: {
+        all: selection.all ? selection.all : undefined,
+        userId: params.userId,
+        ids: selection.all ? undefined : selection.selectedRows
+      }
+    }
+
+    const runsOnPage: number = runsData?.runs?.edges?.length ?? 0
+    const lastRowIndex = ((paginationState.page - 1) * paginationState.pageSize) + runsOnPage;
+    const totalRuns = runsData?.runs?.pageInfo.totalCount ?? 0;
+    const hasNextPage: boolean = lastRowIndex < totalRuns;
+
     deleteUserRuns({
-      variables: {
-        where: {
-          all: selection.all ? selection.all : undefined,
-          userId: params.userId,
-          ids: selection.all ? undefined : selection.selectedRows
+      variables: deleteUserRunsVariables,
+      update(cache){
+        let orderBy: RunOrderByInput[] | undefined = undefined;
+        if(Array.isArray(runsQueryVariables.orderBy)){
+          orderBy = runsQueryVariables.orderBy;
+        }
+        else if(runsQueryVariables.orderBy){
+          orderBy = [runsQueryVariables.orderBy]
+        }
+        
+        const cacheKey = runsQueryGenerateCacheKey(
+            {
+              ...runsQueryVariables, 
+              orderBy: orderBy
+            }
+          );
+        cache.modify({
+          id: 'ROOT_QUERY',
+          fields: {
+            [cacheKey]: (value, details) => {
+              const cachedValue = value as GetUserRunsQueryCachedData;
+              let edges: GetUserRunsQueryCachedData['edges'] = []
+              if(!deleteUserRunsVariables.where.all){
+                const ids = new Set(deleteUserRunsVariables.where.ids ?? [])
+                edges = cachedValue.edges?.filter((edgeRef) => lodash.isNil(edgeRef) || !ids.has(details.readField("id", edgeRef) ?? ""));
+              }
+
+              const storeObject = cachedValue.pageInfo;
+              let totalCount = deleteUserRunsVariables.where.all ? 0: storeObject.totalCount;
+              if(deleteUserRunsVariables.where.ids && (deleteUserRunsVariables.where.ids.length > 0) && totalCount){
+                totalCount -= deleteUserRunsVariables.where.ids.length;
+              }
+
+              const returnValue: GetUserRunsQueryCachedData = {
+                __typename: cachedValue.__typename,
+                edges: edges,
+                pageInfo: {
+                  ...storeObject,
+                  totalCount
+                }
+              }
+
+              return returnValue;
+            }
+          }
+        })
+
+        if(selection.all){
+          setPaginationState({page: 0, pageSize: paginationState.pageSize})
+        }
+        else if(selection.selectedRows.length === runsData?.runs?.edges?.length){
+          setPaginationState({
+            page: hasNextPage ? paginationState.page : Math.max(paginationState.page - 1, 0), 
+            pageSize: paginationState.pageSize
+          })
+        }
+      },
+      onQueryUpdated(observableQuery){
+        if(!selection.all && (selection.selectedRows.length === runsData?.runs?.edges?.length)){
+          const paginationConfig: OffsetPaginationConfig = {
+            page: hasNextPage ? paginationState.page : Math.max(paginationState.page - 1, 0), 
+            pageSize: paginationState.pageSize
+          }
+
+          const queryVars: Partial<GetUserRunsQueryVariables> = {
+            pagination: {
+              offset: createPaginationOffsetInput(paginationConfig)
+            }
+          }
+          observableQuery.refetch(queryVars)
         }
       }
     })
-  }, [deleteUserRuns, params.userId, selection.all, selection.selectedRows])
+
+
+
+
+
+    setSelection({
+      all: false,
+      selectedRows: []
+    })
+  }, [
+    deleteUserRuns, 
+    params.userId, 
+    selection.all, 
+    selection.selectedRows, 
+    runsQueryVariables,
+    paginationState,
+    runsData?.runs?.edges,
+    runsData?.runs?.pageInfo
+  ])
 
   const anySelected = useMemo<boolean>(() => {
     return selection.all || selection.selectedRows.length > 0
   }, [selection.all, selection.selectedRows.length])
 
+  const errorText = useMemo<string>(() => {
+    const errors = compact([deletionError, getGamesError, getUserRunsError]);
+    if(errors.length > 0){
+      return "There was an error"
+    }
+    return "";
+  }, [deletionError, getGamesError, getUserRunsError])
+
+  const alertCloseableProps = useMemo<NonNullable<AlertProps['closable']>>(() => {
+    return {
+      closeIcon: true
+    }
+  }, [])
+
   //<Spin tip="Loading" size="large" spinning={loading} />
   return <BasicPageLayout
     title={<Title level={1}>My Runs</Title>}
   >
+    {errorText && (
+      <Alert type="error" title={errorText} closable={alertCloseableProps} />
+    ) }
     <ConfigProvider theme={themeConfig}>
       <div className="flex min-w-full w-full">
         <Dropdown menu={menuProps}>
@@ -257,8 +377,9 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
       {
         anySelected && (
         <div className={`${styles['delete-action-bar']}`}>
-          <div className="p-1.5 w-full rounded-md flex justify-center gap-4"style={{backgroundColor: colors.dropdown}}>
-            <Button danger={true} onClick={onConfirmDelete}>Delete</Button>
+          <div className="p-1.5 w-full rounded-md flex justify-center items-center gap-4"style={{backgroundColor: colors.dropdown}}>
+            <Typography>{selection.selectedRows.length} selected</Typography>
+            <Button danger={true} disabled={loading} onClick={onConfirmDelete}>Delete</Button>
             <Button onClick={onCancelDelete}>Cancel</Button>
           </div>
         </div>

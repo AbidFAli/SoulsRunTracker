@@ -13,7 +13,7 @@ export interface GamesData{
 }
 
 export function useGetGames(){
-    const {loading, data: gamesData} = useQuery(GetGamesDocument);
+    const {loading, data: gamesData, error} = useQuery(GetGamesDocument);
 
     const cleanedGamesData = useMemo<GamesData[]>(() => {
       if(gamesData?.games){
@@ -47,6 +47,7 @@ export function useGetGames(){
       loading,
       data: cleanedGamesData,
       gameNameToId,
-      gameIdToName
+      gameIdToName,
+      error
     }
 }

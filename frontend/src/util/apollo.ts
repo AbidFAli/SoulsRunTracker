@@ -1,11 +1,37 @@
-import { ApolloClient, FieldFunctionOptions, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, FieldFunctionOptions, HttpLink, InMemoryCache, ApolloLink, CombinedGraphQLErrors } from "@apollo/client";
 import type { RunConnection, GetUserRunsQueryVariables, QueryRunsArgs } from "@/generated/graphql/graphql";
+import { ErrorLink } from "@apollo/client/link/error";
 import lodash from 'lodash';
 
 
+const httpLink = new HttpLink({ uri: 'http://localhost:8000/api/graphql' });
+const errorLink = new ErrorLink(({ error }) => {
+  if (CombinedGraphQLErrors.is(error)) {
+    error.errors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  } else {
+    console.error("[Network error]:", error);
+  }
+});
+
+
+export function runsQueryGenerateCacheKey(args: QueryRunsArgs){
+  const picked = {
+    orderBy: args.orderBy,
+    where: args.where,
+    pagination: args.pagination.cursor ? "cursor" : "offset"
+  };
+
+  //i could forsee some issues with null, field orderings
+  return `runs:${JSON.stringify(picked)}`
+}
+
 type RunsQueryFieldFunctionOptions = FieldFunctionOptions<Partial<GetUserRunsQueryVariables>, Partial<GetUserRunsQueryVariables>>
 export const apolloClient = new ApolloClient({
-  link: new HttpLink({ uri: 'http://localhost:8000/api/graphql' }),
+  link: ApolloLink.from([httpLink, errorLink]),
   cache: new InMemoryCache(
     {
       typePolicies: {
@@ -18,17 +44,12 @@ export const apolloClient = new ApolloClient({
                   return context.fieldName;
                 }
                 const queryRunsArgs = args as QueryRunsArgs;
-                const picked = {
-                  orderBy: queryRunsArgs.orderBy,
-                  where: queryRunsArgs.where,
-                  pagination: queryRunsArgs.pagination.cursor ? "cursor" : "offset"
-                };
 
-                //i could forsee some issues with null, field orderings
-                return `runs:${JSON.stringify(picked)}`
+                return runsQueryGenerateCacheKey(queryRunsArgs);
               },
               merge(existing: RunConnection | undefined, incoming: RunConnection, options: RunsQueryFieldFunctionOptions): RunConnection{
                 //hopefully incoming is not undefined, if it is this will break
+                console.log('merge function called')
                 const merged: RunConnection = {
                   pageInfo: incoming.pageInfo,
                   __typename: "RunConnection",
@@ -50,6 +71,7 @@ export const apolloClient = new ApolloClient({
                 };
               },
               read(existing: RunConnection | undefined, options: RunsQueryFieldFunctionOptions ): RunConnection | undefined{
+                console.log('read function called')
                 if(!existing){
                   return undefined;
                 }
