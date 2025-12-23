@@ -1,7 +1,6 @@
 import { SortOrder } from "@/generated/graphql/graphql";
 import { CaretUpFilled, CaretDownFilled } from "@ant-design/icons";
 import { ICON_COLOR } from "./colors";
-import styles from './styles.module.scss'
 
 
 export interface SortIconProps{

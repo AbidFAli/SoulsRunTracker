@@ -7,6 +7,7 @@ import { RunsTableFilters } from "./types";
 import { ColumnHeader } from "./columnHeader";
 import { useOnClickOutside } from "usehooks-ts";
 import { ICON_COLOR } from "./colors";
+import { MyRunsPageContext } from "@/app/user/[userId]/runs/context";
 
 const { useToken} = theme;
 
@@ -23,6 +24,7 @@ interface NameColumnHeaderProps{
 export function NameColumnHeader(props: NameColumnHeaderProps){
   const {token} = useToken();
   const runTableContext = useContext(RunTableContext);
+  const runPageContext = useContext(MyRunsPageContext);
 
 
   const closeDropdown = useCallback(() => {
@@ -48,6 +50,7 @@ export function NameColumnHeader(props: NameColumnHeaderProps){
           <SearchOutlined 
             style={{color: filtered ? ICON_COLOR.active : ICON_COLOR.inactive}}
             onClick={onSearchClick}
+            disabled={runPageContext.loading}
           />
         </div>
       </div>

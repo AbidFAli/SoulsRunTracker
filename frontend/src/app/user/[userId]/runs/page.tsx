@@ -194,9 +194,9 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
       pageSize: paginationState.pageSize,
       current: paginationState.page,
       total: runsData?.runs?.pageInfo.totalCount ?? 0,
-      disabled: runsLoading,
+      disabled: loading,
     }
-  }, [paginationState.page, paginationState.pageSize, runsData?.runs?.pageInfo.totalCount, runsLoading])
+  }, [paginationState.page, paginationState.pageSize, runsData?.runs?.pageInfo.totalCount, loading])
 
   const myRunsPageContext = useMemo<MyRunsPageContextType>(() => {
     return {
@@ -215,12 +215,12 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     })
   }, [])
 
-  const onConfirmDelete = useCallback(() => {
+  const executeDelete = useCallback((all?: true) => {
     const deleteUserRunsVariables: DeleteUserRunsMutationVariables = {
       where: {
-        all: selection.all ? selection.all : undefined,
+        all: all ? all : undefined,
         userId: params.userId,
-        ids: selection.all ? undefined : selection.selectedRows
+        ids: all ? undefined : selection.selectedRows
       }
     }
 
@@ -277,20 +277,20 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
           }
         })
 
-        if(selection.all){
-          setPaginationState({page: 0, pageSize: paginationState.pageSize})
+        if(all){
+          setPaginationState({page: 1, pageSize: paginationState.pageSize})
         }
         else if(selection.selectedRows.length === runsData?.runs?.edges?.length){
           setPaginationState({
-            page: hasNextPage ? paginationState.page : Math.max(paginationState.page - 1, 0), 
+            page: hasNextPage ? paginationState.page : Math.max(paginationState.page - 1, 1), 
             pageSize: paginationState.pageSize
           })
         }
       },
       onQueryUpdated(observableQuery){
-        if(!selection.all && (selection.selectedRows.length === runsData?.runs?.edges?.length)){
+        if(!all && (selection.selectedRows.length === runsData?.runs?.edges?.length)){
           const paginationConfig: OffsetPaginationConfig = {
-            page: hasNextPage ? paginationState.page : Math.max(paginationState.page - 1, 0), 
+            page: hasNextPage ? paginationState.page : Math.max(paginationState.page - 1, 1), 
             pageSize: paginationState.pageSize
           }
 
@@ -315,7 +315,6 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   }, [
     deleteUserRuns, 
     params.userId, 
-    selection.all, 
     selection.selectedRows, 
     runsQueryVariables,
     paginationState,
@@ -341,14 +340,25 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     }
   }, [])
 
-  //<Spin tip="Loading" size="large" spinning={loading} />
+  const onDeleteAll = useCallback(() => {
+    if(window.confirm("Are you sure you want to delete all of your runs?")){
+      executeDelete(true)
+    }
+  }, [executeDelete])
+
+  const onConfirmDelete = useCallback(() => {
+    executeDelete();
+  }, [executeDelete])
+
   return <BasicPageLayout
     title={<Title level={1}>My Runs</Title>}
   >
-    {errorText && (
-      <Alert type="error" title={errorText} closable={alertCloseableProps} />
-    ) }
+
     <ConfigProvider theme={themeConfig}>
+      {loading && <Spin spinning={true} fullscreen size="large"/>}
+      {errorText && (
+        <Alert type="error" title={errorText} closable={alertCloseableProps} />
+      ) }
       <div className="flex min-w-full w-full">
         <Dropdown menu={menuProps}>
           <div className="border rounded-md border-white w-32 flex justify-center">
@@ -385,6 +395,10 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
         </div>
         )
       }
+
+      <div>
+        <Button danger={true} onClick={onDeleteAll}>Delete All Runs</Button>
+      </div>
 
     </ConfigProvider>
   </BasicPageLayout>
