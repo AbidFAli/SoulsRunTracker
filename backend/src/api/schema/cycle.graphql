@@ -1,7 +1,7 @@
 type Cycle{
   id: ID!
   level: Int
-  completed: Boolean
-  runId: ID
+  completed: Boolean!
+  runId: ID!
   bossesCompleted: [BossCompletion!]
 }

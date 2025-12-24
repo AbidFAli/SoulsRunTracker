@@ -35,5 +35,15 @@ export const runResolvers: graphql.RunResolvers = {
       }
     });
     return maxCycle._max.level;
+  },
+  async game(parent){
+    if(parent.game){
+      return parent.game;
+    }
+    if(!parent.gameId){
+      return null;
+    }
+
+    return prisma.game.findUnique({where: {id: parent.gameId }})
   }
 }

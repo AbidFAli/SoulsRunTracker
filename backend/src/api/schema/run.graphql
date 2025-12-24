@@ -4,6 +4,7 @@ type Run{
   descriptionUrl: String
   completed: Boolean
   gameId: ID
+  game: Game
   userId: ID
   cycles: [Cycle!]
   currentCycle: Int
@@ -86,4 +87,8 @@ input RunDeleteInput{
   userId: ID!
   ids: [ID!]
   all: Boolean
+}
+
+input RunWhereUniqueInput{
+  id: ID!
 }

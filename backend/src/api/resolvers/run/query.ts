@@ -79,7 +79,7 @@ function validateRunCursor(data: unknown){
 
 const DEFAULT_RUN_PAGE_SIZE=20;
 
-export const runsQueryResolvers: Pick<graphql.QueryResolvers, "runs"> = {
+export const runsQueryResolvers: Pick<graphql.QueryResolvers, "runs" | "run"> = {
   async runs(parent, args){
     const where = args.where ? convertRunWhereInputToPrisma(args.where) : undefined;
     const paginationArgs = {
@@ -132,5 +132,8 @@ export const runsQueryResolvers: Pick<graphql.QueryResolvers, "runs"> = {
       pageInfo,
       edges: runs,
     }
+  },
+  async run(parent, args){
+    return prisma.run.findUnique({where: args.where});
   }
 }
