@@ -287,7 +287,10 @@ export function convertDateTimeFilter(data: graphql.DateTimeFilter): DateTimeFil
   const easyKeys = ["equals", "lt", "lte", "gt", "gte"] as const;
   const returnType: DateTimeFilter = {}
   for(const key of easyKeys){
-    returnType[key] = new Date(data[key])
+   if(data[key]){
+      returnType[key] = new Date(data[key])
+   }
+    
   }
   const inKeys = ["in", "notIn"] as const;
   for(const key of inKeys){

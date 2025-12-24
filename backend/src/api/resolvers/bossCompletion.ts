@@ -2,18 +2,21 @@ import * as graphql from '#generated/graphql/types.js';
 import { prisma } from '#src/db/prisma.js';
 
 export const bossCompletionResolvers: graphql.BossCompletionResolvers = {
-  instance(parent){
+  async instance(parent){
     if(parent.instance){
       return parent.instance;
     }
-    if(!parent.instanceId){
-      return null;
-    }
-    return prisma.bossInstance.findUnique({
+    const bossInstance = await prisma.bossInstance.findUnique({
       where: {
         id: parent.instanceId
       }
     });
-    
+
+    if(!bossInstance){
+      throw new Error(`no boss instance found for BossCompletion ${parent.instanceId}`);
+    }
+
+    return bossInstance;
+
   }
 }

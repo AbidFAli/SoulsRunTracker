@@ -13,6 +13,10 @@ const frontendConfig: CodegenConfig = {
             Cursor: {
               input: 'string',
               output: 'string'
+            },
+            DateTime: {
+              input: 'string',
+              output: 'string',
             }
           }
         }

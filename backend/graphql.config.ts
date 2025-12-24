@@ -9,8 +9,12 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
   contextType
   mapperTypeSuffix
   mappers
+  defaultMapper
+  resolverTypeWrapperSignature
+  showUnusedMappers
   typesSuffix/typesPrefix
   namingConvention
+  strictScalars
 */
 export const backendConfig: CodegenConfig = {
   importExtension: '.js',
@@ -19,8 +23,13 @@ export const backendConfig: CodegenConfig = {
       Cursor: {
         input: 'string',
         output: 'string'
+      },
+      DateTime: {
+        input: 'string | Date',
+        output: 'string | Date'
       }
-    }
+    },
+    defaultMapper: "Partial<{T}>"
   },
   generates: {
     './generated/graphql/test/': {
@@ -29,6 +38,9 @@ export const backendConfig: CodegenConfig = {
     './generated/graphql/types.ts': {
         config: {
           useIndexSignature: true,
+          mappers: {
+
+          }
         },
         plugins: ['typescript', 'typescript-resolvers'],
       }
