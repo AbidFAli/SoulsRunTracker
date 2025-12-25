@@ -55,26 +55,70 @@ mutation DeleteUserRuns($where: RunDeleteInput!){
   deleteRuns(where: $where)
 }
 
+query GetRun($where: RunWhereUniqueInput!){
+  run(where: $where){
+    ...RunPageRun
+  }
+}
+
+fragment RunPageRun on Run{
+  id
+  name
+  descriptionUrl
+  completed
+  game{
+    ...GameInfo
+  }
+  cycles{
+    ...RunPageCycle
+  }
+  currentCycle
+  character{
+    ...RunPageCharacter
+  }
+  deaths
+
+}
 
 
-# query GetBossCompletions{
-#   run{ #i know the gameId
-#     id
-#     name
-#     descriptionUrl
-#     completed
-#     cycles{
-#       id
-#       level
-#       completed
-#       bossesCompleted{
-#         completed
-#         instance{ #look up instance information in another request
-#           id
-#           bossId
-#           locationId
-#         }
-#       }
-#     }
-#   }
-# }
+fragment RunPageCharacter on Character{
+  id
+  name
+  level
+  vitality
+  intelligence
+  endurance
+  strength
+  dexterity
+  magic
+  faith
+  luck
+  attunement
+  resistance
+  vigor
+  adaptability
+  insight
+  skill
+  bloodtinge
+  mind
+  hp
+  mp
+  stamina
+  arcane
+  imageId
+}
+
+fragment RunPageCycle on Cycle{
+  id
+  level
+  completed
+  bossesCompleted{
+    ...RunPageBossCompletion
+  }
+}
+
+fragment RunPageBossCompletion on BossCompletion{
+  id
+  instanceId
+  completed
+}

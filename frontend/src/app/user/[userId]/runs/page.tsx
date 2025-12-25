@@ -1,6 +1,6 @@
 "use client"
-import type { GetGamesQuery, GetUserRunsQueryVariables, Run, PageInfo, RunConnection, DeleteUserRunsMutationVariables, PaginationOffsetInput } from '@/generated/graphql/graphql';
-import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument, GetUserRunsQuery } from '@/generated/graphql/graphql';
+import type { GetGamesQuery, GetUserRunsQueryVariables, PageInfo, DeleteUserRunsMutationVariables, PaginationOffsetInput } from '@/generated/graphql/graphql';
+import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument } from '@/generated/graphql/graphql';
 import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
 import { useMutation, useQuery } from "@apollo/client/react";
 import type { MenuProps, TablePaginationConfig, AlertProps } from 'antd';
@@ -201,9 +201,10 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     return {
       updateSorter: setSorter,
       loading,
-      sorter
+      sorter,
+      userId: params.userId,
     }
-  }, [loading, sorter])
+  }, [loading, sorter, params.userId])
 
 
 

@@ -1,10 +1,14 @@
 "use client"
 import { Row, Table, Typography, Col} from "antd"
-import type { SortOrder, UserRunsFragment } from "@/generated/graphql/graphql";
 import { useCallback, useContext, useMemo, useState } from "react";
-import { GamesData } from "@/app/user/[userId]/runs/useGetGames";
 import type { TablePaginationConfig, TableProps } from "antd";
-import { CheckOutlined, DeleteFilled, EditFilled} from '@ant-design/icons'
+import { ColumnType, SorterResult, TableRowSelection } from "antd/es/table/interface";
+import { CheckOutlined, EditFilled} from '@ant-design/icons'
+import lodash from 'lodash';
+import Link from 'next/link';
+
+import type {  UserRunsFragment } from "@/generated/graphql/graphql";
+import { GamesData } from "@/app/user/[userId]/runs/useGetGames";
 import { GAMES } from "@/util/game";
 import { FilterableColumnKey, OffsetPaginationConfig, RunsTableFilters } from "./types";
 import { NameColumnHeader } from "./nameColumnHeader";
@@ -13,11 +17,10 @@ import { RunTableContext, RunTableContextState } from "./context";
 import { FilterIcon } from "./filterIcon";
 import { SortIcon } from "./sortIcon";
 import { MyRunsPageContext } from "@/app/user/[userId]/runs/context";
-import lodash from 'lodash';
-import { ColumnType, SorterResult, TableRowSelection } from "antd/es/table/interface";
 import type { RunsTableSelection} from "./types";
 import { convertSortOrderToGraphql } from "@/util/antd";
 import { convertAntFiltersToRunTableFilters, convertAntSorterToRunTableSorter, paginationIsEqual } from "./util";
+
 const {  Text} = Typography;
 
 
@@ -69,7 +72,7 @@ export function RunsTable(
 
   const [rowHoveredId, setRowHoveredId] = useState<string|undefined>();
   const [columnFilterOpen, setColumnFilterOpen] = useState<FilterableColumnKey>();
-  const {updateSorter, sorter} = useContext(MyRunsPageContext);
+  const {updateSorter, sorter, userId} = useContext(MyRunsPageContext);
 
 
 
@@ -83,6 +86,9 @@ export function RunsTable(
           updateFilters={updateFilters}
           />,
         dataIndex: 'name',
+        render(value, record) {
+          return <Link href={`/user/${userId}/runs/${record.id}`}>{value}</Link>
+        },
         filteredValue: filters.name ? [filters.name] : [],
       },
       {
@@ -184,12 +190,18 @@ export function RunsTable(
         },
       },
     ]
-  }, [filters, updateFilters, gamesData, rowHoveredId]);
+  }, [
+    filters, 
+    updateFilters, 
+    gamesData, 
+    rowHoveredId,
+    userId
+  ]);
 
   const onRow = useCallback<NonNullable<TableProps<UserRunsFragment>['onRow']>>((rowData) => {
     return {
       onMouseEnter: () => setRowHoveredId(rowData.id),
-      onMouseLeave: () => setRowHoveredId(undefined)
+      onMouseLeave: () => setRowHoveredId(undefined),
     }
   }, [])
 

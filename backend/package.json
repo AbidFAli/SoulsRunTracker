@@ -11,7 +11,8 @@
     "seed": "NODE_ENV=development node ./build/src/seedData/index.js",
     "lint": "eslint ./src",
     "cleanup": "rm -rf build/*",
-    "test-integration": "./scripts/setupTestDatabase.sh && vitest --fileParallelism=false build/src/test/integration/"
+    "test-integration": "./scripts/setupTestDatabase.sh && vitest --fileParallelism=false build/src/test/integration/",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",

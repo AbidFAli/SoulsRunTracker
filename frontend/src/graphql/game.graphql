@@ -1,48 +1,84 @@
-query GetGameInformation($where: GameWhereUniqueInput!){
-  game(where: $where){
-    id
-    gameLocations{
-      id
-      order
-      location{
-        id
-        name
-      }
-      bossInstances{
-        id
-        boss{
-          id
-          name
-        }
-        locationId
-        order
-      }
-    }
-    gameStat{
-      id
-      imageId
-      alternateName
-      order
-      minimum
-      maximum
-      stat{
-        name
-        id
-        displayName
-      }
-      image{
-        id
-        name
-        storageUrl
-      }
-    }
+fragment GameInfo on Game{
+  id
+  name
+  gameLocations{
+    ...GameInfoGameLocations
+  }
+  gameStat{
+    ...GameInfoGameStat
   }
 }
 
+fragment GameInfoGameLocations on GameLocation{
+  id
+  order
+  location{
+    ...GameInfoLocation
+  }
+  bossInstances{
+    ...GameInfoBossInstance
+  }
+}
+
+fragment GameInfoLocation on Location{
+  id
+  name
+}
+
+fragment GameInfoBossInstance on BossInstance{
+  id
+  boss{
+    ...GameInfoBoss
+  }
+  locationId
+  order
+}
+
+fragment GameInfoBoss on Boss{
+  id
+  name
+}
+
+fragment GameInfoGameStat on GameStat{
+  id
+  imageId
+  alternateName
+  order
+  minimum
+  maximum
+  stat{
+    ...GameInfoStat
+  }
+  image{
+    ...GameInfoImage
+  }
+}
+
+fragment GameInfoStat on Stat{
+  name
+  id
+  displayName
+}
+
+fragment GameInfoImage on Image{
+  id
+  name
+  storageUrl
+}
+
+query GetGameInformation($where: GameWhereUniqueInput!){
+  game(where: $where){
+    ...GameInfo
+  }
+}
+
+fragment GameBasic on Game{
+  id
+  name
+}
 
 query GetGames{
   games{
-    id
-    name
+    ...GameBasic
   }
 }

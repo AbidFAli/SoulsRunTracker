@@ -5,16 +5,15 @@ import { CreateRunDocument, GetGameInformationDocument } from "@/generated/graph
 import { useMounted } from "@/hooks/useMounted";
 import { ABBREVIATION_TO_GAME } from "@/util/gameAbbreviation";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { Button, Col, Divider, Input, Row, Space, Typography } from "antd";
+import { Button, Input, Space } from "antd";
 import dynamic from "next/dynamic";
 import type Quill from "quill";
-import React, { use, useCallback, useContext, useMemo, useRef } from "react";
+import React, { use, useCallback, useMemo, useRef } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { Controller, useForm } from 'react-hook-form';
-import { AppContext } from "@/state/appContext";
 import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
-import { BasicPageLayout } from "@/components/BasicPageLayout";
-const { Title} = Typography;
+import { RunPageTitle } from "@/components/RunPageTitle";
+import { RunPageLayout } from "@/components/RunPageLayout";
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
@@ -88,21 +87,18 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     handleSubmit(onSubmit)(e);
   }, [handleSubmit, onSubmit])
   
-  const title = useMemo(() => (
-    <Row>
-      <Col span= {8}>
-        <Title className="inline w-lg">Create your run</Title>
-      </Col>
-      <Col offset={8} span={8} >
-        <div className="w-full flex justify-end">
-          <Title className="inline text-right w-full">{gameName}</Title>
-        </div>
-      </Col>
-    </Row>
-    ),[gameName]
-  );
-  return <BasicPageLayout title={title}>
-    <form>
+  const title = useMemo(() => {
+    return <RunPageTitle gameName={gameName} titleText="Create your run" />
+  }, [gameName])
+  
+  const footer = useMemo(() => {
+    return (
+      <Button onClick={onSaveClick}>Save</Button>
+    )
+  }, [onSaveClick])
+
+  const summaryBlock = useMemo(() => {
+    return (
       <Space orientation="vertical" className="w-full" size="middle">
         <Controller 
           name="name"
@@ -113,11 +109,20 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
         />
         {mounted && <RunDescriptionEditor ref={quillRef} readOnly={false}   /> }
       </Space>
-      <Divider />
-      <Title level={2} >Character</Title>
-      <Divider />
-      <Title level={2}>Boss Completion</Title>
-      <Button onClick={onSaveClick}>Save</Button>
-    </form>
-  </BasicPageLayout>
+    )
+  }, [control, mounted])
+
+  const formProps = useMemo(() => {
+    return {};
+  }, [])
+
+  return <RunPageLayout 
+    title={title} 
+    formProps={formProps}
+    footer={footer}
+    summaryBlock={summaryBlock}
+    />
+
+
+      
 }

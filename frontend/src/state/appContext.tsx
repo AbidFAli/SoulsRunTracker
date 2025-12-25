@@ -6,6 +6,7 @@ export interface AppContextState{
   dispatch: ActionDispatch<[AppContextAction]>
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function dummyDispatch(_: AppContextAction){
   throw new Error("AppContext.dispatch has not been set")
 }
