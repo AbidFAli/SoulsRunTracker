@@ -397,7 +397,10 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
       }
 
       <div>
-        <Button danger={true} onClick={onDeleteAll}>Delete All Runs</Button>
+        <Button 
+          danger={true}
+          disabled={selection.selectedRows.length > 0}
+          onClick={onDeleteAll}>Delete All Runs</Button>
       </div>
 
     </ConfigProvider>

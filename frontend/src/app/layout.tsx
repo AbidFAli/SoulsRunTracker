@@ -44,15 +44,15 @@ export default function RootLayout({
 
 //bg-black p-10
   return (
-    <html lang="en" >
+    <html lang="en" className="h-full" >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased p-10`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased p-10 h-full`}
       >
         <ApolloProvider client={apolloClient}>
           <AppContextProvider>
             <ConfigProvider theme={themeConfig}>
               <AntdRegistry>
-                <div className="2xl:mx-64 lg:mx-12">
+                <div className="2xl:mx-64 lg:mx-12 h-full">
                   {children}
                 </div>
               </AntdRegistry>

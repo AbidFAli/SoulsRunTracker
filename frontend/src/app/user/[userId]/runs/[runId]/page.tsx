@@ -1,6 +1,6 @@
 "use client"
 import {use, useMemo} from 'react';
-import { Typography } from 'antd';
+import { Spin, Typography } from 'antd';
 import { useQuery } from '@apollo/client/react';
 
 
@@ -8,6 +8,7 @@ import { RunPageLayout } from '@/components/RunPageLayout';
 import { RunPageTitle } from '@/components/RunPageTitle';
 import { GetRunDocument } from '@/generated/graphql/graphql';
 import { BossCompletionCard } from '@/components/BossCompletionCard';
+import { BasicPageLayout } from '@/components/BasicPageLayout';
 
 
 export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>){
@@ -43,6 +44,13 @@ export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>)
         )
   }, [runData])
 
+  if(runLoading){
+    return (
+      <BasicPageLayout title={undefined} loading={true}>
+      </BasicPageLayout>
+    )
+  }
+  
   return <RunPageLayout 
           title={title}
           summaryBlock={statsBlock}

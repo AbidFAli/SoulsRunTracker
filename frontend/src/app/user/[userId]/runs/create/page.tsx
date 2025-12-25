@@ -1,24 +1,30 @@
 'use client'
-import type { RunDescriptionEditorProps } from "@/components/RunDescriptionEditor/index";
-import type { GetGameInformationQueryVariables } from "@/generated/graphql/graphql";
-import { CreateRunDocument, GetGameInformationDocument } from "@/generated/graphql/graphql";
-import { useMounted } from "@/hooks/useMounted";
-import { ABBREVIATION_TO_GAME } from "@/util/gameAbbreviation";
+
 import { useMutation, useQuery } from "@apollo/client/react";
-import { Button, Input, Space } from "antd";
+import { Alert, Button, Col, Input, Row, Space } from "antd";
 import dynamic from "next/dynamic";
 import type Quill from "quill";
 import React, { use, useCallback, useMemo, useRef } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { Controller, useForm } from 'react-hook-form';
+import { useRouter } from "next/navigation";
+
+import { ABBREVIATION_TO_GAME } from "@/util/gameAbbreviation";
+import type { RunDescriptionEditorProps } from "@/components/RunDescriptionEditor/index";
+import type { GetGameInformationQueryVariables } from "@/generated/graphql/graphql";
+import { CreateRunDocument, GetGameInformationDocument } from "@/generated/graphql/graphql";
+import { useMounted } from "@/hooks/useMounted";
 import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
 import { RunPageTitle } from "@/components/RunPageTitle";
 import { RunPageLayout } from "@/components/RunPageLayout";
+import { FormInput } from "@/components/Form/formInput";
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
   loading: () => <p>loading...</p>
 });
+
+const {Compact: CompactSpace} = Space;
 
 interface CreateRunFormData{
   name?: string;
@@ -26,8 +32,10 @@ interface CreateRunFormData{
 
 
 
+
 export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/create'>){
   // Use a ref to access the quill instance directly
+  const router = useRouter();
   const params = use(props.params);
   const searchParams = use(props.searchParams);
   const parsedSearchParams = useMemo(() => {
@@ -73,7 +81,9 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
           }
         },
         onCompleted(runMutationReturnData) {
-          console.log(`createRunMutation returned ${runMutationReturnData}`)
+          if(runMutationReturnData.createRun){
+            router.push(`/user/${params.userId}/runs/${runMutationReturnData.createRun?.id}`)
+          }
         },
         onError(gqlError) {
           console.log(gqlError);
@@ -81,7 +91,12 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
       });
     }
 
-  }, [params.userId, createRunMutation, gameData?.game?.id]);
+  }, [
+    params.userId, 
+    createRunMutation, 
+    gameData?.game?.id, 
+    router
+  ]);
 
   const onSaveClick= useCallback((e: React.BaseSyntheticEvent) => {
     handleSubmit(onSubmit)(e);
@@ -100,12 +115,18 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
   const summaryBlock = useMemo(() => {
     return (
       <Space orientation="vertical" className="w-full" size="middle">
-        <Controller 
-          name="name"
-          control={control}
-          render={({field}) => (
-            <Input {...field} placeholder="Enter a name for your run" className="border-white"/>
-          )} 
+        <FormInput 
+          controllerProps={{
+            name: "name",
+            control: control,
+            rules: {
+              required: {value: true, message: "This field is required"}, 
+              maxLength: {value: 256, message: "Max length 256 characters"}
+            }
+          }}
+          inputProps={{
+            placeholder:"Enter a name for your run"
+          }}
         />
         {mounted && <RunDescriptionEditor ref={quillRef} readOnly={false}   /> }
       </Space>
