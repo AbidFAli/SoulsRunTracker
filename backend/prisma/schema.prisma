@@ -43,6 +43,7 @@ model Run{
   @@index([gameId])
   @@index([name])
   @@index([userId])
+  @@unique([userId, name])
 }
 
 model Cycle{
