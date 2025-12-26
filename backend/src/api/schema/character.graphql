@@ -32,3 +32,5 @@ input CharacterOrderByInput{
   name: SortOrder
   level: SortOrderInput
 }
+
+

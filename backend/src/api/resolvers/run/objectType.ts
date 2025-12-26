@@ -7,7 +7,6 @@ const { max} = lodash;
 
 export const runResolvers: graphql.RunResolvers = {
   async cycles(parent){
-    console.log('run.cycles resolver executed')
     if(parent.cycles){
       return parent.cycles;
     }

@@ -1,14 +1,17 @@
 import * as graphql from '#generated/graphql/types.js';
+import * as Cycle from '#src/db/cycle.js'
 import { RunCreateInput } from '#generated/prisma/models.js';
 import { prisma } from '#src/db/prisma.js';
 import type { Prisma } from '#generated/prisma/client.js';
 import { Unnullified } from '#src/util/utilityTypes.js';
+
 import lodash from 'lodash';
+import dayjs from 'dayjs';
 
 const { isNil, compact, flatMap} = lodash;
 
 
-export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" | "deleteRuns"> = {
+export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" | "deleteRuns" | "updateRun"> = {
   async createRun(parent, args){
     const cleanedInput = args.run as Unnullified<graphql.RunCreateInput>;
     const runCreateInput: RunCreateInput = {
@@ -38,10 +41,6 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" |
     const transactionResult = await prisma.$transaction(async(txn) => {
       const run = await txn.run.create({
         data: runCreateInput,
-        include: {
-          character: true,
-          cycles: true,
-        }
       })
       return {
         run
@@ -130,5 +129,76 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" |
     ]);
 
     return true;
+  },
+  async updateRun(parent, args){
+
+    const data = args.data as Unnullified<graphql.RunUpdateInput>; //tricksy cast. I may want nulls to set a db field blank.
+    const prismaCharacterUpdate: Prisma.CharacterUpdateOneWithoutRunNestedInput | undefined = data.character ? 
+      {
+        create: data.character.create,
+        update: data.character.update
+      } : undefined;
+
+
+
+    const prismaCycleUpdate: Prisma.CycleUpdateManyWithoutRunNestedInput = {
+      create: data.cycles?.create,
+      update: (data.cycles?.update ?? []).map((cycleUpdate) => {
+        const prismaBossCompletion: Prisma.BossCompletionUpdateManyWithoutCycleNestedInput = {
+          upsert: (cycleUpdate.bossesCompleted?.upsert ?? []).map((bossesCompletedUpdate) => {
+            return {
+              where: {
+                cycleId_instanceId: {
+                  cycleId: cycleUpdate.id,
+                  instanceId: bossesCompletedUpdate.instanceId
+                }
+              },
+              create: bossesCompletedUpdate,
+              update: {
+                completed: bossesCompletedUpdate.completed
+              }
+            }
+          })
+        }
+
+        return {
+          where: {
+            id: cycleUpdate.id,
+          },
+          data: {
+            completed: cycleUpdate.completed,
+            level: cycleUpdate.level,
+            bossesCompleted: cycleUpdate.bossesCompleted ? prismaBossCompletion : undefined,
+          }
+        }
+      })
+    }
+
+    await prisma.$transaction(async (client) => {
+      if(data.cycles?.delete){
+        await Cycle.deleteCycles(client, data.cycles?.delete)
+      }
+
+      return client.run.update({
+        where: {
+          id: args.where.id,
+        },
+        data: {
+          name: data.name,
+          completed: data.completed,
+          deaths: data.deaths,
+          character: prismaCharacterUpdate,
+          cycles: data.cycles ? prismaCycleUpdate : undefined,
+          modifiedAt: dayjs().toDate(),
+        }
+      })
+    });
+
+    return prisma.run.findUnique({
+      where: {
+        id: args.where.id
+      },
+    })
+
   }
 }

@@ -92,3 +92,70 @@ input RunDeleteInput{
 input RunWhereUniqueInput{
   id: ID!
 }
+
+input RunUpdateInput{
+  name: String
+  completed: Boolean
+  deaths: Int
+  character: RunUpdateCharacterOptions
+  cycles: RunUpdateCycleOptions
+}
+
+input RunUpdateCharacterOptions{
+  create: CharacterCreateWithoutRunInput
+  update: CharacterUpdateWithoutRunInput
+}
+
+input CharacterUpdateWithoutRunInput{
+  name: String
+  level: Int
+  vitality: Int
+  intelligence: Int
+  endurance: Int
+  strength: Int
+  dexterity: Int
+  magic: Int
+  faith: Int
+  luck: Int
+  attunement: Int
+  resistance: Int
+  vigor: Int
+  adaptability: Int
+  insight: Int
+  skill: Int
+  bloodtinge: Int
+  mind: Int
+  hp: Int
+  mp: Int
+  stamina: Int
+  arcane: Int
+}
+
+input RunUpdateCycleOptions{
+  create: [CycleCreateWithoutRunInput!]
+  update: [CycleUpdateWithoutRunInput!]
+  delete: [ID!]
+}
+
+input CycleCreateWithoutRunInput{
+  level: Int
+  completed: Boolean
+  bossesCompleted: CycleUpdateBossesCompletedOptions
+}
+
+input CycleUpdateWithoutRunInput{
+  id: ID!
+  level: Int
+  completed: Boolean
+  bossesCompleted: CycleUpdateBossesCompletedOptions
+}
+
+input CycleUpdateBossesCompletedOptions{
+  upsert: [BossCompletionUpsertWithoutCycleInput!]
+}
+
+input BossCompletionUpsertWithoutCycleInput{
+  completed: Boolean!
+  instanceId: String!
+}
+
