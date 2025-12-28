@@ -20,8 +20,7 @@ export const gameLocationFieldResolvers: graphql.GameLocationResolvers ={
     }
     return prisma.bossInstance.findMany({
       where: {
-        gameId: parent.gameId,
-        locationId: parent.locationId
+        gameLocationId: parent.id,
       },
       orderBy: {
         order: "asc"

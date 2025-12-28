@@ -19,7 +19,7 @@ import { faker } from '@faker-js/faker';
 import type { Dayjs} from 'dayjs'
 import dayjs from 'dayjs'
 
-const {groupBy, compact} = lodash;
+const {compact} = lodash;
 
 const LOCATION_MAP_LIMIT = 10;
 
@@ -36,18 +36,34 @@ async function createBossCompletionsInDB(){
     }
   });
 
-  const bossInstances = await prisma.bossInstance.findMany({orderBy: {gameId: "asc"}});
-  //Map<GameId, BossInstance[]>
-  const gameBosses = groupBy(bossInstances, (bossInstance) => bossInstance.gameId);
+
+  const gameLocations = await prisma.gameLocation.findMany({
+    include: {
+      location: true,
+      game: true,
+      bossInstances: {
+        orderBy: {
+          order: "asc"
+        }
+      }
+    },
+    orderBy: [
+      {gameId: "asc"},
+      {order: "asc"}
+    ]
+  })
+
+
+
   const bossCompletionData: BossCompletionCreateManyInput[] = [];
 
   for(const cycle of cycles){
-    for(const gameId in gameBosses){
-      gameBosses[gameId].forEach((bossInstance) => {
+    for(const gameLocation of gameLocations){
+      gameLocation.bossInstances.forEach((bossInstance, i) => {
         bossCompletionData.push({
           cycleId: cycle.id,
           instanceId: bossInstance.id,
-          completed: false
+          completed: i % 3 == 0,
         })
       })
     }
@@ -124,6 +140,16 @@ async function main() {
   });
   
   await prisma.cycle.createMany({data: CYCLES});
+  await prisma.cycle.createMany({
+    data: Array.from({length: 20}, (_, index) => {
+      return {
+        completed: index % 3 === 0,
+        level: index,
+        runId: RUNS[8].id
+      }
+    })
+  })
+
   await createBossCompletionsInDB();
   console.timeEnd("script run time");
 

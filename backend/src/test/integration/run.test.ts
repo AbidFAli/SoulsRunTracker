@@ -63,7 +63,9 @@ describe('tests for createRun mutation', () => {
 
     const bossInstances = await prisma.bossInstance.findMany({
       where: {
-        gameId: game.id
+        gameLocation: {
+          gameId: game.id
+        }
       },
       orderBy: {
         id: "asc"

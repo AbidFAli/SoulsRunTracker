@@ -1,6 +1,7 @@
 import {
-  GameLocationCreateWithoutLocationInput
+  GameLocationCreateWithoutLocationInput,
 } from '#generated/prisma/models.js';
+import type { Prisma } from '#generated/prisma/client.js';
 import { prisma } from '#src/db/prisma.js';
 import { ABBREVIATION_TO_GAME, BOSSES, GameAbbreviation } from './boss.js';
 import { GAMES } from './game.js';
@@ -66,6 +67,12 @@ interface BossInstanceWithLocation extends NestedBossInstanceWithoutLocation{
 }
 
 async function createBossInstancesInDB(){
+  const games = await prisma.game.findMany();
+  const gameNameToIdMap = new Map<string, Prisma.GameModel>();
+  games.forEach((game) => {
+    gameNameToIdMap.set(game.name, game)
+  })
+
   const locationsWithIds: LocationSeedDataWithId[] = await as.mapLimit(LOCATIONS, LOCATION_MAP_LIMIT, 
     async (locationSeedData: LocationSeedData) => {
       const locations = await prisma.location.findMany({
@@ -99,6 +106,10 @@ async function createBossInstancesInDB(){
   });
 
   return as.mapLimit(bossInstances, LOCATION_MAP_LIMIT, async (bossInstance: BossInstanceWithLocation) => {
+    const game = gameNameToIdMap.get(bossInstance.game);
+    if(!game){
+      throw new Error(`no gameId found for game name=${bossInstance.game} on boss instance record`)
+    }
     return await prisma.bossInstance.create({
         data: {
           order: bossInstance.order,
@@ -107,16 +118,14 @@ async function createBossInstancesInDB(){
               name: bossInstance.name
             }
           },
-          location: {
+          gameLocation: {
             connect: {
-              id: bossInstance.locationId
+              gameId_locationId: {
+                locationId: bossInstance.locationId,
+                gameId: game.id,
+              }
             }
           },
-          game: {
-            connect: {
-              name: bossInstance.game
-            }
-          }
         }
       });
   });
