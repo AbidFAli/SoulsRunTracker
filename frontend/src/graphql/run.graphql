@@ -77,7 +77,6 @@ fragment RunPageRun on Run{
     ...RunPageCharacter
   }
   deaths
-
 }
 
 
@@ -121,4 +120,25 @@ fragment RunPageBossCompletion on BossCompletion{
   id
   instanceId
   completed
+}
+
+fragment EditPageRun on Run{
+  id
+  name
+  descriptionUrl
+  completed
+  cycles{
+    ...RunPageCycle
+  }
+  currentCycle
+  character{
+    ...RunPageCharacter
+  }
+  deaths
+}
+
+mutation UpdateUserRun($where: RunWhereUniqueInput!, $data: RunUpdateInput!){
+  updateRun(where: $where, data: $data){
+    ...EditPageRun
+  }
 }

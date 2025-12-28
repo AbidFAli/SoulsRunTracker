@@ -1,17 +1,19 @@
 "use client"
-import type { GetGamesQuery, GetUserRunsQueryVariables, PageInfo, DeleteUserRunsMutationVariables, PaginationOffsetInput } from '@/generated/graphql/graphql';
-import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument } from '@/generated/graphql/graphql';
-import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
 import { useMutation, useQuery } from "@apollo/client/react";
+import { Reference } from '@apollo/client';
+import { DownOutlined } from '@ant-design/icons';
+import lodash, {compact} from 'lodash';
 import type { MenuProps, TablePaginationConfig, AlertProps } from 'antd';
 import { Dropdown, Space, Typography, ConfigProvider, Button, Spin, Alert } from 'antd';
 import Link from 'next/link';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useContext, useEffect } from 'react';
 import { use } from 'react';
+
+import type { GetGamesQuery, GetUserRunsQueryVariables, PageInfo, DeleteUserRunsMutationVariables, PaginationOffsetInput } from '@/generated/graphql/graphql';
+import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument } from '@/generated/graphql/graphql';
+import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
 import { createRunCreatePageUrlSearchParams} from '@/util/routing'
 import { BasicPageLayout } from '@/components/BasicPageLayout';
-import { DownOutlined } from '@ant-design/icons';
-import lodash, {compact} from 'lodash';
 import { OffsetPaginationConfig, RunsTable, RunsTableFilters, RunsTableSelection, RunsTableSorter } from '@/components/RunsTable';
 import { useGetGames } from '@/app/user/[userId]/runs/useGetGames';
 import { themeConfig } from './theme';
@@ -19,7 +21,7 @@ import { MyRunsPageContext, MyRunsPageContextType } from './context';
 import { colors } from '@/util/colors';
 import styles from './page.module.scss'
 import { runsQueryGenerateCacheKey } from '@/util/apollo';
-import { Reference } from '@apollo/client';
+import { BasicPageLayoutContext } from "@/components/BasicPageLayout/context";
 
 const { Title} = Typography;
 
@@ -61,6 +63,7 @@ function createPaginationOffsetInput(config: OffsetPaginationConfig): Pagination
 
 export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   const params = use(props.params);
+  const {handleGraphqlError, setError: setPageError} = useContext(BasicPageLayoutContext);
   const [filters, setFilters] = useState<RunsTableFilters>({});
   const [sorter, setSorter] = useState<RunsTableSorter>({});
   const [selection, setSelection] = useState<RunsTableSelection>({all: false, selectedRows: []});
@@ -154,7 +157,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   }, [fetchMore])
 
   const [deleteUserRuns, {loading: deleteRunning, error: deletionError}] = useMutation(DeleteUserRunsDocument, {
-    refetchQueries: [GetUserRunsDocument]
+    refetchQueries: [GetUserRunsDocument],
   })
 
   const loading = useMemo(() => {
@@ -326,19 +329,25 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     return selection.all || selection.selectedRows.length > 0
   }, [selection.all, selection.selectedRows.length])
 
-  const errorText = useMemo<string>(() => {
+
+  useEffect(() => {
     const errors = compact([deletionError, getGamesError, getUserRunsError]);
     if(errors.length > 0){
-      return "There was an error"
+      handleGraphqlError(errors[0]);
     }
-    return "";
-  }, [deletionError, getGamesError, getUserRunsError])
+    else{
+      setPageError(undefined);
+    }
+  }, [
+      deletionError, 
+      getGamesError, 
+      getUserRunsError,
+      handleGraphqlError,
+      setPageError
+    ])
 
-  const alertCloseableProps = useMemo<NonNullable<AlertProps['closable']>>(() => {
-    return {
-      closeIcon: true
-    }
-  }, [])
+
+
 
   const onDeleteAll = useCallback(() => {
     if(window.confirm("Are you sure you want to delete all of your runs?")){
@@ -356,9 +365,6 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
 
     <ConfigProvider theme={themeConfig}>
       {loading && <Spin spinning={true} fullscreen size="large"/>}
-      {errorText && (
-        <Alert type="error" title={errorText} closable={alertCloseableProps} />
-      ) }
       <div className="flex min-w-full w-full">
         <Dropdown menu={menuProps}>
           <div className="border rounded-md border-white w-32 flex justify-center">

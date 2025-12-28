@@ -14,6 +14,7 @@ interface RunPageLayoutProps{
   bossCompletionBlock?: React.ReactNode;
   formProps?: React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>;
   footer?: React.ReactNode;
+  loading?: boolean;
 }
 
 interface ConditionalFormProps{
@@ -38,8 +39,16 @@ export function RunPageLayout({
   characterBlock, 
   bossCompletionBlock, 
   formProps,
-  footer
+  footer,
+  loading
 }: RunPageLayoutProps){
+
+  if(loading){
+    return (
+      <BasicPageLayout title={title} loading={true}>
+      </BasicPageLayout>
+    )
+  }
 
   return <BasicPageLayout title={title}>
     <ConditionalForm formProps={formProps}>

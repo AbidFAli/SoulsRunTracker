@@ -1,18 +1,22 @@
 "use client"
-import {use, useMemo} from 'react';
-import { Spin, Typography } from 'antd';
+import {use, useCallback, useContext, useMemo, useEffect} from 'react';
+import { Button, Row, Typography } from 'antd';
 import { useQuery } from '@apollo/client/react';
+import Link from 'next/link';
+import lodash from 'lodash';
 
 
 import { RunPageLayout } from '@/components/RunPageLayout';
 import { RunPageTitle } from '@/components/RunPageTitle';
 import { GetRunDocument } from '@/generated/graphql/graphql';
 import { BossCompletionCard } from '@/components/BossCompletionCard';
-import { BasicPageLayout } from '@/components/BasicPageLayout';
+import { BasicPageLayoutContext } from '@/components/BasicPageLayout/context';
 
 
 export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>){
   const params = use(props.params);
+  const {handleGraphqlError, setError: setPageError} = useContext(BasicPageLayoutContext);
+  
   
   const {data: runData, loading: runLoading, error: runError} = useQuery(GetRunDocument, {
     variables: {
@@ -21,6 +25,16 @@ export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>)
       }
     }
   })
+
+  
+  useEffect(() => {
+    const errors = lodash.compact([runError]);
+    if(errors.length > 0){
+      handleGraphqlError(errors[0]);
+    } else{
+      setPageError(undefined);
+    }
+  }, [handleGraphqlError, runError, setPageError]);
 
   const title = useMemo(() => {
     return <RunPageTitle gameName={runData?.run?.game?.name ?? ""} titleText={runData?.run?.name ?? ""} />
@@ -44,16 +58,23 @@ export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>)
         )
   }, [runData])
 
-  if(runLoading){
+  const footer = useMemo(() => {
     return (
-      <BasicPageLayout title={undefined} loading={true}>
-      </BasicPageLayout>
+      <Row>
+        <Link href={`/user/${params.userId}/runs/${params.runId}/edit`}>
+          <Button>Edit</Button>
+        </Link>
+        
+      </Row>
     )
-  }
+  }, [params.runId, params.userId])
+
   
   return <RunPageLayout 
-          title={title}
+          title={runLoading ? undefined : title}
           summaryBlock={statsBlock}
           bossCompletionBlock={bossCompletionBlock}
+          loading={runLoading}
+          footer={footer}
           />
 }

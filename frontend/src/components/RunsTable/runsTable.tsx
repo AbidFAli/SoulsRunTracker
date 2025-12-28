@@ -163,7 +163,9 @@ export function RunsTable(
             </Col>
             <Col span={12}>
               {record.id === rowHoveredId && (
-                <EditFilled style={{color: 'white'}} />
+                <Link href={`/user/${userId}/runs/${record.id}/edit`}>
+                  <EditFilled style={{color: 'white'}} />
+                </Link>
               )}
             </Col>
           </Row>

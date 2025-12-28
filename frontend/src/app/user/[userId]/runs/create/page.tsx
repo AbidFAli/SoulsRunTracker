@@ -4,10 +4,11 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import { Alert, Button, Col, Input, Row, Space } from "antd";
 import dynamic from "next/dynamic";
 import type Quill from "quill";
-import React, { use, useCallback, useMemo, useRef } from "react";
+import React, { use, useCallback, useContext, useMemo, useRef, useEffect } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { Controller, useForm } from 'react-hook-form';
 import { useRouter } from "next/navigation";
+import lodash from 'lodash';
 
 import { ABBREVIATION_TO_GAME } from "@/util/gameAbbreviation";
 import type { RunDescriptionEditorProps } from "@/components/RunDescriptionEditor/index";
@@ -18,6 +19,8 @@ import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
 import { RunPageTitle } from "@/components/RunPageTitle";
 import { RunPageLayout } from "@/components/RunPageLayout";
 import { FormInput } from "@/components/Form/formInput";
+import { RunNameInput } from "@/components/RunForm";
+import { BasicPageLayoutContext } from "@/components/BasicPageLayout/context";
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
@@ -34,10 +37,11 @@ interface CreateRunFormData{
 
 
 export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/create'>){
-  // Use a ref to access the quill instance directly
+  
   const router = useRouter();
   const params = use(props.params);
   const searchParams = use(props.searchParams);
+  
   const parsedSearchParams = useMemo(() => {
     return ZRunCreatePageUrlSearchParams.parse(searchParams);
   }, [searchParams])
@@ -54,13 +58,24 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     }
   }, [gameName])
 
+  const {handleGraphqlError, setError: setPageError} = useContext(BasicPageLayoutContext);
+
   const {data: gameData, loading: gameDataLoading, error: gameDataError} = useQuery(GetGameInformationDocument, {variables : getGameInfoQueryVars});
-  const [createRunMutation, {data, loading, error}] = useMutation(CreateRunDocument);
+  const [createRunMutation, {data, loading, error: createRunError}] = useMutation(CreateRunDocument);
 
   const mounted = useMounted();
+  // Use a ref to access the quill instance directly
   const quillRef = useRef<Quill| null>(null);
 
 
+  useEffect(() => {
+    const errors = lodash.compact([gameDataError, createRunError]);
+    if(errors.length > 0){
+      handleGraphqlError(errors[0]);
+    } else{
+      setPageError(undefined);
+    }
+  }, [createRunError, gameDataError, handleGraphqlError, setPageError])
 
   const {
     register,
@@ -68,6 +83,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     watch,
     control,
     formState: { errors: formErrors },
+    reset
   } = useForm<CreateRunFormData>()
 
   const onSubmit = useCallback<SubmitHandler<CreateRunFormData>>((formData) => {
@@ -106,27 +122,24 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     return <RunPageTitle gameName={gameName} titleText="Create your run" />
   }, [gameName])
   
+  const onResetClick = useCallback(() => {
+    reset();
+  }, [reset])
   const footer = useMemo(() => {
     return (
-      <Button onClick={onSaveClick}>Save</Button>
+      <Space>
+        <Button onClick={onSaveClick}>Save</Button>
+        <Button onClick={onResetClick}>Reset</Button>
+      </Space>
+      
     )
-  }, [onSaveClick])
+  }, [onSaveClick, onResetClick])
 
   const summaryBlock = useMemo(() => {
     return (
       <Space orientation="vertical" className="w-full" size="middle">
-        <FormInput 
-          controllerProps={{
-            name: "name",
-            control: control,
-            rules: {
-              required: {value: true, message: "This field is required"}, 
-              maxLength: {value: 256, message: "Max length 256 characters"}
-            }
-          }}
-          inputProps={{
-            placeholder:"Enter a name for your run"
-          }}
+        <RunNameInput<CreateRunFormData>
+          control={control}
         />
         {mounted && <RunDescriptionEditor ref={quillRef} readOnly={false}   /> }
       </Space>

@@ -39,7 +39,6 @@ export const apolloClient = new ApolloClient({
           fields: {
             runs: {
               keyArgs(args, context){
-                //return "runs:${JSON.stringify(args)}"
                 if(args === null){
                   return context.fieldName;
                 }

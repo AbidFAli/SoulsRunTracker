@@ -2,7 +2,7 @@ import { Alert, AlertProps, Col, Input, InputProps, Row } from "antd"
 import { Controller, ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 
 
-interface FormInputProps<
+export interface FormInputProps<
   TFieldValues extends FieldValues = FieldValues, 
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TTransformedValues = TFieldValues>{
