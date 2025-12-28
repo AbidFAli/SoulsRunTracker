@@ -21,7 +21,8 @@ import { MyRunsPageContext, MyRunsPageContextType } from './context';
 import { colors } from '@/util/colors';
 import styles from './page.module.scss'
 import { runsQueryGenerateCacheKey } from '@/util/apollo';
-import { BasicPageLayoutContext } from "@/components/BasicPageLayout/context";
+import { PageErrorMessengerContext } from "@/hooks/pageError/context";
+import { usePageError } from "@/hooks/pageError/usePageError";
 
 const { Title} = Typography;
 
@@ -63,7 +64,6 @@ function createPaginationOffsetInput(config: OffsetPaginationConfig): Pagination
 
 export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   const params = use(props.params);
-  const {handleGraphqlError, setError: setPageError} = useContext(BasicPageLayoutContext);
   const [filters, setFilters] = useState<RunsTableFilters>({});
   const [sorter, setSorter] = useState<RunsTableSorter>({});
   const [selection, setSelection] = useState<RunsTableSelection>({all: false, selectedRows: []});
@@ -330,23 +330,17 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   }, [selection.all, selection.selectedRows.length])
 
 
-  useEffect(() => {
-    const errors = compact([deletionError, getGamesError, getUserRunsError]);
+  const pageError = useMemo(() => {
+    const errors = lodash.compact([deletionError, getGamesError, getUserRunsError]);
     if(errors.length > 0){
-      handleGraphqlError(errors[0]);
+      return errors[0];
+    } else{
+      return undefined;
     }
-    else{
-      setPageError(undefined);
-    }
-  }, [
-      deletionError, 
-      getGamesError, 
-      getUserRunsError,
-      handleGraphqlError,
-      setPageError
-    ])
+  }, [deletionError, getGamesError, getUserRunsError])
 
-
+  const {context: pageErrorContext} = usePageError({error: pageError})
+  
 
 
   const onDeleteAll = useCallback(() => {
@@ -359,56 +353,59 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     executeDelete();
   }, [executeDelete])
 
-  return <BasicPageLayout
-    title={<Title level={1}>My Runs</Title>}
-  >
-
-    <ConfigProvider theme={themeConfig}>
-      {loading && <Spin spinning={true} fullscreen size="large"/>}
-      <div className="flex min-w-full w-full">
-        <Dropdown menu={menuProps}>
-          <div className="border rounded-md border-white w-32 flex justify-center">
-            <Space>
-              <Typography>Create Run</Typography>
-              <DownOutlined />
-            </Space>
+  return (
+    <PageErrorMessengerContext value={pageErrorContext}>
+      <BasicPageLayout
+        title={<Title level={1}>My Runs</Title>}
+      >
+        <ConfigProvider theme={themeConfig}>
+          {loading && <Spin spinning={true} fullscreen size="large"/>}
+          <div className="flex min-w-full w-full">
+            <Dropdown menu={menuProps}>
+              <div className="border rounded-md border-white w-32 flex justify-center">
+                <Space>
+                  <Typography>Create Run</Typography>
+                  <DownOutlined />
+                </Space>
+              </div>
+            </Dropdown>
           </div>
-        </Dropdown>
-      </div>
-      
-      <MyRunsPageContext value={myRunsPageContext}>
-        <RunsTable 
-          data={runsData?.runs?.edges ?? []}
-          gamesData={cleanedGamesData}
-          pagination={tablePaginationConfig}
-          filters={filters}
-          updateFilters={setFilters}
-          updatePagination={setPaginationState}
-          selection={selection}
-          updateSelection={setSelection}
-          showSelection={true}
-          fetchMore={fetchMoreRuns}
-        />
-      </MyRunsPageContext>
-      {
-        anySelected && (
-        <div className={`${styles['delete-action-bar']}`}>
-          <div className="p-1.5 w-full rounded-md flex justify-center items-center gap-4"style={{backgroundColor: colors.dropdown}}>
-            <Typography>{selection.selectedRows.length} selected</Typography>
-            <Button danger={true} disabled={loading} onClick={onConfirmDelete}>Delete</Button>
-            <Button onClick={onCancelDelete}>Cancel</Button>
+          
+          <MyRunsPageContext value={myRunsPageContext}>
+            <RunsTable 
+              data={runsData?.runs?.edges ?? []}
+              gamesData={cleanedGamesData}
+              pagination={tablePaginationConfig}
+              filters={filters}
+              updateFilters={setFilters}
+              updatePagination={setPaginationState}
+              selection={selection}
+              updateSelection={setSelection}
+              showSelection={true}
+              fetchMore={fetchMoreRuns}
+            />
+          </MyRunsPageContext>
+          {
+            anySelected && (
+            <div className={`${styles['delete-action-bar']}`}>
+              <div className="p-1.5 w-full rounded-md flex justify-center items-center gap-4"style={{backgroundColor: colors.dropdown}}>
+                <Typography>{selection.selectedRows.length} selected</Typography>
+                <Button danger={true} disabled={loading} onClick={onConfirmDelete}>Delete</Button>
+                <Button onClick={onCancelDelete}>Cancel</Button>
+              </div>
+            </div>
+            )
+          }
+
+          <div>
+            <Button 
+              danger={true}
+              disabled={selection.selectedRows.length > 0}
+              onClick={onDeleteAll}>Delete All Runs</Button>
           </div>
-        </div>
-        )
-      }
 
-      <div>
-        <Button 
-          danger={true}
-          disabled={selection.selectedRows.length > 0}
-          onClick={onDeleteAll}>Delete All Runs</Button>
-      </div>
-
-    </ConfigProvider>
-  </BasicPageLayout>
+        </ConfigProvider>
+      </BasicPageLayout>
+    </PageErrorMessengerContext>
+  )
 }

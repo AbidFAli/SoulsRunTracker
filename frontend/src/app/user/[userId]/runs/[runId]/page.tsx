@@ -10,12 +10,12 @@ import { RunPageLayout } from '@/components/RunPageLayout';
 import { RunPageTitle } from '@/components/RunPageTitle';
 import { GetRunDocument } from '@/generated/graphql/graphql';
 import { BossCompletionCard } from '@/components/BossCompletionCard';
-import { BasicPageLayoutContext } from '@/components/BasicPageLayout/context';
+import { PageErrorMessengerContext } from '@/hooks/pageError/context';
+import { usePageError } from '@/hooks/pageError/usePageError';
 
 
 export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>){
   const params = use(props.params);
-  const {handleGraphqlError, setError: setPageError} = useContext(BasicPageLayoutContext);
   
   
   const {data: runData, loading: runLoading, error: runError} = useQuery(GetRunDocument, {
@@ -26,15 +26,17 @@ export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>)
     }
   })
 
-  
-  useEffect(() => {
+  const pageError = useMemo(() => {
     const errors = lodash.compact([runError]);
     if(errors.length > 0){
-      handleGraphqlError(errors[0]);
+      return errors[0];
     } else{
-      setPageError(undefined);
+      return undefined;
     }
-  }, [handleGraphqlError, runError, setPageError]);
+  }, [runError])
+
+  const {context: pageErrorContext} = usePageError({error: pageError})
+
 
   const title = useMemo(() => {
     return <RunPageTitle gameName={runData?.run?.game?.name ?? ""} titleText={runData?.run?.name ?? ""} />
@@ -70,11 +72,16 @@ export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>)
   }, [params.runId, params.userId])
 
   
-  return <RunPageLayout 
-          title={runLoading ? undefined : title}
-          summaryBlock={statsBlock}
-          bossCompletionBlock={bossCompletionBlock}
-          loading={runLoading}
-          footer={footer}
-          />
+  return (
+    <PageErrorMessengerContext value={pageErrorContext}>
+      <RunPageLayout 
+        title={runLoading ? undefined : title}
+        summaryBlock={statsBlock}
+        bossCompletionBlock={bossCompletionBlock}
+        loading={runLoading}
+        footer={footer}
+        />
+   </PageErrorMessengerContext> 
+  )
+
 }

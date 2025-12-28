@@ -20,7 +20,8 @@ import { RunPageTitle } from "@/components/RunPageTitle";
 import { RunPageLayout } from "@/components/RunPageLayout";
 import { FormInput } from "@/components/Form/formInput";
 import { RunNameInput } from "@/components/RunForm";
-import { BasicPageLayoutContext } from "@/components/BasicPageLayout/context";
+import { PageErrorMessengerContext } from "@/hooks/pageError/context";
+import { usePageError } from "@/hooks/pageError/usePageError";
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
@@ -58,7 +59,6 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     }
   }, [gameName])
 
-  const {handleGraphqlError, setError: setPageError} = useContext(BasicPageLayoutContext);
 
   const {data: gameData, loading: gameDataLoading, error: gameDataError} = useQuery(GetGameInformationDocument, {variables : getGameInfoQueryVars});
   const [createRunMutation, {data, loading, error: createRunError}] = useMutation(CreateRunDocument);
@@ -68,14 +68,17 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
   const quillRef = useRef<Quill| null>(null);
 
 
-  useEffect(() => {
+  const pageError = useMemo(() => {
     const errors = lodash.compact([gameDataError, createRunError]);
     if(errors.length > 0){
-      handleGraphqlError(errors[0]);
+      return errors[0];
     } else{
-      setPageError(undefined);
+      return undefined;
     }
-  }, [createRunError, gameDataError, handleGraphqlError, setPageError])
+  }, [gameDataError, createRunError])
+
+  const {context: pageErrorContext} = usePageError({error: pageError})
+  
 
   const {
     register,
@@ -150,13 +153,14 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     return {};
   }, [])
 
-  return <RunPageLayout 
-    title={title} 
-    formProps={formProps}
-    footer={footer}
-    summaryBlock={summaryBlock}
-    />
-
-
-      
+  return (
+    <PageErrorMessengerContext value={pageErrorContext}>
+      <RunPageLayout 
+        title={title} 
+        formProps={formProps}
+        footer={footer}
+        summaryBlock={summaryBlock}
+        />
+    </PageErrorMessengerContext>
+  )      
 }

@@ -5,7 +5,7 @@ import { RunPageTitle } from "@/components/RunPageTitle";
 import { GetRunDocument, UpdateUserRunDocument } from "@/generated/graphql/graphql";
 import { RunNameInput } from "@/components/RunForm";
 import { unnullify } from "@/util/graphql";
-import { BasicPageLayoutContext } from "@/components/BasicPageLayout/context";
+import { PageErrorMessengerContext } from "@/hooks/pageError/context";
 
 import { useMutation, useQuery } from "@apollo/client/react";
 import { use, useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -13,6 +13,7 @@ import { Controller, useForm } from 'react-hook-form';
 import type { SubmitHandler } from "react-hook-form";
 import { Button, Checkbox, Col, Row, Space, Typography } from "antd";
 import lodash from 'lodash';
+import { usePageError } from "@/hooks/pageError/usePageError";
 
 interface EditRunFormData{
   name?: string;
@@ -22,7 +23,6 @@ interface EditRunFormData{
 export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId]/edit'>){
   const params = use(props.params);
 
-  const {handleGraphqlError, setError: setPageError} = useContext(BasicPageLayoutContext);
   
   
 
@@ -63,14 +63,17 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
 
   const [updateRun, {error: updateRunError, loading: updateRunLoading}] = useMutation(UpdateUserRunDocument)
 
-  useEffect(() => {
+  const pageError = useMemo(() => {
     const errors = lodash.compact([updateRunError, runError]);
     if(errors.length > 0){
-      handleGraphqlError(errors[0]);
+      return errors[0];
     } else{
-      setPageError(undefined);
+      return undefined;
     }
-  }, [handleGraphqlError, runError, setPageError, updateRunError])
+  }, [runError, updateRunError])
+
+  const {context: pageErrorContext} = usePageError({error: pageError})
+  
   
   
   const title = useMemo(() => {
@@ -144,12 +147,16 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
   }, [])
 
 
+  return (
+    <PageErrorMessengerContext value={pageErrorContext}>
+      <RunPageLayout
+          title={runLoading ? undefined : title}
+          summaryBlock={summaryBlock}
+          loading={runLoading || updateRunLoading}
+          footer={footer}
+          formProps={formProps}
+        />
+    </PageErrorMessengerContext>
+  )
 
-  return <RunPageLayout
-    title={runLoading ? undefined : title}
-    summaryBlock={summaryBlock}
-    loading={runLoading || updateRunLoading}
-    footer={footer}
-    formProps={formProps}
-  />
 }
