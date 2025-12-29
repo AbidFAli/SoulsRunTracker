@@ -7,7 +7,7 @@ type Run{
   game: Game
   userId: ID
   cycles: [Cycle!]
-  currentCycle: Int
+  currentCycle: Cycle
   character: Character
   deaths: Int
   modifiedAt: DateTime

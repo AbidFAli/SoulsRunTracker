@@ -144,7 +144,7 @@ async function main() {
     data: Array.from({length: 20}, (_, index) => {
       return {
         completed: index % 3 === 0,
-        level: index,
+        level: index + 1,
         runId: RUNS[8].id
       }
     })

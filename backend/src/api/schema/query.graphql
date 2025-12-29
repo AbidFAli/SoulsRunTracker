@@ -8,5 +8,6 @@ type Query{
     pagination: RunPaginationInput!,
     orderBy: [RunOrderByInput!]
   ): RunConnection
+  cycle(where: CycleWhereUniqueInput!): Cycle
 }
 

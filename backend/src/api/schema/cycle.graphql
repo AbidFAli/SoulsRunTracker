@@ -5,3 +5,7 @@ type Cycle{
   runId: ID!
   bossesCompleted: [BossCompletion!]
 }
+
+input CycleWhereUniqueInput{
+  id: ID!
+}

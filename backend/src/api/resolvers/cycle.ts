@@ -9,3 +9,9 @@ export const cycleResolvers: graphql.CycleResolvers = {
     return prisma.bossCompletion.findMany({where: { cycleId: parent.id}});
   }
 }
+
+export const cycleQueryResolvers: Pick<graphql.QueryResolvers, "cycle"> = {
+  cycle(parent, args){
+    return prisma.cycle.findUnique({where: args.where});
+  }
+}

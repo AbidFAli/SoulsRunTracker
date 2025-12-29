@@ -29,7 +29,7 @@ export const backendConfig: CodegenConfig = {
         output: 'string | Date'
       }
     },
-    defaultMapper: "Partial<{T}>"
+    defaultMapper: "Partial<{T}>",
   },
   generates: {
     './generated/graphql/test/': {
@@ -38,6 +38,7 @@ export const backendConfig: CodegenConfig = {
     './generated/graphql/types.ts': {
         config: {
           useIndexSignature: true,
+          allowParentTypeOverride: true,
           mappers: {
 
           }
