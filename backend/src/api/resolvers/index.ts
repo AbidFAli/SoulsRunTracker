@@ -1,6 +1,6 @@
 import { bossCompletionResolvers } from './bossCompletion.js'
 import { bossInstanceResolvers } from './bossInstance.js'
-import { cycleResolvers } from './cycle.js'
+import { cycleResolvers, cycleQueryResolvers } from './cycle.js'
 import { gameFieldResolvers, gameQueryResolvers } from './game.js'
 import { gameLocationFieldResolvers } from './gameLocation.js'
 import { gameStatFieldResolvers } from './gameStat.js'
@@ -20,6 +20,7 @@ export const resolvers: Resolvers = {
   Query: {
     ...gameQueryResolvers,
     ...runsQueryResolvers,
+    ...cycleQueryResolvers,
   },
   Mutation: {
     ...runMutationResolvers,

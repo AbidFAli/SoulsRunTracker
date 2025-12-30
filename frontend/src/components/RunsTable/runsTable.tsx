@@ -15,7 +15,7 @@ import { NameColumnHeader } from "./nameColumnHeader";
 import { ColumnHeader } from "./columnHeader";
 import { RunTableContext, RunTableContextState } from "./context";
 import { FilterIcon } from "./filterIcon";
-import { SortIcon } from "./sortIcon";
+import { SortIcon } from "../SortIcon/sortIcon";
 import { MyRunsPageContext } from "@/app/user/[userId]/runs/context";
 import type { RunsTableSelection} from "./types";
 import { convertSortOrderToGraphql } from "@/util/antd";
@@ -142,9 +142,8 @@ export function RunsTable(
       {
         key: 'currentCycle',
         title: <ColumnHeader value={'Cycle'} />,
-        dataIndex: 'currentCycle',
         render(_, record){
-          return `NG+${record.currentCycle ?? 0}`
+          return `NG+${record.currentCycle?.level ?? 0}`
         },
         width: WIDTH_NUMBER_COL,
         filteredValue: [],

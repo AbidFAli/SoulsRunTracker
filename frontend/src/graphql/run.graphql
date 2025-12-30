@@ -29,15 +29,26 @@ fragment UserRuns on Run{
   name
   completed
   gameId
-  currentCycle
+  currentCycle{
+    ...UserRunsCycle
+  }
   deaths
   createdAt
   modifiedAt
   character{
-    id
-    name
-    level
+    ...UserRunsCharacter
   }
+}
+
+fragment UserRunsCycle on Cycle{
+  id
+  level
+}
+
+fragment UserRunsCharacter on Character{
+  id
+  name
+  level
 }
 
 query GetUserRuns($where: RunWhereInput!, $pagination: RunPaginationInput!, $orderBy: [RunOrderByInput!]){
@@ -72,7 +83,9 @@ fragment RunPageRun on Run{
   cycles{
     ...RunPageCycle
   }
-  currentCycle
+  currentCycle{
+    ...RunPageDetailedCycle
+  }
   character{
     ...RunPageCharacter
   }
@@ -111,9 +124,6 @@ fragment RunPageCycle on Cycle{
   id
   level
   completed
-  bossesCompleted{
-    ...RunPageBossCompletion
-  }
 }
 
 fragment RunPageBossCompletion on BossCompletion{
@@ -130,7 +140,9 @@ fragment EditPageRun on Run{
   cycles{
     ...RunPageCycle
   }
-  currentCycle
+  currentCycle{
+    ...RunPageDetailedCycle
+  }
   character{
     ...RunPageCharacter
   }
@@ -140,5 +152,19 @@ fragment EditPageRun on Run{
 mutation UpdateUserRun($where: RunWhereUniqueInput!, $data: RunUpdateInput!){
   updateRun(where: $where, data: $data){
     ...EditPageRun
+  }
+}
+
+fragment RunPageDetailedCycle on Cycle{
+  ...RunPageCycle
+  bossesCompleted{
+    ...RunPageBossCompletion
+  }
+}
+
+
+query GetCycle($where: CycleWhereUniqueInput!){
+  cycle(where:$where){
+    ...RunPageDetailedCycle
   }
 }

@@ -10,7 +10,8 @@
     "generate": "npx graphql-codegen",
     "test": "vitest",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
