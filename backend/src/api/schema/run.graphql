@@ -23,6 +23,7 @@ input RunCreateInput{
   userId: String!
   character: CharacterCreateWithoutRunInput
   deaths: Int
+  cycles: [CycleCreateWithoutRunInput!]
 }
 
 input CharacterCreateWithoutRunInput{

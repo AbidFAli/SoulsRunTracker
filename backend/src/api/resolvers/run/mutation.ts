@@ -14,6 +14,18 @@ const { isNil, compact, flatMap} = lodash;
 export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" | "deleteRuns" | "updateRun"> = {
   async createRun(parent, args){
     const cleanedInput = args.run as Unnullified<graphql.RunCreateInput>;
+    const cyclesToCreate: Prisma.CycleCreateWithoutRunInput[] = (cleanedInput.cycles ?? []).map((cycle) => {
+      return {
+        completed: cycle.completed,
+        level: cycle.level,
+        bossesCompleted: {
+          createMany: {
+            data: cycle.bossesCompleted?.upsert ?? []
+          }
+        }
+      }
+    });
+
     const runCreateInput: RunCreateInput = {
       name: cleanedInput.name,
       descriptionUrl: cleanedInput.descriptionUrl,
@@ -31,12 +43,11 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" |
       },
       character: cleanedInput.character ? {create: { ...cleanedInput.character}} : undefined,
       cycles: {
-        create: {
-          completed: false,
-          level: 0,
-        }
+        create: cyclesToCreate,
       }
     }
+
+
 
     const transactionResult = await prisma.$transaction(async(txn) => {
       const run = await txn.run.create({
