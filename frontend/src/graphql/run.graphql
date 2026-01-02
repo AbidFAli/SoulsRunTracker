@@ -1,29 +1,10 @@
 mutation CreateRun($input: RunCreateInput!){
-  createRun(run: $input){ #i know the gameId
+  createRun(run: $input){
     id
-    name
-    descriptionUrl
-    completed
-    deaths
-    createdAt
-    modifiedAt
-    cycles{
-      id
-      level
-      completed
-      bossesCompleted{
-        id
-        completed
-        instance{ #look up instance information in another request
-          id
-          bossId
-          locationId
-        }
-      }
-    }
   }
 }
 
+# Run for MyRunsPage
 fragment UserRuns on Run{
   id
   name
@@ -72,6 +53,7 @@ query GetRun($where: RunWhereUniqueInput!){
   }
 }
 
+# Run for RunPage
 fragment RunPageRun on Run{
   id
   name
@@ -132,6 +114,7 @@ fragment RunPageBossCompletion on BossCompletion{
   completed
 }
 
+# Run returned by UpdateUserRun mutation
 fragment EditPageRun on Run{
   id
   name
@@ -155,6 +138,7 @@ mutation UpdateUserRun($where: RunWhereUniqueInput!, $data: RunUpdateInput!){
   }
 }
 
+# Cycle with boss completion information
 fragment RunPageDetailedCycle on Cycle{
   ...RunPageCycle
   bossesCompleted{

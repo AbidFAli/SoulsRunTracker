@@ -1,27 +1,30 @@
 'use client'
 
 import { useMutation, useQuery } from "@apollo/client/react";
-import { Alert, Button, Col, Input, Row, Space } from "antd";
+import {  Button, Space } from "antd";
 import dynamic from "next/dynamic";
 import type Quill from "quill";
-import React, { use, useCallback, useContext, useMemo, useRef, useEffect } from "react";
+import React, { use, useCallback,  useMemo, useRef,  } from "react";
 import type { SubmitHandler } from "react-hook-form";
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useRouter } from "next/navigation";
 import lodash from 'lodash';
 
 import { ABBREVIATION_TO_GAME } from "@/util/gameAbbreviation";
 import type { RunDescriptionEditorProps } from "@/components/RunDescriptionEditor/index";
-import type { GetGameInformationQueryVariables } from "@/generated/graphql/graphql";
+import type {  GetGameInformationQueryVariables } from "@/generated/graphql/graphql";
 import { CreateRunDocument, GetGameInformationDocument } from "@/generated/graphql/graphql";
 import { useMounted } from "@/hooks/useMounted";
 import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
 import { RunPageTitle } from "@/components/RunPageTitle";
 import { RunPageLayout } from "@/components/RunPageLayout";
-import { FormInput } from "@/components/Form/formInput";
 import { RunNameInput } from "@/components/RunForm";
 import { PageErrorMessengerContext } from "@/hooks/pageError/context";
 import { usePageError } from "@/hooks/pageError/usePageError";
+import { CycleList } from "@/components/CycleList";
+import { scrollToBossCompletionTitle } from "@/util/RunPage";
+import { useFormCycles } from "./useFormCycles";
+import { BossCompletionSection } from "@/components/BossCompletionSection";
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
@@ -30,8 +33,18 @@ const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dyn
 
 const {Compact: CompactSpace} = Space;
 
-interface CreateRunFormData{
+export interface CreateRunFormBossCompletion{
+  completed?: boolean;
+  instanceId: string;
+}
+export interface CreateRunFormCycle{
+  completed?: boolean;
+  level?: number;
+  bossesCompleted?: CreateRunFormBossCompletion[];
+}
+export interface CreateRunFormData{
   name?: string;
+  cycles: CreateRunFormCycle[];
 }
 
 
@@ -87,7 +100,15 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     control,
     formState: { errors: formErrors },
     reset
-  } = useForm<CreateRunFormData>()
+  } = useForm<CreateRunFormData>({
+    defaultValues: {cycles: []}
+  });
+
+  const {
+    cycles,
+    onAddCycle,
+    onDeleteCycle,
+  } = useFormCycles({control});
 
   const onSubmit = useCallback<SubmitHandler<CreateRunFormData>>((formData) => {
     if(formData.name && gameData?.game?.id){
@@ -153,6 +174,22 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     return {};
   }, [])
 
+  const bossCompletionBlockRef = useRef<HTMLDivElement | null>(null);
+
+  const cycleBlock = useMemo(() => {
+    return (
+      <CycleList 
+        cycles={cycles}
+        onCycleClick={(cycle) => {
+          scrollToBossCompletionTitle(bossCompletionBlockRef);
+        }}
+        editable={true}
+        onAddCycle={onAddCycle}
+        onDeleteCycle={onDeleteCycle}
+      />
+    )
+  }, [cycles, onAddCycle, onDeleteCycle])
+
   return (
     <PageErrorMessengerContext value={pageErrorContext}>
       <RunPageLayout 
@@ -160,6 +197,8 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
         formProps={formProps}
         footer={footer}
         summaryBlock={summaryBlock}
+        bossCompletionTitleRef={bossCompletionBlockRef}
+        cyclesBlock={cycleBlock}
         />
     </PageErrorMessengerContext>
   )      

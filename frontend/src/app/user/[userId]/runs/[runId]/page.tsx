@@ -12,8 +12,9 @@ import { GetCycleDocument, GetRunDocument, RunPageCycleFragment, RunPageDetailed
 import { BossCompletionCard } from '@/components/BossCompletionSection';
 import { PageErrorMessengerContext } from '@/hooks/pageError/context';
 import { usePageError } from '@/hooks/pageError/usePageError';
-import { CycleList } from '@/components/CycleList';
+import { CycleList, CycleListCycle } from '@/components/CycleList';
 import { BossCompletionSection } from '@/components/BossCompletionSection/bossCompletionSection';
+import { scrollToBossCompletionTitle } from '@/util/RunPage';
 
 
 export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>){
@@ -96,20 +97,39 @@ export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>)
     )
   }, [runData, onChangeCycle, currentCycleDetails, cycleLoading])
 
+  const cycles = useMemo<CycleListCycle[]>(() => {
+    if(!runData?.run?.cycles){
+      return []
+    }
+
+    const errors: string[] = [];
+    const filteredCycles = runData.run.cycles.filter((cycle) => {
+      if(lodash.isNumber(cycle.level)){
+        return true;
+      }
+      else{
+        errors.push(cycle.id)
+        return false;
+      }
+    });
+
+    if(errors.length > 0){
+      console.error(`The following cycles did not have a level: ${filteredCycles} `)
+    }
+    return filteredCycles as CycleListCycle[];
+  }, [runData])
+
   const cycleBlock = useMemo(() => {
     return runData?.run?.cycles && (
       <CycleList
-        cycles={runData.run.cycles}
+        cycles={cycles}
         onCycleClick={(cycle) => {
-          if(bossCompletionBlockRef.current){
-            const coords = bossCompletionBlockRef.current.getBoundingClientRect();
-            window.scrollTo(window.scrollX, Math.max(coords.y + window.scrollY - 20, 0));
-          }
-          onChangeCycle(cycle)
+          scrollToBossCompletionTitle(bossCompletionBlockRef);
+          onChangeCycle(cycle as RunPageCycleFragment);
         }}
       />
     )
-  }, [runData, onChangeCycle])
+  }, [runData, onChangeCycle, cycles])
 
   const footer = useMemo(() => {
     return (

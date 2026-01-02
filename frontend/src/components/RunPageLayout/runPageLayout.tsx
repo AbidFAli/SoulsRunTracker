@@ -69,6 +69,7 @@ export function RunPageLayout({
       <Divider />
       <Title level={2}>Cycles</Title>
       {cyclesBlock}
+      {footer && <Divider />}
       {footer}
     </ConditionalForm>
   </BasicPageLayout>

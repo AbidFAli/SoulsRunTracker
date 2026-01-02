@@ -1,30 +1,44 @@
-import { SortOrder, type RunPageCycleFragment } from "@/generated/graphql/graphql"
+import { SortOrder } from "@/generated/graphql/graphql"
 import { RunPageListCard } from "../RunPageListCard";
+import { SortIcon } from "../SortIcon";
 
 import { useCallback, useMemo, useState } from "react";
-import { Card, List, Typography } from "antd";
+import { Button, Col, List, Row, Typography } from "antd";
 import lodash from 'lodash'
-import { SortIcon } from "../SortIcon";
+import { DeleteFilled, PlusCircleOutlined } from "@ant-design/icons";
 
 const { Item: ListItem} = List;
 
-export interface CycleListProps{
-  cycles: RunPageCycleFragment[];
-  onCycleClick: (cycle: RunPageCycleFragment) => void;
+export interface CycleListCycle{
+  id?: string;
+  level: number;
+  completed?: boolean;
+}
+export interface CycleListProps<T extends CycleListCycle = CycleListCycle>{
+  cycles: T[];
+  onCycleClick: (cycle: T) => void;
+  editable?: boolean;
+  onAddCycle?: () => void;
+  onDeleteCycle?: () => void;
 }
 
 
-function cycleListRowKey(data: RunPageCycleFragment){
-  return data.id;
+function cycleListRowKey(data: CycleListCycle){
+  return data.level;
 }
-export function CycleList({
+
+export function CycleList<T extends CycleListCycle = CycleListCycle>({
   cycles,
-  onCycleClick
-}: CycleListProps){
+  onCycleClick,
+  editable,
+  onAddCycle,
+  onDeleteCycle,
+}: CycleListProps<T>){
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.Desc);
+  const [hoveredCycle, setHoveredCycle] = useState<number | undefined>();
   const sortedCycles = useMemo(() => {
     return lodash.sortBy(cycles, (cycle) => {
-      const order = cycle.level ?? 0;
+      const order = cycle.level;
       if(sortOrder === SortOrder.Asc){
         return order;
       }
@@ -43,20 +57,57 @@ export function CycleList({
     }
   }, [sortOrder]);
 
-  const listRenderFunction = useCallback((item: RunPageCycleFragment) => {
+  const listRenderFunction = useCallback((item: T, index: number) => {
+    const lastCycle = sortOrder === SortOrder.Asc ? sortedCycles.at(-1) : sortedCycles[0];
+    const isLastCycle = item.level === lastCycle?.level;
+
     return (
-      <ListItem onClick={() => onCycleClick(item)}>
-        <Typography>NG+{item.level}</Typography>
+      <ListItem
+        onMouseOver={() => isLastCycle && setHoveredCycle(item.level ?? undefined)}
+        onMouseLeave={() => isLastCycle && setHoveredCycle(undefined)}
+      >
+        <Row>
+          <Col span={8}>
+            <Row>
+              <Typography
+                onClick={() => onCycleClick(item)} 
+                className="cursor-pointer">
+                  NG+{item.level}
+              </Typography>
+            </Row>
+          </Col>
+          <Col span={8} offset={8}>
+            <Row justify={"end"}>
+              {
+                editable && hoveredCycle===item.level && isLastCycle && (
+                <DeleteFilled
+                  style={{color: "white"}}
+                  onClick={onDeleteCycle}
+                />  
+              )
+            }
+            </Row>
+          </Col>
+        </Row>
       </ListItem>
     )
-  }, [onCycleClick])
+  }, [onCycleClick, hoveredCycle, onDeleteCycle, editable, sortOrder, sortedCycles])
 
   return (
     <RunPageListCard>
-      <div className="flex">
+      <div className="flex gap-x-4">
         <SortIcon direction={sortOrder} onClick={toggleSortOrder} />
+        {
+          editable && (
+            <>
+              <PlusCircleOutlined style={{fontSize: "24px"}} onClick={onAddCycle} />
+              <Button danger={true} onClick={onDeleteCycle}>Delete Last Cycle</Button>
+            </>
+          )
+        }
       </div>
-      <List
+      <List<T>
+        itemLayout="vertical"
         dataSource={sortedCycles}
         rowKey={cycleListRowKey}
         renderItem={listRenderFunction}
