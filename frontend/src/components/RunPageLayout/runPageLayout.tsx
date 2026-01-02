@@ -11,8 +11,6 @@ interface RunPageLayoutProps{
   title?: React.ReactNode;
   summaryBlock?: React.ReactNode;
   characterBlock?: React.ReactNode;
-  bossCompletionBlock?: React.ReactNode;
-  bossCompletionTitleRef?: React.RefObject<HTMLDivElement | null>
   cyclesBlock?: React.ReactNode;
   formProps?: React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>;
   footer?: React.ReactNode;
@@ -39,8 +37,6 @@ export function RunPageLayout({
   title, 
   summaryBlock, 
   characterBlock, 
-  bossCompletionBlock,
-  bossCompletionTitleRef,
   formProps,
   footer,
   loading,
@@ -61,11 +57,6 @@ export function RunPageLayout({
       <Divider />
       <Title level={2} >Character</Title>
       {characterBlock}
-      <div ref={bossCompletionTitleRef}>
-        <Divider />
-        <Title level={2}>Boss Completion</Title>
-      </div>
-      {bossCompletionBlock}
       <Divider />
       <Title level={2}>Cycles</Title>
       {cyclesBlock}

@@ -4,10 +4,10 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import {  Button, Space } from "antd";
 import dynamic from "next/dynamic";
 import type Quill from "quill";
-import React, { use, useCallback,  useMemo, useRef,  } from "react";
+import React, { use, useCallback,  useContext,  useMemo, useRef,  } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from 'react-hook-form';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import lodash from 'lodash';
 
 import { ABBREVIATION_TO_GAME } from "@/util/gameAbbreviation";
@@ -24,7 +24,7 @@ import { usePageError } from "@/hooks/pageError/usePageError";
 import { CycleList } from "@/components/CycleList";
 import { scrollToBossCompletionTitle } from "@/util/RunPage";
 import { useFormCycles } from "./useFormCycles";
-import { BossCompletionSection } from "@/components/BossCompletionSection";
+import { CreateRunFormData, CreateRunFormDataContext } from "./context";
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
@@ -33,25 +33,13 @@ const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dyn
 
 const {Compact: CompactSpace} = Space;
 
-export interface CreateRunFormBossCompletion{
-  completed?: boolean;
-  instanceId: string;
-}
-export interface CreateRunFormCycle{
-  completed?: boolean;
-  level?: number;
-  bossesCompleted?: CreateRunFormBossCompletion[];
-}
-export interface CreateRunFormData{
-  name?: string;
-  cycles: CreateRunFormCycle[];
-}
+
 
 
 
 
 export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/create'>){
-  
+  const pathname = usePathname();
   const router = useRouter();
   const params = use(props.params);
   const searchParams = use(props.searchParams);
@@ -74,7 +62,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
 
 
   const {data: gameData, loading: gameDataLoading, error: gameDataError} = useQuery(GetGameInformationDocument, {variables : getGameInfoQueryVars});
-  const [createRunMutation, {data, loading, error: createRunError}] = useMutation(CreateRunDocument);
+  const [createRunMutation, {loading, error: createRunError}] = useMutation(CreateRunDocument);
 
   const mounted = useMounted();
   // Use a ref to access the quill instance directly
@@ -91,17 +79,17 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
   }, [gameDataError, createRunError])
 
   const {context: pageErrorContext} = usePageError({error: pageError})
+  const {formData: contextFormData, dispatch: dispatchContextFormData} = useContext(CreateRunFormDataContext);
   
 
   const {
-    register,
     handleSubmit,
-    watch,
     control,
     formState: { errors: formErrors },
-    reset
+    reset,
+    getValues: getFormValues
   } = useForm<CreateRunFormData>({
-    defaultValues: {cycles: []}
+    defaultValues: contextFormData
   });
 
   const {
@@ -174,21 +162,38 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     return {};
   }, [])
 
-  const bossCompletionBlockRef = useRef<HTMLDivElement | null>(null);
+  const saveFormDataInContext = useCallback(() => {
+    const values = getFormValues();
+    dispatchContextFormData({
+      type: 'setAll',
+      ...values,
+    })
+  }, [dispatchContextFormData, getFormValues])
 
   const cycleBlock = useMemo(() => {
     return (
       <CycleList 
         cycles={cycles}
         onCycleClick={(cycle) => {
-          scrollToBossCompletionTitle(bossCompletionBlockRef);
+          saveFormDataInContext();
+          router.push(pathname+'/cycle')
         }}
         editable={true}
         onAddCycle={onAddCycle}
         onDeleteCycle={onDeleteCycle}
       />
     )
-  }, [cycles, onAddCycle, onDeleteCycle])
+  }, [
+      cycles, 
+      onAddCycle, 
+      onDeleteCycle, 
+      saveFormDataInContext,
+      pathname,
+      router
+    ])
+
+  
+
 
   return (
     <PageErrorMessengerContext value={pageErrorContext}>
@@ -197,7 +202,6 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
         formProps={formProps}
         footer={footer}
         summaryBlock={summaryBlock}
-        bossCompletionTitleRef={bossCompletionBlockRef}
         cyclesBlock={cycleBlock}
         />
     </PageErrorMessengerContext>

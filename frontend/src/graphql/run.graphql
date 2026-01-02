@@ -146,9 +146,23 @@ fragment RunPageDetailedCycle on Cycle{
   }
 }
 
-
-query GetCycle($where: CycleWhereUniqueInput!){
-  cycle(where:$where){
+fragment CyclePageRun on Run{
+  id
+  name
+  game{
+    ...GameInfo
+  }
+  currentCycle{
     ...RunPageDetailedCycle
+  }
+
+}
+
+query GetCyclePageInfo($cycleWhere: CycleWhereUniqueInput!, $runWhere: RunWhereUniqueInput!){
+  cycle(where:$cycleWhere){
+    ...RunPageDetailedCycle
+  }
+  run(where: $runWhere){
+    ...CyclePageRun
   }
 }
