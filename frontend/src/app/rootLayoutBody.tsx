@@ -4,8 +4,6 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { ThemeConfig } from "antd";
 import { ConfigProvider, theme } from "antd";
 
-import { AppContextProvider } from "@/state/appContext";
-
 
 
 const themeConfig: ThemeConfig = {
@@ -31,7 +29,6 @@ export function RootLayoutBody({
 }>) {
 
   return (
-    <AppContextProvider>
       <ConfigProvider theme={themeConfig}>
         <AntdRegistry>
           <div className="2xl:mx-64 lg:mx-12 p-10">
@@ -39,6 +36,5 @@ export function RootLayoutBody({
           </div>
         </AntdRegistry>
       </ConfigProvider>
-    </AppContextProvider>
   );
 }

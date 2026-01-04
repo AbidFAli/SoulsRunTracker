@@ -43,25 +43,25 @@ export function RunPageLayout({
   cyclesBlock,
 }: RunPageLayoutProps){
 
-  if(loading){
-    return (
-      <BasicPageLayout title={title} loading={true}>
-      </BasicPageLayout>
-    )
-  }
 
-  return <BasicPageLayout title={title}>
-    <ConditionalForm formProps={formProps}>
-      <Title level={2}>Summary</Title>
-      {summaryBlock}
-      <Divider />
-      <Title level={2} >Character</Title>
-      {characterBlock}
-      <Divider />
-      <Title level={2}>Cycles</Title>
-      {cyclesBlock}
-      {footer && <Divider />}
-      {footer}
-    </ConditionalForm>
+
+  return <BasicPageLayout title={title} loading={loading}>
+    {
+      !loading && (
+        <ConditionalForm formProps={formProps}>
+          <Title level={2}>Summary</Title>
+          {summaryBlock}
+          <Divider />
+          <Title level={2} >Character</Title>
+          {characterBlock}
+          <Divider />
+          <Title level={2}>Cycles</Title>
+          {cyclesBlock}
+          {footer && <Divider />}
+          {footer}
+        </ConditionalForm>
+      )
+    }
+
   </BasicPageLayout>
 }

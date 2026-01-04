@@ -7,6 +7,7 @@ import "./globals.css";
 
 import { apolloClient } from "@/util/apollo";
 import { RootLayoutBody} from './rootLayoutBody'
+import { StoreProvider } from "@/components/StoreProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,16 +29,18 @@ export default function RootLayout({
 
 //bg-black p-10
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <RootLayoutBody>
-          <ApolloProvider client={apolloClient}>
-            {children}
-          </ApolloProvider>
-        </RootLayoutBody>
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <RootLayoutBody>
+            <ApolloProvider client={apolloClient}>
+              {children}
+            </ApolloProvider>
+          </RootLayoutBody>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }
