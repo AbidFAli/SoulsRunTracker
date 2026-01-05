@@ -41,7 +41,8 @@ export const runResolvers: graphql.RunResolvers = {
 
     const cycles = await prisma.cycle.findMany({
       where: {
-        level: maxCycle._max.level
+        level: maxCycle._max.level,
+        runId: parent.id,
       }
     })
     
