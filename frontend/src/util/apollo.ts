@@ -8,7 +8,7 @@ const httpLink = new HttpLink({ uri: 'http://localhost:8000/api/graphql' });
 const errorLink = new ErrorLink(({ error }) => {
   if (CombinedGraphQLErrors.is(error)) {
     error.errors.forEach(({ message, locations, path }) =>
-      console.log(
+      console.error(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
     );

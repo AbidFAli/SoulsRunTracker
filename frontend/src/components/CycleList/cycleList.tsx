@@ -3,9 +3,9 @@ import { RunPageListCard } from "../RunPageListCard";
 import { SortIcon } from "../SortIcon";
 
 import { useCallback, useMemo, useState } from "react";
-import { Button, Col, List, Row, Typography } from "antd";
+import { Button, Col, List, Row, Space, Typography } from "antd";
 import lodash from 'lodash'
-import { DeleteFilled, PlusCircleOutlined } from "@ant-design/icons";
+import { CheckOutlined, DeleteFilled, PlusCircleOutlined } from "@ant-design/icons";
 
 const { Item: ListItem} = List;
 
@@ -69,11 +69,19 @@ export function CycleList<T extends CycleListCycle = CycleListCycle>({
         <Row>
           <Col span={8}>
             <Row>
-              <Typography
-                onClick={() => onCycleClick(item)} 
-                className="cursor-pointer">
-                  NG+{item.level}
-              </Typography>
+              <Space>
+                <Typography
+                  onClick={() => onCycleClick(item)} 
+                  className="cursor-pointer">
+                    NG+{item.level}
+                </Typography>
+                {
+                  item.completed && (
+                    <CheckOutlined style={{color: "green"}} />
+                  )
+                }
+              </Space>
+
             </Row>
           </Col>
           <Col span={8} offset={8}>

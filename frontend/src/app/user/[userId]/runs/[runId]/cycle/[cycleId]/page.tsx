@@ -5,10 +5,14 @@ import { useQuery, useLazyQuery } from '@apollo/client/react';
 import { GetCyclePageInfoDocument } from "@/generated/graphql/graphql";
 import { BasicPageLayout } from "@/components/BasicPageLayout";
 import { RunPageTitle } from "@/components/RunPageTitle";
-import { Divider, Typography } from "antd";
+import { Col, Divider, Row, Typography } from "antd";
 import Link from 'next/link';
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { BossCompletionCard } from "@/components/BossCompletionSection";
+import { BossCompletionCard, BossCompletionCardProps } from "@/components/BossCompletionSection";
+import lodash from 'lodash';
+import { CreateRunFormCycle } from "@/state/runs/createRunForm/createRunFormSlice";
+import { RunCompletedIcon } from "@/components/Icons";
+import { CyclePageCycleLabel } from "@/components/CyclePage/cyclePageCycleLabel";
 
 const { Title} = Typography;
 
@@ -27,9 +31,18 @@ export default function CyclePage(props: PageProps<'/user/[userId]/runs/[runId]/
     }
   });
 
-    const title = useMemo(() => {
-      return <RunPageTitle gameName={cyclePageInfo?.run?.game?.name ?? ""} titleText={cyclePageInfo?.run?.name ?? ""} />
-    }, [cyclePageInfo])
+  const title = useMemo(() => {
+    return <RunPageTitle gameName={cyclePageInfo?.run?.game?.name ?? ""} titleText={cyclePageInfo?.run?.name ?? ""} />
+  }, [cyclePageInfo])
+
+  const bossesCompleted = useMemo<CreateRunFormCycle["bossesCompleted"]>(() => {
+    const returnValue: CreateRunFormCycle["bossesCompleted"] = {};
+    cyclePageInfo?.cycle?.bossesCompleted?.forEach((bossCompleted) => {
+      returnValue[bossCompleted.instanceId] = bossCompleted;
+    })
+
+    return returnValue;
+  }, [cyclePageInfo])
 
   return (
     <BasicPageLayout
@@ -43,14 +56,29 @@ export default function CyclePage(props: PageProps<'/user/[userId]/runs/[runId]/
         </Link>
       </div>
       {!queryLoading && (
-        <Title level={2}>Cycle: NG+{cyclePageInfo?.cycle?.level}</Title>
+        <Row >
+          <Col span={12}>
+            <CyclePageCycleLabel cycle={cyclePageInfo?.cycle?.level}/>
+          </Col>
+          <Col span={12} >
+            <Row justify={"end"} >
+              {
+                cyclePageInfo?.cycle?.completed && (
+                  <RunCompletedIcon className="text-3xl" />
+                )
+              }
+            </Row>
+          </Col>
+        </Row>
       )}
-      <Divider />
+      <div >
+        <Divider  />
+      </div>
       <Title level={3}>Boss Completion</Title>
       {
         cyclePageInfo?.cycle && cyclePageInfo.run?.game && (
             <BossCompletionCard
-              cycle={cyclePageInfo.cycle}
+              bossesCompleted={bossesCompleted}
               gameInfo={cyclePageInfo.run.game}
             />
         )

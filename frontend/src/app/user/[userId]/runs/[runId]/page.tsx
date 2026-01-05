@@ -33,6 +33,7 @@ export default function RunPage(props: PageProps<'/user/[userId]/runs/[runId]'>)
   const pageError = useMemo(() => {
     const errors = lodash.compact([runError]);
     if(errors.length > 0){
+      console.error(runError);
       return errors[0];
     } else{
       return undefined;

@@ -2,13 +2,13 @@ import { createAppSlice } from "@/state/createAppSlice";
 
 
 export interface CreateRunFormBossCompletion{
-  completed?: boolean;
+  completed: boolean;
   instanceId: string;
 }
 export interface CreateRunFormCycle{
   completed?: boolean;
   level?: number;
-  bossesCompleted?: CreateRunFormBossCompletion[];
+  bossesCompleted: Record<string,CreateRunFormBossCompletion>; //map BossInstance.id to BossCompletion
 }
 export interface CreateRunFormSavedData{
   name?: string;
@@ -31,7 +31,9 @@ export const createRunFormSlice = createAppSlice({
   initialState,
   reducers: (create) => ({
     setAll: create.reducer<CreateRunFormSavedData>((state, action) => {
-      return action.payload;
+      const temp = {...action.payload, cycles: [...action.payload.cycles]};
+      temp.cycles.sort((a, b) => (a.level ?? 0) - (b.level ?? 0));
+      return temp;
     }),
     setCycle: create.reducer<CreateRunFormDataActionSetCycle>((state, action ) => {
       if(action.payload.index >= state.cycles.length){

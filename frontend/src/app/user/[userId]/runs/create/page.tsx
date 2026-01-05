@@ -12,8 +12,13 @@ import lodash from 'lodash';
 
 import { ABBREVIATION_TO_GAME } from "@/util/gameAbbreviation";
 import type { RunDescriptionEditorProps } from "@/components/RunDescriptionEditor/index";
-import type {  GetGameInformationQueryVariables } from "@/generated/graphql/graphql";
-import { CreateRunDocument, GetGameInformationDocument } from "@/generated/graphql/graphql";
+import { 
+  CreateRunDocument, 
+  GetGameInformationDocument, 
+  CycleCreateWithoutRunInput,
+  CycleUpdateBossesCompletedOptions, 
+  BossCompletionUpsertWithoutCycleInput
+} from "@/generated/graphql/graphql";
 import { useMounted } from "@/hooks/useMounted";
 import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
 import { RunPageTitle } from "@/components/RunPageTitle";
@@ -22,16 +27,16 @@ import { RunNameInput } from "@/components/RunForm";
 import { PageErrorMessengerContext } from "@/hooks/pageError/context";
 import { usePageError } from "@/hooks/pageError/usePageError";
 import { CycleList } from "@/components/CycleList";
-import { scrollToBossCompletionTitle } from "@/util/RunPage";
 import { useFormCycles } from "./useFormCycles";
-import { CreateRunFormData, CreateRunFormDataContext } from "./context";
+import type { CreateRunFormData } from "./useFormCycles";
+import { useAppDispatch, useAppSelector } from "@/state/hooks"
+import * as createRunFormSlice from '@/state/runs/createRunForm/createRunFormSlice'
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
   loading: () => <p>loading...</p>
 });
 
-const {Compact: CompactSpace} = Space;
 
 
 
@@ -39,10 +44,11 @@ const {Compact: CompactSpace} = Space;
 
 
 export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/create'>){
-  const pathname = usePathname();
-  const router = useRouter();
   const params = use(props.params);
   const searchParams = use(props.searchParams);
+  const pathname = usePathname();
+  const router = useRouter();
+
   
   const parsedSearchParams = useMemo(() => {
     return ZRunCreatePageUrlSearchParams.parse(searchParams);
@@ -52,16 +58,16 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     return ABBREVIATION_TO_GAME.get(parsedSearchParams.game) ?? ""
   }, [parsedSearchParams.game])
 
-  const getGameInfoQueryVars = useMemo<GetGameInformationQueryVariables>(() => {
-    return {
-      where: {
-        name: gameName
+  const {data: gameData, loading: gameDataLoading, error: gameDataError} = useQuery(GetGameInformationDocument, 
+    {
+      variables : {
+        where: {
+          name: gameName
+        }
       }
     }
-  }, [gameName])
-
-
-  const {data: gameData, loading: gameDataLoading, error: gameDataError} = useQuery(GetGameInformationDocument, {variables : getGameInfoQueryVars});
+  );
+  
   const [createRunMutation, {loading, error: createRunError}] = useMutation(CreateRunDocument);
 
   const mounted = useMounted();
@@ -79,7 +85,16 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
   }, [gameDataError, createRunError])
 
   const {context: pageErrorContext} = usePageError({error: pageError})
-  const {formData: contextFormData, dispatch: dispatchContextFormData} = useContext(CreateRunFormDataContext);
+
+
+  const savedFormData = useAppSelector(createRunFormSlice.selectAll);
+  const dispatch = useAppDispatch();
+  const defaultFormValues = useMemo<CreateRunFormData>(() => {
+    return {
+      name: savedFormData.name,
+      cycles: [...savedFormData.cycles]
+    }
+  }, [savedFormData])
   
 
   const {
@@ -89,7 +104,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     reset,
     getValues: getFormValues
   } = useForm<CreateRunFormData>({
-    defaultValues: contextFormData
+    defaultValues: defaultFormValues
   });
 
   const {
@@ -104,9 +119,24 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
         variables: {
           input: {
             name: formData.name,
+            cycles: formData.cycles.map<CycleCreateWithoutRunInput>((cycle) => {
+              return {
+                completed: cycle.completed,
+                level: cycle.level,
+                bossesCompleted: {
+                  upsert: Object.keys(cycle.bossesCompleted).map<BossCompletionUpsertWithoutCycleInput>((instanceId) => {
+                    const bossCompletion = cycle.bossesCompleted[instanceId];
+                    return {
+                      instanceId,
+                      completed: bossCompletion.completed
+                    }
+                  })
+                }
+              }
+            }),
             userId: params.userId,
             gameId: gameData?.game?.id
-          }
+          },
         },
         onCompleted(runMutationReturnData) {
           if(runMutationReturnData.createRun){
@@ -114,7 +144,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
           }
         },
         onError(gqlError) {
-          console.log(gqlError);
+          console.error(gqlError);
         },
       });
     }
@@ -162,21 +192,21 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     return {};
   }, [])
 
-  const saveFormDataInContext = useCallback(() => {
+  const saveFormDataInRedux = useCallback(() => {
     const values = getFormValues();
-    dispatchContextFormData({
-      type: 'setAll',
+    dispatch(createRunFormSlice.setAll({
       ...values,
-    })
-  }, [dispatchContextFormData, getFormValues])
+      gameName,
+    }))
+  }, [getFormValues, dispatch, gameName])
 
   const cycleBlock = useMemo(() => {
     return (
       <CycleList 
         cycles={cycles}
         onCycleClick={(cycle) => {
-          saveFormDataInContext();
-          router.push(pathname+'/cycle')
+          saveFormDataInRedux();
+          router.push(pathname+`/cycle/${cycle.level}`)
         }}
         editable={true}
         onAddCycle={onAddCycle}
@@ -187,7 +217,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
       cycles, 
       onAddCycle, 
       onDeleteCycle, 
-      saveFormDataInContext,
+      saveFormDataInRedux,
       pathname,
       router
     ])

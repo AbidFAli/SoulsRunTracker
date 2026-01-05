@@ -1,4 +1,4 @@
-import { CreateRunFormData } from "@/app/user/[userId]/runs/create/page";
+import type { CreateRunFormSavedData } from "@/state/runs/createRunForm/createRunFormSlice";
 import type { CycleListCycle } from "@/components/CycleList";
 
 
@@ -7,6 +7,8 @@ import type { Control } from "react-hook-form";
 import { useCallback, useMemo } from "react";
 import {isNil} from 'lodash';
 
+
+export type CreateRunFormData = Omit<CreateRunFormSavedData, "gameName" | "tempId">;
 
 interface FormCycleListProps{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +25,7 @@ export function useFormCycles({control}: FormCycleListProps){
   const onAddCycle = useCallback(() => {
     append({
       completed: false,
-      bossesCompleted: [],
+      bossesCompleted: {},
       level: fields.length //levels start at 0
     })
   }, [append, fields.length])

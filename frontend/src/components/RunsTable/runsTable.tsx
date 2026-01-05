@@ -20,6 +20,7 @@ import { MyRunsPageContext } from "@/app/user/[userId]/runs/context";
 import type { RunsTableSelection} from "./types";
 import { convertSortOrderToGraphql } from "@/util/antd";
 import { convertAntFiltersToRunTableFilters, convertAntSorterToRunTableSorter, paginationIsEqual } from "./util";
+import { RunCompletedIcon } from "../Icons";
 
 const {  Text} = Typography;
 
@@ -157,7 +158,7 @@ export function RunsTable(
           return <Row>
             <Col span={12}>
               {value && (
-                <CheckOutlined style={{color: "green"}} />
+                <RunCompletedIcon />
               )}
             </Col>
             <Col span={12}>

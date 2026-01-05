@@ -1,10 +1,16 @@
 import { 
   GameInfoLocationFragment, 
   GameInfoBossInstanceFragment, 
-  RunPageBossCompletionFragment,
   } from "@/generated/graphql/graphql";
+import { CreateRunFormBossCompletion, CreateRunFormCycle } from "@/state/runs/createRunForm/createRunFormSlice";
+
 import { List, Typography, Checkbox, Space } from "antd";
-import { useCallback, useMemo } from "react";
+import type { CheckboxChangeEvent } from "antd";
+import React, { useCallback, useMemo } from "react";
+import { Controller, type Control } from "react-hook-form";
+import lodash from 'lodash';
+import { FormCheckbox } from "../Form/formCheckbox";
+
 
 const { Title} = Typography;
 const { Item: ListItem} = List;
@@ -12,33 +18,51 @@ const { Item: ListItem} = List;
 export interface LocationCompletionProps{
   location: GameInfoLocationFragment;
   bossInstances: GameInfoBossInstanceFragment[];
-  bossesCompleted: RunPageBossCompletionFragment[];
+  bossesCompleted?: CreateRunFormCycle["bossesCompleted"];
+  control?: Control<CreateRunFormCycle>;
 }
 
 function locationCompletionRowKey(row: GameInfoBossInstanceFragment){
   return row.id;
 }
 
-export function LocationCompletion({location, bossInstances, bossesCompleted}: LocationCompletionProps){
+export function LocationCompletion({
+  location, 
+  bossInstances, 
+  bossesCompleted,
+  control
+}: LocationCompletionProps){
 
-  const bossCompletionMap = useMemo<Map<string, RunPageBossCompletionFragment>>(() => {
-    const returnValue = new Map<string, RunPageBossCompletionFragment>();
-    bossesCompleted.forEach((bossCompletion) => {
-      returnValue.set(bossCompletion.instanceId, bossCompletion)
-    })
-    return returnValue;
-  }, [bossesCompleted])
+
 
   const renderListItem = useCallback((row: GameInfoBossInstanceFragment) => {
-    const completed = bossCompletionMap.has(row.id) ? (bossCompletionMap.get(row.id)?.completed as boolean) : false;
+    const completed = bossesCompleted?.[row.id] ? bossesCompleted[row.id]?.completed as boolean : false;
+
+    let checkbox: React.ReactNode;
+    if(control){
+      checkbox = (
+        <FormCheckbox
+          controllerProps={{
+            control,
+            name: `bossesCompleted.${row.id}.completed`
+          }}
+        />
+      )
+    }
+    else{
+      checkbox = (
+        <Checkbox checked={completed}/>
+      )
+    }
+
 
     return <ListItem>
       <Space>
-        <Checkbox checked={completed}/>
+        {checkbox}
         <Typography>{row?.boss?.name ?? ""}</Typography>  
       </Space>
     </ListItem>
-  }, [bossCompletionMap])
+  }, [bossesCompleted, control])
 
 
 

@@ -11,8 +11,7 @@ import { use } from 'react';
 
 import type { GetGamesQuery, GetUserRunsQueryVariables, PageInfo, DeleteUserRunsMutationVariables, PaginationOffsetInput } from '@/generated/graphql/graphql';
 import { GetUserRunsDocument, QueryMode, RunOrderByInput, RunWhereInput, NullsOrder, DeleteUserRunsDocument } from '@/generated/graphql/graphql';
-import { GAME_TO_ABBREVIATION } from '@/util/gameAbbreviation';
-import { createRunCreatePageUrlSearchParams} from '@/util/routing'
+import { makeCreateRunPageUrl} from '@/util/routing'
 import { BasicPageLayout } from '@/components/BasicPageLayout';
 import { OffsetPaginationConfig, RunsTable, RunsTableFilters, RunsTableSelection, RunsTableSorter } from '@/components/RunsTable';
 import { useGetGames } from '@/app/user/[userId]/runs/useGetGames';
@@ -172,9 +171,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     const tempGames: Exclude<GetGamesQuery["games"], null | undefined> =  cleanedGamesData.slice(0);
     return tempGames.sort((a,b) => (gameOrder.get(a.name ?? "") ?? 0) - (gameOrder.get(b.name ?? "") ?? 0))
       .map((game) => {
-        const abbreviation = GAME_TO_ABBREVIATION.get(game.name ?? "");
-        const searchParams = createRunCreatePageUrlSearchParams({game: abbreviation ?? ""});
-        const href = game.name ?`/user/${params.userId}/runs/create?${searchParams.toString()}` : undefined;
+        const href = makeCreateRunPageUrl(game.name ?? '', params.userId)
         
         return {
           key: game.id,

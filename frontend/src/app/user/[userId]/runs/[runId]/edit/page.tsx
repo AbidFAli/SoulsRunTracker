@@ -14,6 +14,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { Button, Checkbox, Col, Row, Space, Typography } from "antd";
 import lodash from 'lodash';
 import { usePageError } from "@/hooks/pageError/usePageError";
+import { FormCheckbox } from "@/components/Form/formCheckbox";
 
 interface EditRunFormData{
   name?: string;
@@ -86,25 +87,16 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
         <RunNameInput<EditRunFormData>
           control={control}
         />
-        <Controller
-          name="completed"
-          control={control}
-          render={({field}) => {
-            return (
-              <Row>
-                <Col span={2}>
-                  <Row justify={"space-between"}>
-                    <Typography>Completed</Typography>
-                    <Checkbox
-                      {...(lodash.omit(field, 'value'))}
-                      checked={field.value}
-                    />
-                  </Row>
-                </Col>
-              </Row>
-            )
-          }}
-        />
+        <Row>
+          <Col span={2}>
+            <Row justify={"space-between"}>
+              <Typography>Completed</Typography>
+              <FormCheckbox
+                controllerProps={{control, name: "completed"}}
+               />
+            </Row>
+          </Col>
+        </Row>
       </Space>
     )
   }, [control])
