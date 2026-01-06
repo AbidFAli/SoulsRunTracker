@@ -13,7 +13,7 @@ interface BasicPageLayoutProps{
 export function BasicPageLayout(props: BasicPageLayoutProps){
   const {errorText} = useContext(PageErrorMessengerContext)
 
-  return <div className="flex-col h-full ">
+  return <div className="flex-col h-full py-10">
     {props.title}
     <div className={`bg-card p-6 rounded-lg ${props.loading ? styles['loading-block'] : ""} mb-10 ${styles['main-banner']}`}>
       {errorText && <Alert type="error" title={errorText} /> }
