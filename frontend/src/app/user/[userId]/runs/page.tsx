@@ -3,10 +3,10 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import { Reference } from '@apollo/client';
 import { DownOutlined } from '@ant-design/icons';
 import lodash, {compact} from 'lodash';
-import type { MenuProps, TablePaginationConfig, AlertProps } from 'antd';
-import { Dropdown, Space, Typography, ConfigProvider, Button, Spin, Alert } from 'antd';
+import type { MenuProps, TablePaginationConfig } from 'antd';
+import { Dropdown, Space, Typography, ConfigProvider, Button, Spin } from 'antd';
 import Link from 'next/link';
-import React, { useCallback, useMemo, useState, useContext, useEffect } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import { use } from 'react';
 
 import type { GetGamesQuery, GetUserRunsQueryVariables, PageInfo, DeleteUserRunsMutationVariables, PaginationOffsetInput } from '@/generated/graphql/graphql';
@@ -22,6 +22,9 @@ import styles from './page.module.scss'
 import { runsQueryGenerateCacheKey } from '@/util/apollo';
 import { PageErrorMessengerContext } from "@/hooks/pageError/context";
 import { usePageError } from "@/hooks/pageError/usePageError";
+import { useAppDispatch } from "@/state/hooks"
+import * as userRunsPageGlobalDataSlice from '@/state/runs/userRunsPageGlobalDataSlice';
+
 
 const { Title} = Typography;
 
@@ -61,8 +64,24 @@ function createPaginationOffsetInput(config: OffsetPaginationConfig): Pagination
   }
 }
 
+function GetUserRunsQueryVariables_to_QueryRunArgs(variables: GetUserRunsQueryVariables){
+  let orderBy: RunOrderByInput[] | undefined = undefined;
+  if(Array.isArray(variables.orderBy)){
+    orderBy = variables.orderBy;
+  }
+  else if(variables.orderBy){
+    orderBy = [variables.orderBy]
+  }
+
+  return {
+    ...variables,
+    orderBy,
+  }
+}
+
 export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
   const params = use(props.params);
+  const dispatch = useAppDispatch();
   const [filters, setFilters] = useState<RunsTableFilters>({});
   const [sorter, setSorter] = useState<RunsTableSorter>({});
   const [selection, setSelection] = useState<RunsTableSelection>({all: false, selectedRows: []});
@@ -141,8 +160,13 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     }
   }, [paginationState, runsQueryOrderBy, runsQueryWhere]);
 
+  useEffect(() => {
+    const runsQueryCacheKey = runsQueryGenerateCacheKey(GetUserRunsQueryVariables_to_QueryRunArgs(runsQueryVariables));
+    dispatch(userRunsPageGlobalDataSlice.addRunsQueryCacheKey(runsQueryCacheKey))
+  }, [runsQueryVariables, dispatch])
+
   const { loading: runsLoading, data: runsData, fetchMore, error: getUserRunsError} = useQuery(GetUserRunsDocument, {
-    variables: runsQueryVariables
+    variables: runsQueryVariables,
   });
 
   const fetchMoreRuns = useCallback((pagination: OffsetPaginationConfig) => {
@@ -232,19 +256,10 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
     deleteUserRuns({
       variables: deleteUserRunsVariables,
       update(cache){
-        let orderBy: RunOrderByInput[] | undefined = undefined;
-        if(Array.isArray(runsQueryVariables.orderBy)){
-          orderBy = runsQueryVariables.orderBy;
-        }
-        else if(runsQueryVariables.orderBy){
-          orderBy = [runsQueryVariables.orderBy]
-        }
+
         
         const cacheKey = runsQueryGenerateCacheKey(
-            {
-              ...runsQueryVariables, 
-              orderBy: orderBy
-            }
+            GetUserRunsQueryVariables_to_QueryRunArgs(runsQueryVariables)
           );
         cache.modify({
           id: 'ROOT_QUERY',

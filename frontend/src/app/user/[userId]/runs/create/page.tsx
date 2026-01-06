@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQuery } from "@apollo/client/react";
-import {  Button, Space } from "antd";
+import {  Button, Space, Spin } from "antd";
 import dynamic from "next/dynamic";
 import type Quill from "quill";
 import React, { use, useCallback,  useContext,  useMemo, useRef,  } from "react";
@@ -17,7 +17,8 @@ import {
   GetGameInformationDocument, 
   CycleCreateWithoutRunInput,
   CycleUpdateBossesCompletedOptions, 
-  BossCompletionUpsertWithoutCycleInput
+  BossCompletionUpsertWithoutCycleInput,
+  GetUserRunsDocument
 } from "@/generated/graphql/graphql";
 import { useMounted } from "@/hooks/useMounted";
 import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
@@ -31,6 +32,7 @@ import { useFormCycles } from "./useFormCycles";
 import type { CreateRunFormData } from "./useFormCycles";
 import { useAppDispatch, useAppSelector } from "@/state/hooks"
 import * as createRunFormSlice from '@/state/runs/createRunForm/createRunFormSlice'
+import * as userRunsPageGlobalDataSlice from "@/state/runs/userRunsPageGlobalDataSlice"
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
@@ -48,6 +50,8 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
   const searchParams = use(props.searchParams);
   const pathname = usePathname();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
 
   
   const parsedSearchParams = useMemo(() => {
@@ -68,7 +72,20 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     }
   );
   
-  const [createRunMutation, {loading, error: createRunError}] = useMutation(CreateRunDocument);
+  const runsQueryCacheKeys = useAppSelector(userRunsPageGlobalDataSlice.selectRunsQueryCacheKeys);
+  const [createRunMutation, {loading: createRunLoading, error: createRunError}] = useMutation(CreateRunDocument, {
+    update(cache){
+      cache.batch({
+        update(batchedCache) {
+          for(const key of runsQueryCacheKeys){
+            batchedCache.evict({id: 'ROOT_QUERY', fieldName: key })
+          }
+          batchedCache.gc();
+        },
+      })
+      dispatch(userRunsPageGlobalDataSlice.reset())
+    }
+  });
 
   const mounted = useMounted();
   // Use a ref to access the quill instance directly
@@ -88,7 +105,6 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
 
 
   const savedFormData = useAppSelector(createRunFormSlice.selectAll);
-  const dispatch = useAppDispatch();
   const defaultFormValues = useMemo<CreateRunFormData>(() => {
     return {
       name: savedFormData.name,
@@ -169,13 +185,15 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
   }, [reset])
   const footer = useMemo(() => {
     return (
-      <Space>
-        <Button onClick={onSaveClick}>Save</Button>
-        <Button onClick={onResetClick}>Reset</Button>
-      </Space>
-      
+      <div>
+        {createRunLoading && <Spin size="large" fullscreen={true}/> }
+        <Space>
+          <Button onClick={onSaveClick}>Save</Button>
+          <Button onClick={onResetClick}>Reset</Button>
+        </Space>
+      </div>      
     )
-  }, [onSaveClick, onResetClick])
+  }, [onSaveClick, onResetClick, createRunLoading])
 
   const summaryBlock = useMemo(() => {
     return (
@@ -233,6 +251,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
         footer={footer}
         summaryBlock={summaryBlock}
         cyclesBlock={cycleBlock}
+        loading={gameDataLoading}
         />
     </PageErrorMessengerContext>
   )      

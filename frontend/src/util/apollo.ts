@@ -48,7 +48,6 @@ export const apolloClient = new ApolloClient({
               },
               merge(existing: RunConnection | undefined, incoming: RunConnection, options: RunsQueryFieldFunctionOptions): RunConnection{
                 //hopefully incoming is not undefined, if it is this will break
-                console.log('merge function called')
                 const merged: RunConnection = {
                   pageInfo: incoming.pageInfo,
                   __typename: "RunConnection",
@@ -70,7 +69,6 @@ export const apolloClient = new ApolloClient({
                 };
               },
               read(existing: RunConnection | undefined, options: RunsQueryFieldFunctionOptions ): RunConnection | undefined{
-                console.log('read function called')
                 if(!existing){
                   return undefined;
                 }
