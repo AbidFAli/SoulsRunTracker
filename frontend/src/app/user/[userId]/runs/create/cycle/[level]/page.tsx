@@ -1,7 +1,6 @@
 'use client'
 import { use, useMemo, useCallback } from "react";
 import { Divider, Row, Space, Typography } from "antd";
-import Link from "next/link";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useQuery } from "@apollo/client/react";
 import { useForm } from "react-hook-form";
@@ -18,6 +17,9 @@ import { BossCompletionCard } from "@/components/BossCompletionSection";
 import type { CreateRunFormCycle} from "@/state/runs/createRunForm/createRunFormSlice"
 import { CyclePageCycleLabel } from "@/components/CyclePage/cyclePageCycleLabel";
 import { FormCheckbox } from "@/components/Form/formCheckbox";
+import { LinkNoStyle } from "@/components/LinkNoStyle";
+import { usePageError } from "@/hooks/pageError/usePageError";
+import { PageErrorMessengerContext } from "@/hooks/pageError/context";
 
 
 const { Title} = Typography;
@@ -37,7 +39,7 @@ export default function CreateRunCyclePage(props: PageProps<'/user/[userId]/runs
 
   const backLink = useMemo(() => makeCreateRunPageUrl(gameName ?? '', userId), [gameName, userId])
 
-  const {data: gameData} = useQuery(GetGameInformationDocument, 
+  const {data: gameData, loading: gameDataLoading, error: gameDataError} = useQuery(GetGameInformationDocument, 
     {
       variables : {
         where: {
@@ -46,6 +48,9 @@ export default function CreateRunCyclePage(props: PageProps<'/user/[userId]/runs
       }
     }
   );
+
+  const {context: pageErrorContext} = usePageError({error: gameDataError})
+  
 
   const formDefaultValues = useMemo<CreateRunFormCycle>(() => {
     const returnValue: CreateRunFormCycle = savedCycleData ? 
@@ -78,44 +83,43 @@ export default function CreateRunCyclePage(props: PageProps<'/user/[userId]/runs
 
 
   return (
-    <BasicPageLayout
-      title={title}
-    >
-      <div className="flex">
-        <Link
-          href={backLink}
-          onClick={onBackClick}
-        >
-          <ArrowLeftOutlined className="text-3xl" />
-        </Link>
-      </div>
-      <Row>
-        <CyclePageCycleLabel cycle={level}/>
-      </Row>
-      <Divider />
-      <Space orientation="vertical">
+    <PageErrorMessengerContext value={pageErrorContext}>
+      <BasicPageLayout
+        title={title}
+        loading={gameDataLoading}
+      >
+        <div className="flex">
+          <LinkNoStyle
+            href={backLink}
+            onClick={onBackClick}
+          >
+            <ArrowLeftOutlined className="text-3xl" />
+          </LinkNoStyle>
+        </div>
         <Row>
-          <Space>
-            <Typography>Completed:</Typography>
-            <FormCheckbox
-              controllerProps={{control, name: "completed"}}
-            />
-          </Space>
+          <CyclePageCycleLabel cycle={level}/>
         </Row>
-        <Title level={3}>Boss Completion</Title>
-      </Space>
-      {
-        gameData?.game && (
-          <BossCompletionCard
-            gameInfo={gameData.game}
-            control={control}
-          />
-        )
-      }
-
-
-
-
-    </BasicPageLayout>
+        <Divider />
+        <Space orientation="vertical">
+          <Row>
+            <Space>
+              <Typography>Completed:</Typography>
+              <FormCheckbox
+                controllerProps={{control, name: "completed"}}
+              />
+            </Space>
+          </Row>
+          <Title level={3}>Boss Completion</Title>
+        </Space>
+        {
+          gameData?.game && (
+            <BossCompletionCard
+              gameInfo={gameData.game}
+              control={control}
+            />
+          )
+        }
+      </BasicPageLayout>
+    </PageErrorMessengerContext>
   )
 }

@@ -1,18 +1,20 @@
 'use client'
 import { use, useMemo } from "react";
-import { useQuery, useLazyQuery } from '@apollo/client/react';
+import { useQuery } from '@apollo/client/react';
+import { Col, Divider, Row, Typography } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+
 
 import { GetCyclePageInfoDocument } from "@/generated/graphql/graphql";
 import { BasicPageLayout } from "@/components/BasicPageLayout";
 import { RunPageTitle } from "@/components/RunPageTitle";
-import { Col, Divider, Row, Typography } from "antd";
-import Link from 'next/link';
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { BossCompletionCard, BossCompletionCardProps } from "@/components/BossCompletionSection";
-import lodash from 'lodash';
+import { BossCompletionCard } from "@/components/BossCompletionSection";
 import { CreateRunFormCycle } from "@/state/runs/createRunForm/createRunFormSlice";
 import { RunCompletedIcon } from "@/components/Icons";
 import { CyclePageCycleLabel } from "@/components/CyclePage/cyclePageCycleLabel";
+import { LinkNoStyle } from "@/components/LinkNoStyle";
+import { usePageError } from "@/hooks/pageError/usePageError";
+import { PageErrorMessengerContext } from "@/hooks/pageError/context";
 
 const { Title} = Typography;
 
@@ -20,7 +22,7 @@ const { Title} = Typography;
 export default function CyclePage(props: PageProps<'/user/[userId]/runs/[runId]/cycle/[cycleId]'>){
   const params = use(props.params);
 
-  const {data: cyclePageInfo, loading: queryLoading}= useQuery(GetCyclePageInfoDocument, {
+  const {data: cyclePageInfo, loading: queryLoading, error: cycleQueryError}= useQuery(GetCyclePageInfoDocument, {
     variables: {
       cycleWhere: {
         id : params.cycleId
@@ -30,6 +32,9 @@ export default function CyclePage(props: PageProps<'/user/[userId]/runs/[runId]/
       }
     }
   });
+
+  const {context: pageErrorContext} = usePageError({error: cycleQueryError})
+  
 
   const title = useMemo(() => {
     return <RunPageTitle gameName={cyclePageInfo?.run?.game?.name ?? ""} titleText={cyclePageInfo?.run?.name ?? ""} />
@@ -45,17 +50,18 @@ export default function CyclePage(props: PageProps<'/user/[userId]/runs/[runId]/
   }, [cyclePageInfo])
 
   return (
-    <BasicPageLayout
-      title={title}
-    >
-      <div className="flex">
-        <Link
-          href={`/user/${params.userId}/runs/${params.runId}`}
-        >
-          <ArrowLeftOutlined className="text-3xl" />
-        </Link>
-      </div>
-      {!queryLoading && (
+    <PageErrorMessengerContext value={pageErrorContext}>
+      <BasicPageLayout
+        title={title}
+        loading={queryLoading}
+      >
+        <div className="flex">
+          <LinkNoStyle
+            href={`/user/${params.userId}/runs/${params.runId}`}
+          >
+            <ArrowLeftOutlined className="text-3xl" />
+          </LinkNoStyle>
+        </div>
         <Row >
           <Col span={12}>
             <CyclePageCycleLabel cycle={cyclePageInfo?.cycle?.level}/>
@@ -70,22 +76,20 @@ export default function CyclePage(props: PageProps<'/user/[userId]/runs/[runId]/
             </Row>
           </Col>
         </Row>
-      )}
-      <div >
-        <Divider  />
-      </div>
-      <Title level={3}>Boss Completion</Title>
-      {
-        cyclePageInfo?.cycle && cyclePageInfo.run?.game && (
-            <BossCompletionCard
-              bossesCompleted={bossesCompleted}
-              gameInfo={cyclePageInfo.run.game}
-            />
-        )
-      }
-
-
-    </BasicPageLayout>
+        <div >
+          <Divider  />
+        </div>
+        <Title level={3}>Boss Completion</Title>
+        {
+          cyclePageInfo?.cycle && cyclePageInfo.run?.game && (
+              <BossCompletionCard
+                bossesCompleted={bossesCompleted}
+                gameInfo={cyclePageInfo.run.game}
+              />
+          )
+        }
+      </BasicPageLayout>
+    </PageErrorMessengerContext>
   )
 
 
