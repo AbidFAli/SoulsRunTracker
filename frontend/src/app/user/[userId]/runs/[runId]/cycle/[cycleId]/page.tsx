@@ -2,7 +2,6 @@
 import { use, useMemo } from "react";
 import { useQuery } from '@apollo/client/react';
 import { Col, Divider, Row, Typography } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 
 
 import { GetCyclePageInfoDocument } from "@/generated/graphql/graphql";
@@ -12,9 +11,9 @@ import { BossCompletionCard } from "@/components/BossCompletionSection";
 import { CreateRunFormCycle } from "@/state/runs/createRunForm/createRunFormSlice";
 import { RunCompletedIcon } from "@/components/Icons";
 import { CyclePageCycleLabel } from "@/components/CyclePage/cyclePageCycleLabel";
-import { LinkNoStyle } from "@/components/LinkNoStyle";
 import { usePageError } from "@/hooks/pageError/usePageError";
 import { PageErrorMessengerContext } from "@/hooks/pageError/context";
+import { CyclePageBackButton } from "@/components/CyclePage/cyclePageBackButton";
 
 const { Title} = Typography;
 
@@ -56,11 +55,9 @@ export default function CyclePage(props: PageProps<'/user/[userId]/runs/[runId]/
         loading={queryLoading}
       >
         <div className="flex">
-          <LinkNoStyle
+          <CyclePageBackButton
             href={`/user/${params.userId}/runs/${params.runId}`}
-          >
-            <ArrowLeftOutlined className="text-3xl" />
-          </LinkNoStyle>
+          />
         </div>
         <Row >
           <Col span={12}>

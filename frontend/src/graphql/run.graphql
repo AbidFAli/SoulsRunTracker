@@ -166,3 +166,9 @@ query GetCyclePageInfo($cycleWhere: CycleWhereUniqueInput!, $runWhere: RunWhereU
     ...CyclePageRun
   }
 }
+
+query GetRunEditPageCycleInfo($where: CycleWhereUniqueInput!){
+  cycle(where: $where){
+    ...RunPageDetailedCycle
+  }
+}

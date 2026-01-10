@@ -1,7 +1,6 @@
 'use client'
 import { use, useMemo, useCallback } from "react";
 import { Divider, Row, Space, Typography } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useQuery } from "@apollo/client/react";
 import { useForm } from "react-hook-form";
 import lodash from 'lodash';
@@ -17,9 +16,10 @@ import { BossCompletionCard } from "@/components/BossCompletionSection";
 import type { CreateRunFormCycle} from "@/state/runs/createRunForm/createRunFormSlice"
 import { CyclePageCycleLabel } from "@/components/CyclePage/cyclePageCycleLabel";
 import { FormCheckbox } from "@/components/Form/formCheckbox";
-import { LinkNoStyle } from "@/components/LinkNoStyle";
 import { usePageError } from "@/hooks/pageError/usePageError";
 import { PageErrorMessengerContext } from "@/hooks/pageError/context";
+import { populateBossCompletions } from "@/util/cycle";
+import { CyclePageBackButton } from "@/components/CyclePage/cyclePageBackButton";
 
 
 const { Title} = Typography;
@@ -56,16 +56,9 @@ export default function CreateRunCyclePage(props: PageProps<'/user/[userId]/runs
     const returnValue: CreateRunFormCycle = savedCycleData ? 
     {...lodash.cloneDeep(savedCycleData), level: parsedLevel} : {bossesCompleted: {}, level: parsedLevel};
 
-    gameData?.game?.gameLocations?.forEach((gameLocation) => {
-      gameLocation?.bossInstances?.forEach((bossInstance) => {
-        if(!returnValue.bossesCompleted[bossInstance.id]){
-          returnValue.bossesCompleted[bossInstance.id] = {
-            instanceId: bossInstance.id,
-            completed: false
-          }
-        }
-      })
-    })
+    if(gameData?.game){
+      returnValue.bossesCompleted = populateBossCompletions(gameData.game, returnValue.bossesCompleted)
+    }
 
     return returnValue;
 
@@ -89,12 +82,10 @@ export default function CreateRunCyclePage(props: PageProps<'/user/[userId]/runs
         loading={gameDataLoading}
       >
         <div className="flex">
-          <LinkNoStyle
+          <CyclePageBackButton
             href={backLink}
             onClick={onBackClick}
-          >
-            <ArrowLeftOutlined className="text-3xl" />
-          </LinkNoStyle>
+          />
         </div>
         <Row>
           <CyclePageCycleLabel cycle={level}/>

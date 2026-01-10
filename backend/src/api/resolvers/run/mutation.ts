@@ -178,7 +178,6 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" |
           },
           data: {
             completed: cycleUpdate.completed,
-            level: cycleUpdate.level,
             bossesCompleted: cycleUpdate.bossesCompleted ? prismaBossCompletion : undefined,
           }
         }
