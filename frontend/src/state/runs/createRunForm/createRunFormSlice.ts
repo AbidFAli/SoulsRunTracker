@@ -7,7 +7,7 @@ export interface CreateRunFormBossCompletion{
 }
 export interface CreateRunFormCycle{
   completed?: boolean;
-  level?: number;
+  level: number;
   bossesCompleted: Record<string,CreateRunFormBossCompletion>; //map BossInstance.id to BossCompletion
 }
 export interface CreateRunFormSavedData{

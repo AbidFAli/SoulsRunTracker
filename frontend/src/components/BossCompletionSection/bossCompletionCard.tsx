@@ -1,6 +1,6 @@
 import { 
-  GameInfoFragment, 
-  RunPageDetailedCycleFragment} from "@/generated/graphql/graphql";
+  GameInfoFragment
+} from "@/generated/graphql/graphql";
 import {  Spin } from "antd";
 import { compact } from "lodash";
 import { useMemo } from "react";
@@ -11,26 +11,26 @@ import type { Control } from "react-hook-form";
 
 
 
-export interface BossCompletionCardProps{
+export interface BossCompletionCardProps<T extends CreateRunFormCycle=CreateRunFormCycle>{
   gameInfo: GameInfoFragment;
   bossesCompleted?: CreateRunFormCycle["bossesCompleted"];
   loading?: boolean;
   onBossCompletionClick?: (completion: CreateRunFormBossCompletion) => void;
-  control?: Control<CreateRunFormCycle>;
+  control?: Control<T>;
 }
 
-export function BossCompletionCard({
+export function BossCompletionCard<T extends CreateRunFormCycle=CreateRunFormCycle>({
   gameInfo, 
   bossesCompleted, 
   loading,
   onBossCompletionClick,
   control
-}: BossCompletionCardProps){
+}: BossCompletionCardProps<T>){
 
 
 
-  const locationCompletionProps = useMemo<LocationCompletionProps[]>(() => {
-    return compact((gameInfo?.gameLocations ?? []).map<LocationCompletionProps | undefined>((gameLocation) => {
+  const locationCompletionProps = useMemo<LocationCompletionProps<T>[]>(() => {
+    return compact((gameInfo?.gameLocations ?? []).map<LocationCompletionProps<T> | undefined>((gameLocation) => {
       if(!gameLocation.location){
         return undefined;
       }

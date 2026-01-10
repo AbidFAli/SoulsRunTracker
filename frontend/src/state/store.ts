@@ -2,11 +2,16 @@ import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import {counterSlice} from "./counter/counterSlice";
 import { createRunFormSlice } from "./runs/createRunForm/createRunFormSlice";
+import { editRunFormSlice } from "./runs/editRunFormSlice";
 import { userRunsPageGlobalDataSlice} from './runs/userRunsPageGlobalDataSlice'
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
-const rootReducer = combineSlices(counterSlice, createRunFormSlice, userRunsPageGlobalDataSlice);
+const rootReducer = combineSlices(counterSlice, 
+  createRunFormSlice, 
+  userRunsPageGlobalDataSlice,
+  editRunFormSlice
+);
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;
 
