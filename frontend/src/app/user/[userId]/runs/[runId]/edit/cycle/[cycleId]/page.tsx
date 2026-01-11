@@ -113,6 +113,7 @@ export default function EditRunCyclePage(props: PageProps<'/user/[userId]/runs/[
     formState: {dirtyFields, isDirty}
   } = useForm<EditRunFormCycle>({
     defaultValues: formDefaultValues,
+    disabled: !!runError || !!cycleInfoError
   })
 
   useEffect(() => {

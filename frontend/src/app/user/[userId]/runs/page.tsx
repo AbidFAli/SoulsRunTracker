@@ -23,7 +23,7 @@ import { runsQueryGenerateCacheKey } from '@/util/apollo';
 import { PageErrorMessengerContext } from "@/hooks/pageError/context";
 import { usePageError } from "@/hooks/pageError/usePageError";
 import { useAppDispatch } from "@/state/hooks"
-import * as userRunsPageGlobalDataSlice from '@/state/runs/userRunsPageGlobalDataSlice';
+import * as apolloQueryCacheKeySlice from '@/state/runs/apolloQueryCacheKey';
 
 
 const { Title} = Typography;
@@ -162,7 +162,7 @@ export default function MyRunsPage(props: PageProps<"/user/[userId]/runs">){
 
   useEffect(() => {
     const runsQueryCacheKey = runsQueryGenerateCacheKey(GetUserRunsQueryVariables_to_QueryRunArgs(runsQueryVariables));
-    dispatch(userRunsPageGlobalDataSlice.addRunsQueryCacheKey(runsQueryCacheKey))
+    dispatch(apolloQueryCacheKeySlice.addGetUserRuns(runsQueryCacheKey))
   }, [runsQueryVariables, dispatch])
 
   const { loading: runsLoading, data: runsData, fetchMore, error: getUserRunsError} = useQuery(GetUserRunsDocument, {

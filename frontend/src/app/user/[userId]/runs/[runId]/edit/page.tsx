@@ -21,6 +21,8 @@ import { EditRunFormCycle, EditRunFormData } from "./types";
 import { useEditRunFormCycles } from "./useFormCycles";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import * as editRunFormSlice from "@/state/runs/editRunFormSlice"
+import * as apolloQueryCacheKeySlice from "@/state/runs/apolloQueryCacheKey"
+
 
 
 function applyCycleEditToRunPageCycleFragment(edit: editRunFormSlice.EditRunFormGlobalDataEditCycle, gqlCycle: RunPageCycleFragment): EditRunFormCycle {
@@ -30,6 +32,10 @@ function applyCycleEditToRunPageCycleFragment(edit: editRunFormSlice.EditRunForm
     level: gqlCycle.level ?? 0,
     bossesCompleted: edit.bossesCompleted,
   }
+}
+
+function cycleAscendingComparator(a: EditRunFormCycle, b: EditRunFormCycle){
+  return a.level - b.level
 }
 
 
@@ -56,26 +62,38 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
     return unnullify(runData);
   }, [runData]);
 
-  const defaultFormValues = useMemo<EditRunFormData>(() => {
-    if(!savedFormData.id){
-      const cycles = (cleanedRunData?.run?.cycles ?? []).map<EditRunFormCycle>((cycle) => {
-        if(cycle.level === undefined){
-          throw new Error("Cycle level missing")
-        }
+  const createDefaultFormValuesNoRedux = useCallback<() => EditRunFormData>(() => {
 
-        return {
-          ...cycle,
-          level: cycle.level as number,
-          bossesCompleted: {}
-        }
-      });
+    const cycles = (cleanedRunData?.run?.cycles ?? []).map<EditRunFormCycle>((cycle) => {
+      if(cycle.level === undefined){
+        throw new Error("Cycle level missing")
+      }
 
       return {
-        id: cleanedRunData?.run?.id ?? "",
-        name: cleanedRunData?.run?.name,
-        completed: cleanedRunData?.run?.completed,
-        cycles: cycles,
+        ...cycle,
+        level: cycle.level as number,
+        bossesCompleted: {}
       }
+    });
+
+    const returnValue: EditRunFormData = {
+      id: cleanedRunData?.run?.id ?? "",
+      name: cleanedRunData?.run?.name,
+      completed: cleanedRunData?.run?.completed,
+      cycles: cycles,
+    }
+
+    cycles.sort(cycleAscendingComparator)
+
+    return returnValue;
+
+
+  }, [cleanedRunData])
+
+  const defaultFormValues = useMemo<EditRunFormData>(() => {
+
+    if(!savedFormData.id){
+      return createDefaultFormValuesNoRedux()
     }
     else{
       let cycles: EditRunFormCycle[] = [];
@@ -113,20 +131,27 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
         })
       }
 
-      return {
+      const returnValue: EditRunFormData = {
         ...lodash.pick(savedFormData, ['id', 'name', 'completed']),
         cycles,
       }
+      returnValue.cycles.sort(cycleAscendingComparator)
+      return returnValue
     }
+  }, [
+    cleanedRunData, 
+    savedFormData,
+    createDefaultFormValuesNoRedux
+  ])
 
-  }, [cleanedRunData, savedFormData])
+  const formDisabled = useMemo<boolean>(() => !!runError, [runError])
 
   const {
     getValues: getFormValues,
     handleSubmit,
     control,
     reset
-  } = useForm<EditRunFormData>({defaultValues: defaultFormValues});
+  } = useForm<EditRunFormData>({defaultValues: defaultFormValues, disabled: formDisabled});
 
   useEffect(() => {
     if(cleanedRunData?.run){
@@ -134,9 +159,37 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
     }
   }, [cleanedRunData, defaultFormValues, reset]);
 
-  const {cycles: cycleListCycles, onAddCycle, onDeleteCycle} = useEditRunFormCycles({control})
+  const {cycles: cycleListCycles, onAddCycle, onDeleteCycle} = useEditRunFormCycles({control, disabled: formDisabled})
 
-  const [updateRun, {error: updateRunError, loading: updateRunLoading}] = useMutation(UpdateUserRunDocument)
+  const runsQueryCacheKeys = useAppSelector(apolloQueryCacheKeySlice.selectRunsQueryCacheKeys);
+  const [updateRun, {error: updateRunError, loading: updateRunLoading}] = useMutation(UpdateUserRunDocument,
+    {
+      update(cache, result, options){
+        cache.batch({
+          update(batchedCache) {
+            for(const key of runsQueryCacheKeys){
+              batchedCache.evict({id: 'ROOT_QUERY', fieldName: key })
+            }
+            //don't need to update the GetRunQuery since this mutation should return a run and update the cache
+            options.variables?.data.cycles?.delete?.forEach((cycle) => {
+              batchedCache.evict({id: `Cycle:${cycle}`})
+            })
+
+            options.variables?.data.cycles?.update?.forEach((cycle) => {
+              batchedCache.evict({id: `Cycle:${cycle.id}`})
+            })
+            
+            batchedCache.gc();
+
+          },
+        })
+        dispatch(apolloQueryCacheKeySlice.resetGetUserRuns())
+
+
+        //also evict queries for Cycles
+      }
+    }
+  )
 
   const pageError = useMemo(() => {
     const errors = lodash.compact([updateRunError, runError]);
@@ -149,38 +202,6 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
 
   const {context: pageErrorContext} = usePageError({error: pageError})
   
-  
-  
-  const title = useMemo(() => {
-    return <RunPageTitle gameName={runData?.run?.game?.name ?? ""} titleText={runData?.run?.name ?? ""} />
-  }, [runData])
-
-  const summaryBlock = useMemo(() => {
-    return (
-      <Space orientation="vertical" className="w-full" size="middle">
-        <RunNameInput<EditRunFormData>
-          control={control}
-        />
-        <Row>
-          <Col span={2}>
-            <Row justify={"space-between"}>
-              <Typography>Completed</Typography>
-              <FormCheckbox
-                controllerProps={{control, name: "completed"}}
-               />
-            </Row>
-          </Col>
-        </Row>
-      </Space>
-    )
-  }, [control])
-
-
-
-
-
-
-
   const formProps = useMemo(() => {
     return {}
   }, [])
@@ -279,11 +300,14 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
         }
       },
       refetchQueries: [GetRunDocument]
+    }).then(() => {
+      router.push(`/user/${params.userId}/runs/${params.runId}`)
     })
   }, [params, 
     updateRun, 
     createNewFormGlobalData,
     cleanedRunData,
+    router
   ])
 
   const onSaveClick= useCallback((e: React.BaseSyntheticEvent) => {
@@ -291,8 +315,9 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
   }, [handleSubmit, onSubmit]);
   
   const onResetClick = useCallback(() => {
-    reset();
-  }, [reset])
+    dispatch(editRunFormSlice.reset())
+    reset(createDefaultFormValuesNoRedux());
+  }, [reset, dispatch, createDefaultFormValuesNoRedux])
 
   const cycleBlock = useMemo(() => {
     return (
@@ -331,8 +356,28 @@ export default function EditRunPage(props: PageProps<'/user/[userId]/runs/[runId
   return (
     <PageErrorMessengerContext value={pageErrorContext}>
       <RunPageLayout
-          title={runLoading ? undefined : title}
-          summaryBlock={summaryBlock}
+          title={
+            runLoading ? 
+            undefined : 
+            <RunPageTitle gameName={runData?.run?.game?.name ?? ""} titleText={runData?.run?.name ?? ""} />
+          }
+          summaryBlock={
+            <Space orientation="vertical" className="w-full" size="middle">
+              <RunNameInput<EditRunFormData>
+                control={control}
+              />
+              <Row>
+                <Col span={2}>
+                  <Row justify={"space-between"}>
+                    <Typography>Completed</Typography>
+                    <FormCheckbox
+                      controllerProps={{control, name: "completed"}}
+                    />
+                  </Row>
+                </Col>
+              </Row>
+            </Space>
+          }
           loading={runLoading || updateRunLoading}
           footer={footer}
           formProps={formProps}

@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import {  Button, Space, Spin } from "antd";
 import dynamic from "next/dynamic";
 import type Quill from "quill";
-import React, { use, useCallback,  useContext,  useMemo, useRef,  } from "react";
+import React, { use, useCallback,  useMemo, useRef,  } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from 'react-hook-form';
 import { useRouter, usePathname } from "next/navigation";
@@ -16,9 +16,7 @@ import {
   CreateRunDocument, 
   GetGameInformationDocument, 
   CycleCreateWithoutRunInput,
-  CycleUpdateBossesCompletedOptions, 
   BossCompletionUpsertWithoutCycleInput,
-  GetUserRunsDocument
 } from "@/generated/graphql/graphql";
 import { useMounted } from "@/hooks/useMounted";
 import { ZRunCreatePageUrlSearchParams} from "@/util/routing"
@@ -32,7 +30,7 @@ import { useFormCycles } from "./useFormCycles";
 import type { CreateRunFormData } from "./useFormCycles";
 import { useAppDispatch, useAppSelector } from "@/state/hooks"
 import * as createRunFormSlice from '@/state/runs/createRunForm/createRunFormSlice'
-import * as userRunsPageGlobalDataSlice from "@/state/runs/userRunsPageGlobalDataSlice"
+import * as apolloQueryCacheKeySlice from "@/state/runs/apolloQueryCacheKey"
 
 const RunDescriptionEditor: React.ComponentType<RunDescriptionEditorProps> = dynamic(() => import('../../../../../components/RunDescriptionEditor/index'), {
   ssr: false,
@@ -72,7 +70,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
     }
   );
   
-  const runsQueryCacheKeys = useAppSelector(userRunsPageGlobalDataSlice.selectRunsQueryCacheKeys);
+  const runsQueryCacheKeys = useAppSelector(apolloQueryCacheKeySlice.selectRunsQueryCacheKeys);
   const [createRunMutation, {loading: createRunLoading, error: createRunError}] = useMutation(CreateRunDocument, {
     update(cache){
       cache.batch({
@@ -83,7 +81,7 @@ export default function CreateRunPage(props: PageProps<'/user/[userId]/runs/crea
           batchedCache.gc();
         },
       })
-      dispatch(userRunsPageGlobalDataSlice.reset())
+      dispatch(apolloQueryCacheKeySlice.resetGetUserRuns())
     }
   });
 

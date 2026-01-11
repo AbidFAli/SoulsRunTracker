@@ -8,7 +8,7 @@ import { useAppDispatch } from '@/state/hooks'
 
 const reCreateRunsPage = /^\/user\/.*?\/runs\/create/; //TODO low chance of clashing with /user/[userId]/runs/[runId]
 
-const reEditRunsPage = /^\/user\.*?\/runs\/.*?\/edit/;
+const reEditRunsPage = /^\/user\/.*?\/runs\/.*?\/edit/;
 export function NavigationEvents() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
