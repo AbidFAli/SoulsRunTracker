@@ -15,7 +15,7 @@ export async function deleteCycles(client: Prisma.TransactionClient, ids: string
 
   const bossCompletionIds = bossCompletions.map((bossCompletion) => bossCompletion.id)
 
-  client.bossCompletion.deleteMany({
+  await client.bossCompletion.deleteMany({
     where: {
       id: {
         in: bossCompletionIds

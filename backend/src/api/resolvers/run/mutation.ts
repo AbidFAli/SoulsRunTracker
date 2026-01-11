@@ -2,7 +2,7 @@ import * as graphql from '#generated/graphql/types.js';
 import * as Cycle from '#src/db/cycle.js'
 import { RunCreateInput } from '#generated/prisma/models.js';
 import { prisma } from '#src/db/prisma.js';
-import type { Prisma } from '#generated/prisma/client.js';
+import { Prisma } from '#generated/prisma/client.js';
 import { Unnullified } from '#src/util/utilityTypes.js';
 
 import lodash from 'lodash';
@@ -151,9 +151,17 @@ export const runMutationResolvers: Pick<graphql.MutationResolvers, "createRun" |
       } : undefined;
 
 
-
     const prismaCycleUpdate: Prisma.CycleUpdateManyWithoutRunNestedInput = {
-      create: data.cycles?.create,
+      create: data.cycles?.create?.map<Prisma.CycleCreateWithoutRunInput>((cycleCreate) => {
+        return {
+          ...lodash.pick(cycleCreate, ['completed', 'level']),
+          bossesCompleted: {
+            createMany: {
+              data: cycleCreate.bossesCompleted?.upsert ?? []
+            }
+          }
+        }
+      }),
       update: (data.cycles?.update ?? []).map((cycleUpdate) => {
         const prismaBossCompletion: Prisma.BossCompletionUpdateManyWithoutCycleNestedInput = {
           upsert: (cycleUpdate.bossesCompleted?.upsert ?? []).map((bossesCompletedUpdate) => {
