@@ -1,0 +1,161 @@
+type Run{
+  id: ID!
+  name: String
+  descriptionUrl: String
+  completed: Boolean
+  gameId: ID
+  game: Game
+  userId: ID
+  cycles: [Cycle!]
+  currentCycle: Cycle
+  character: Character
+  deaths: Int
+  modifiedAt: DateTime
+  createdAt: DateTime
+}
+
+
+input RunCreateInput{
+  name: String!
+  descriptionUrl: String
+  completed: Boolean
+  gameId: String!
+  userId: String!
+  character: CharacterCreateWithoutRunInput
+  deaths: Int
+  cycles: [CycleCreateWithoutRunInput!]
+}
+
+input CharacterCreateWithoutRunInput{
+  name: String!
+  level: Int
+  vitality: Int
+  intelligence: Int
+  endurance: Int
+  strength: Int
+  dexterity: Int
+  magic: Int
+  faith: Int
+  luck: Int
+  attunement: Int
+  resistance: Int
+  vigor: Int
+  adaptability: Int
+  insight: Int
+  skill: Int
+  bloodtinge: Int
+  mind: Int
+  hp: Int
+  mp: Int
+  stamina: Int
+  arcane: Int
+}
+
+
+input RunWhereInput{
+  AND: [RunWhereInput!]
+  OR: [RunWhereInput!]
+  NOT: [RunWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  completed: BoolFilter
+  gameId: StringFilter
+  userId: StringFilter
+}
+
+input RunOrderByInput{
+  id: SortOrder
+  name: SortOrder
+  completed: SortOrder
+  game: GameOrderByInput
+  character: CharacterOrderByInput
+  deaths: SortOrder
+  modifiedAt: SortOrder
+  createdAt: SortOrder
+}
+
+input RunPaginationInput{
+  offset: PaginationOffsetInput
+  cursor: PaginationCursorInput
+}
+
+type RunConnection{
+  pageInfo: PageInfo!
+  edges: [Run!]
+}
+
+input RunDeleteInput{
+  userId: ID!
+  ids: [ID!]
+  all: Boolean
+}
+
+input RunWhereUniqueInput{
+  id: ID!
+}
+
+input RunUpdateInput{
+  name: String
+  completed: Boolean
+  deaths: Int
+  character: RunUpdateCharacterOptions
+  cycles: RunUpdateCycleOptions
+}
+
+input RunUpdateCharacterOptions{
+  create: CharacterCreateWithoutRunInput
+  update: CharacterUpdateWithoutRunInput
+}
+
+input CharacterUpdateWithoutRunInput{
+  name: String
+  level: Int
+  vitality: Int
+  intelligence: Int
+  endurance: Int
+  strength: Int
+  dexterity: Int
+  magic: Int
+  faith: Int
+  luck: Int
+  attunement: Int
+  resistance: Int
+  vigor: Int
+  adaptability: Int
+  insight: Int
+  skill: Int
+  bloodtinge: Int
+  mind: Int
+  hp: Int
+  mp: Int
+  stamina: Int
+  arcane: Int
+}
+
+input RunUpdateCycleOptions{
+  create: [CycleCreateWithoutRunInput!]
+  update: [CycleUpdateWithoutRunInput!]
+  delete: [ID!]
+}
+
+input CycleCreateWithoutRunInput{
+  level: Int!
+  completed: Boolean
+  bossesCompleted: CycleUpdateBossesCompletedOptions
+}
+
+input CycleUpdateWithoutRunInput{
+  id: ID!
+  completed: Boolean
+  bossesCompleted: CycleUpdateBossesCompletedOptions
+}
+
+input CycleUpdateBossesCompletedOptions{
+  upsert: [BossCompletionUpsertWithoutCycleInput!]
+}
+
+input BossCompletionUpsertWithoutCycleInput{
+  completed: Boolean!
+  instanceId: String!
+}
+

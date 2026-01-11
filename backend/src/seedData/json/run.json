@@ -4,69 +4,79 @@
     "userId": "37a8ddd4-4882-4590-81d6-56ea8d8a5aad",
     "name": "run1",
     "completed": false,
-    "game": "Demon's Souls"
+    "game": "Demon's Souls",
+    "deaths": 0
   },
   {
     "id": "6d9d95b6-d9a1-42d8-bba1-a552464f72e5",
     "userId": "d0bab662-3579-43ff-b10a-4b84f79b0097",
     "name": "run2",
     "completed": false,
-    "game": "Dark Souls"
+    "game": "Dark Souls",
+    "deaths": 40
   },
   {
     "id": "02144811-f9b3-4877-bac4-0fe2e658f5cb",
     "userId": "75953b16-44f0-4fbf-9c75-3d3c9de81e91",
     "name": "run3",
     "completed": false,
-    "game": "Dark Souls 2"
+    "game": "Dark Souls 2",
+    "deaths": 31
   },
   {
     "id": "d8628f30-a2b3-4347-9a9d-3b8c557863cd",
     "userId": "d329161d-2a47-4ab1-b742-10220418ed23",
     "name": "run4",
     "completed": false,
-    "game": "Dark Souls 2: Scholar of the First Sin"
+    "game": "Dark Souls 2: Scholar of the First Sin",
+    "deaths": 100
   },
   {
     "id": "c19c683e-3367-4b02-ae64-6182f8805bd3",
     "userId": "3138e678-9373-470a-8ff9-ca4e679a072c",
     "name": "run5",
     "completed": false,
-    "game": "Bloodborne"
+    "game": "Bloodborne",
+    "deaths": 200
   },
   {
     "id": "f3d34200-7a80-44a9-9f34-9e12e8c79286",
     "userId": "1a9cc3a6-ac67-4ec5-a1ab-d1171b5b727c",
     "name": "run6",
     "completed": false,
-    "game": "Dark Souls 3"
+    "game": "Dark Souls 3",
+    "deaths": 30
   },
   {
     "id": "b89a34bf-af8e-4121-aadf-5dc67c53957a",
     "userId": "2072d5b7-e451-4c9a-bdcf-8ebfb0de38f5",
     "name": "run8",
     "completed": false,
-    "game": "Elden Ring"
+    "game": "Elden Ring",
+    "deaths": 0
   },
   {
     "id": "9ff6f940-e839-45e1-aa70-bc4cbf4de065",
     "userId": "dc33d0fd-4336-48ae-ad3a-c74af01e8075",
     "name": "run9",
     "completed": false,
-    "game": "Elden Ring"
+    "game": "Elden Ring",
+    "deaths": 47
   },
   {
     "id": "41f61748-b217-4fb3-8010-b2a8c147dbb9",
     "userId": "55027ea2-0e8d-4a91-8154-cd5704984a34",
     "name": "run10",
     "completed": false,
-    "game": "Elden Ring"
+    "game": "Elden Ring",
+    "deaths": 31
   },
   {
     "id": "f2b295a9-5c34-4184-9649-b3cb92cf12b6",
     "userId": "5bc9320e-e93a-4d14-98ae-14294c4a0111",
     "name": "run7",
     "completed": false,
-    "game": "Sekiro: Shadows Die Twice"
+    "game": "Sekiro: Shadows Die Twice",
+    "deaths": 42
   }
 ]

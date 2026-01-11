@@ -19,7 +19,6 @@ model Game {
   name String @unique
   runs Run[]
   stats GameStat[]
-  bossInstances BossInstance[]
   gameLocation GameLocation[]
 }
 
@@ -28,6 +27,7 @@ model Run{
   name String
   descriptionUrl String @default("")
   completed Boolean @default(false)
+  deaths Int @default(0)
   gameId String
   game Game @relation(fields: [gameId], references: [id])
   cycles Cycle[]
@@ -35,9 +35,14 @@ model Run{
 
   userId String
   user User @relation(fields: [userId], references: [id])
+
+  modifiedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+
   @@index([gameId])
   @@index([name])
   @@index([userId])
+  @@unique([userId, name])
 }
 
 model Cycle{
@@ -53,7 +58,7 @@ model Cycle{
 model Character{
   id String @id @default(cuid())
   name String
-  level Int @default(1)
+  level Int? //I would like to make this required but prisma doesn't allow controlling null sort order on Optional relationships with required fields.
   vitality Int?
   intelligence Int?
   endurance Int?
@@ -74,7 +79,6 @@ model Character{
   mp Int?
   stamina Int?
   arcane Int?
-  deaths Int @default(0)
   runId String @unique
   run Run @relation(fields: [runId], references: [id])
   imageId String? @unique
@@ -87,7 +91,7 @@ model Stat{
   name String @unique
   displayName String
 
-  stats GameStat[]
+  gameStats GameStat[]
 }
 
 model GameStat{
@@ -122,7 +126,6 @@ model Boss{
 model Location{
   id String @id @default(cuid())
   name String //not unique to support having different records for locations that share the same name but exist in multiple games
-  bossInstances BossInstance[]
   gameLocation GameLocation[]
 }
 
@@ -133,8 +136,10 @@ model GameLocation{
   order Int
   game Game @relation(fields: [gameId], references: [id])
   location Location @relation(fields: [locationId], references: [id])
+  bossInstances BossInstance[]
   @@index([gameId, order(sort: Asc)])
   @@index([locationId])
+  @@unique([gameId, locationId])
 }
 
 
@@ -155,18 +160,15 @@ model BossInstance{
   id String @id @default(cuid())
   //PK= (bossId, locationId, gameId)
   bossId String
-  locationId String
-  gameId String
+  gameLocationId String
 
   completions BossCompletion[]
   boss Boss @relation(fields: [bossId], references: [id])
-  location Location @relation(fields: [locationId], references: [id])
+  gameLocation GameLocation @relation(fields: [gameLocationId], references: [id])
   order Int
-  game Game @relation(fields: [gameId], references: [id])
   @@index([bossId])
-  @@index([gameId])
-  @@index([locationId, order(sort: Asc)])
-  @@unique([gameId, locationId, bossId])
+  @@index([gameLocationId, order(sort: Asc)])
+  @@unique([gameLocationId, bossId])
 }
 
 model User{

@@ -110,7 +110,7 @@ const DS2_GAME_STATS: GameStatSeedDataItem[] = [
     NormalStat({name: "attunement"}),
     NormalStat({name: "strength"}),
     NormalStat({name: "dexterity"}),
-    NormalStat({name: "resistance"}),
+    NormalStat({name: "adaptability"}),
     NormalStat({name: "intelligence"}),
     NormalStat({name: "faith"}),
     {

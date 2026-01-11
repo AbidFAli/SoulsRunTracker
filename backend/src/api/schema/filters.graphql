@@ -1,0 +1,324 @@
+enum QueryMode{
+  DEFAULT
+  INSENSITIVE
+}
+
+enum SortOrder{
+  ASC
+  DESC
+}
+
+enum NullsOrder{
+  FIRST
+  LAST
+}
+
+
+
+input StringFilter{
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringFilter 
+}
+
+
+
+input StringWithAggregatesFilter{
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringWithAggregatesFilter
+  _count: IntFilter
+  _min: StringFilter
+  _max: StringFilter
+}
+
+
+
+input BoolFilter{
+  equals: Boolean
+  not: BoolFilter
+}
+
+
+
+
+input BoolWithAggregatesFilter{
+  equals: Boolean
+  not: BoolWithAggregatesFilter
+  _count: IntFilter
+  _min: BoolFilter
+  _max: BoolFilter
+}
+
+
+
+input IntFilter{
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+
+
+input IntWithAggregatesFilter{
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntWithAggregatesFilter
+  _count: IntFilter
+  _avg: FloatFilter
+  _sum: IntFilter
+  _min: IntFilter
+  _max: IntFilter
+}
+
+""" Only use one """
+input IntNullableFilterEquals{
+  value: Int
+  null: Boolean
+}
+
+""" Only use one """
+input IntNullableFilterNot{
+  value: Int
+  filter: IntNullableFilter
+  null: Boolean
+}
+
+""" Only use one """
+input IntNullableFilterIn{
+  value: [Int!]
+  null: Boolean
+}
+
+input IntNullableFilter{
+  equals: IntNullableFilterEquals
+  in: IntNullableFilterIn
+  notIn: IntNullableFilterIn
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilterNot
+}
+
+""" Only use one """
+input StringNullableFilterEquals{
+  value: String
+  null: Boolean
+}
+
+""" Only use one """
+input StringNullableFilterIn{
+  value: [String!]
+  null: Boolean
+}
+
+""" Only use one """
+input StringNullableFilterNot{
+  value: String
+  filter: StringNullableFilter
+  null: Boolean
+}
+input StringNullableFilter{
+  equals: StringNullableFilterEquals
+  in: StringNullableFilterIn
+  notIn: StringNullableFilterIn
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableFilterNot
+}
+
+input SortOrderInput{
+  sort: SortOrder!
+  nulls: NullsOrder
+}
+
+""" Only use one """
+input IntNullableWithAggregatesFilterNot{
+  value: Int
+  filter: IntNullableWithAggregatesFilter
+  null: Boolean
+}
+
+input IntNullableWithAggregatesFilter{
+  equals: IntNullableFilterEquals
+  in: IntNullableFilterIn
+  notIn: IntNullableFilterIn
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableWithAggregatesFilterNot
+  _count: IntNullableFilter
+  _avg: FloatNullableFilter
+  _sum: IntNullableFilter
+  _min: IntNullableFilter
+  _max: IntNullableFilter
+}
+
+""" Only use one """
+input StringNullableWithAggregatesFilterNot{
+  value: String
+  filter: StringNullableWithAggregatesFilter
+  null: Boolean
+}
+
+input StringNullableWithAggregatesFilter{
+  equals: StringNullableFilterEquals
+  in: StringNullableFilterIn
+  notIn: StringNullableFilterIn
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: StringNullableWithAggregatesFilterNot
+  _count: IntNullableFilter
+  _min: StringNullableFilter
+  _max: StringNullableFilter
+}
+
+
+
+input FloatFilter{
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatFilter
+}
+
+""" Only use one """
+input FloatNullableFilterEquals{
+  value: Float
+  null: Boolean
+}
+
+""" Only use one """
+input FloatNullableFilterIn{
+  value: [Float!]
+  null: Boolean
+}
+
+""" Only use one """
+input FloatNullableFilterNot{
+  value: Float
+  filter: FloatNullableFilter
+  null: Boolean
+}
+
+input FloatNullableFilter{
+  equals: FloatNullableFilterEquals
+  in: FloatNullableFilterIn
+  notIn: FloatNullableFilterIn
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableFilterNot
+}
+
+
+input FloatWithAggregatesFilter{
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatWithAggregatesFilter
+  _count: IntFilter
+  _avg: FloatFilter
+  _sum: FloatFilter
+  _min: FloatFilter
+  _max: FloatFilter
+}
+
+""" Only use one """
+input FloatNullableWithAggregatesFilterNot{
+  value: Float
+  filter: FloatNullableWithAggregatesFilter
+  null: Boolean
+}
+
+input FloatNullableWithAggregatesFilter{
+  equals: FloatNullableFilterEquals
+  in: FloatNullableFilterIn
+  notIn: FloatNullableFilterIn
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableWithAggregatesFilterNot
+  _count: IntNullableFilter
+  _avg: FloatNullableFilter
+  _sum: FloatNullableFilter
+  _min: FloatNullableFilter
+  _max: FloatNullableFilter
+}
+
+input DateTimeFilter{
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeFilter
+}
+
+input DateTimeWithAggregatesFilter{
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeFilter
+  _count: IntFilter
+  _min: DateTimeFilter
+  _max: DateTimeFilter
+}

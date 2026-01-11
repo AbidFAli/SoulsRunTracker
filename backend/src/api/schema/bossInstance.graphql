@@ -1,0 +1,8 @@
+type BossInstance{
+  id: ID!
+  bossId: ID
+  locationId: ID
+  gameId: ID
+  boss: Boss
+  order: Int
+}

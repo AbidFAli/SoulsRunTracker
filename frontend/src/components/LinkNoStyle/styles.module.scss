@@ -1,0 +1,15 @@
+// .link-no-style{
+//   a, a:hover, a:visited, a:active {
+//     color: white;
+//     text-decoration: none;
+//  }
+// }
+
+a.link-no-style:visited,
+a.link-no-style:link,
+a.link-no-style:active,
+a.link-no-style:hover{
+  color: white;
+  text-decoration: none;
+}
+

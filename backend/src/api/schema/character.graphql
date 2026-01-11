@@ -1,0 +1,36 @@
+type Character{
+  id: ID!
+  name: String
+  level: Int
+  vitality: Int
+  intelligence: Int
+  endurance: Int
+  strength: Int
+  dexterity: Int
+  magic: Int
+  faith: Int
+  luck: Int
+  attunement: Int
+  resistance: Int
+  vigor: Int
+  adaptability: Int
+  insight: Int
+  skill: Int
+  bloodtinge: Int
+  mind: Int
+  hp: Int
+  mp: Int
+  stamina: Int
+  arcane: Int
+  runId: ID
+  run: Run 
+  imageId: ID
+  image: Image
+}
+
+input CharacterOrderByInput{
+  name: SortOrder
+  level: SortOrderInput
+}
+
+

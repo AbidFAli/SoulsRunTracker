@@ -1,0 +1,6 @@
+type Boss{
+  id: ID!
+  name: String
+  imageId: ID
+  image: Image
+}

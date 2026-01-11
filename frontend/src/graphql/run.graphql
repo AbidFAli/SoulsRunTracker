@@ -1,0 +1,174 @@
+mutation CreateRun($input: RunCreateInput!){
+  createRun(run: $input){
+    id
+  }
+}
+
+# Run for MyRunsPage
+fragment UserRuns on Run{
+  id
+  name
+  completed
+  gameId
+  currentCycle{
+    ...UserRunsCycle
+  }
+  deaths
+  createdAt
+  modifiedAt
+  character{
+    ...UserRunsCharacter
+  }
+}
+
+fragment UserRunsCycle on Cycle{
+  id
+  level
+}
+
+fragment UserRunsCharacter on Character{
+  id
+  name
+  level
+}
+
+query GetUserRuns($where: RunWhereInput!, $pagination: RunPaginationInput!, $orderBy: [RunOrderByInput!]){
+  runs(where: $where, pagination: $pagination, orderBy: $orderBy){
+    edges{
+      ...UserRuns
+    }
+    pageInfo{
+      ...PageInfoFragment
+    }
+  }
+}
+
+mutation DeleteUserRuns($where: RunDeleteInput!){
+  deleteRuns(where: $where)
+}
+
+query GetRun($where: RunWhereUniqueInput!){
+  run(where: $where){
+    ...RunPageRun
+  }
+}
+
+# Run for RunPage
+fragment RunPageRun on Run{
+  id
+  name
+  descriptionUrl
+  completed
+  game{
+    ...GameInfo
+  }
+  cycles{
+    ...RunPageCycle
+  }
+  currentCycle{
+    ...RunPageDetailedCycle
+  }
+  character{
+    ...RunPageCharacter
+  }
+  deaths
+}
+
+
+fragment RunPageCharacter on Character{
+  id
+  name
+  level
+  vitality
+  intelligence
+  endurance
+  strength
+  dexterity
+  magic
+  faith
+  luck
+  attunement
+  resistance
+  vigor
+  adaptability
+  insight
+  skill
+  bloodtinge
+  mind
+  hp
+  mp
+  stamina
+  arcane
+  imageId
+}
+
+fragment RunPageCycle on Cycle{
+  id
+  level
+  completed
+}
+
+fragment RunPageBossCompletion on BossCompletion{
+  id
+  instanceId
+  completed
+}
+
+# Run returned by UpdateUserRun mutation
+fragment EditPageRun on Run{
+  id
+  name
+  descriptionUrl
+  completed
+  cycles{
+    ...RunPageCycle
+  }
+  currentCycle{
+    ...RunPageDetailedCycle
+  }
+  character{
+    ...RunPageCharacter
+  }
+  deaths
+}
+
+mutation UpdateUserRun($where: RunWhereUniqueInput!, $data: RunUpdateInput!){
+  updateRun(where: $where, data: $data){
+    ...EditPageRun
+  }
+}
+
+# Cycle with boss completion information
+fragment RunPageDetailedCycle on Cycle{
+  ...RunPageCycle
+  bossesCompleted{
+    ...RunPageBossCompletion
+  }
+}
+
+fragment CyclePageRun on Run{
+  id
+  name
+  game{
+    ...GameInfo
+  }
+  currentCycle{
+    ...RunPageDetailedCycle
+  }
+
+}
+
+query GetCyclePageInfo($cycleWhere: CycleWhereUniqueInput!, $runWhere: RunWhereUniqueInput!){
+  cycle(where:$cycleWhere){
+    ...RunPageDetailedCycle
+  }
+  run(where: $runWhere){
+    ...CyclePageRun
+  }
+}
+
+query GetRunEditPageCycleInfo($where: CycleWhereUniqueInput!){
+  cycle(where: $where){
+    ...RunPageDetailedCycle
+  }
+}

@@ -1,0 +1,13 @@
+
+type Query{
+  game(where: GameWhereUniqueInput!): Game
+  games(where: GameWhereInput): [Game!]
+  run(where: RunWhereUniqueInput!): Run
+  runs(
+    where: RunWhereInput!, 
+    pagination: RunPaginationInput!,
+    orderBy: [RunOrderByInput!]
+  ): RunConnection
+  cycle(where: CycleWhereUniqueInput!): Cycle
+}
+

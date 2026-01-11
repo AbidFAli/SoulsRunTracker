@@ -1,0 +1,26 @@
+
+
+type Game{
+  id: ID!
+  name: String
+  gameLocations: [GameLocation!]
+  gameStat: [GameStat!]
+}
+
+input GameWhereUniqueInput{
+  id: String
+  name: String
+}
+
+
+input GameWhereInput{
+  AND: [GameWhereInput!]
+  OR: [GameWhereInput!]
+  NOT: [GameWhereInput!]
+  id: StringFilter
+  name: StringFilter
+}
+
+input GameOrderByInput{
+  name: SortOrder
+}

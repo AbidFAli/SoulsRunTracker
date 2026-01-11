@@ -1,0 +1,12 @@
+type GameStat{
+  id: ID!
+  imageId: ID
+  gameId: ID
+  statId: ID
+  alternateName: String
+  order: Int
+  minimum: Int
+  maximum: Int
+  image: Image
+  stat: Stat
+}

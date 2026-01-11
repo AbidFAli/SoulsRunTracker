@@ -1,6 +1,14 @@
 {
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
+    "source.organizeImports": "never"
   },
+  "eslint.workingDirectories": ["./backend", "./frontend"],
+  "eslint.useFlatConfig": true,
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": ["css", "scss"],
+  "stylelint.configFile": "frontend/stylelint.config.mjs"
 }
     

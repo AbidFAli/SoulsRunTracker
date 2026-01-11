@@ -1,0 +1,5 @@
+type Mutation{
+  createRun(run: RunCreateInput!): Run
+  updateRun(where: RunWhereUniqueInput!, data:RunUpdateInput!): Run
+  deleteRuns(where: RunDeleteInput!): Boolean!
+}
